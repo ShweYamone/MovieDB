@@ -10,6 +10,7 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="ok">Ok</string>
+    <string name="btn_play">Play</string>
     <string name="incorrect_user_name_or_password">Incorrect username or password</string>
     <string name="error_connecting">Error connecting</string>
     <string name="please_check_your_internet_connection">Please check your internet connection</string>

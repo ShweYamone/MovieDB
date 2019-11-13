@@ -20,6 +20,7 @@
     <color name="color_danger_dark">#af4d4d</color>
     <color name="color_black_trans">#4D000000</color>
     <color name="color_blue">#0548b3</color>
+    <color name="color_red">#ff0000</color>
     <color name="color_white_trans">#F2ffffff</color>
     <color name="color_noti_background">#F4F4F4</color>
 
