@@ -1,6 +1,7 @@
 package com.example.moviedb.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.moviedb.common.BaseActivity;
 
@@ -17,5 +18,6 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
 
+        Log.e("hello","hi hi");
     }
 }
