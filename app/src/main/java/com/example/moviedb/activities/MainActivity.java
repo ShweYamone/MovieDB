@@ -1,5 +1,5 @@
 package com.example.moviedb.activities;
-
+//Hello Testing
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,7 +27,6 @@ public class MainActivity extends BaseActivity {
 
     public static Intent getMainActivityIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        //Hello
         return intent;
     }
 
