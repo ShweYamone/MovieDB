@@ -14,5 +14,13 @@
         android:background="@drawable/bg_searchview"
         android:queryHint="@string/search" />
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp">
+
+
+    </androidx.core.widget.NestedScrollView>
+
 
 </FrameLayout>
