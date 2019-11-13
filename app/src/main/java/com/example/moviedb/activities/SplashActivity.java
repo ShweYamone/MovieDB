@@ -19,5 +19,7 @@ public class SplashActivity extends BaseActivity {
     protected void setUpContents(Bundle savedInstanceState) {
 
         Log.e("hello","hi hi");
+         Log.i("Test Sourcetree", "Sourcetree");
+
     }
 }
