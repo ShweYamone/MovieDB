@@ -27,6 +27,7 @@ public class MainActivity extends BaseActivity {
 
     public static Intent getMainActivityIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
+        //Hello
         return intent;
     }
 
