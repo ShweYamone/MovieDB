@@ -41,24 +41,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         setUpContents(savedInstanceState);
     }
 
-    protected void setupToolbar(boolean isChild) {
-
-        if (toolbar != null)
-            setSupportActionBar(toolbar);
-
-        if (isChild) {
-            if (getSupportActionBar() != null) {
-
-                /*final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
-                upArrow.setColorFilter(getResources().getColor(R.color.colorTextColorPrimary), PorterDuff.Mode.SRC_ATOP);
-                getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
-
-
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-         //       toolbar.setNavigationIcon(R.drawable.ic_back);
-            }
-        }
-    }
+//    protected void setupToolbar(boolean isChild) {
+//
+//        if (toolbar != null)
+//            setSupportActionBar(toolbar);
+//
+//        if (isChild) {
+//            if (getSupportActionBar() != null) {
+//
+//                /*final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_material);
+//                upArrow.setColorFilter(getResources().getColor(R.color.colorTextColorPrimary), PorterDuff.Mode.SRC_ATOP);
+//                getSupportActionBar().setHomeAsUpIndicator(upArrow);*/
+//
+//
+//                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//         //       toolbar.setNavigationIcon(R.drawable.ic_back);
+//            }
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
