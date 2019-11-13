@@ -38,8 +38,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
-        setupToolbar(false);
-        setupToolbarText("The Movie DB");
         init();
 
     }
@@ -56,24 +54,20 @@ public class MainActivity extends BaseActivity {
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    setupToolbarText("The Movie DB");
                     fragment = new HomeFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.navigation_search:
-                    setupToolbarText("Search");
                     fragment = new SearchFragment();
                     loadFragment(fragment);
                     return true;
 
                 case R.id.navigation_my_list:
-                    setupToolbarText("My List");
                     fragment = new MyListFragment();
                     loadFragment(fragment);
                     return true;
 
                 case R.id.navigation_profile:
-                    setupToolbarText("Profile");
                     fragment = new ProfileFragment();
                     loadFragment(fragment);
                     return true;

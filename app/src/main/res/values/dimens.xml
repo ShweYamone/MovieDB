@@ -32,4 +32,7 @@
     <dimen name="placeholder_width">105dp</dimen>
     <dimen name="placeholder_height">170dp</dimen>
 
+    <dimen name="searchview_corner">10dp</dimen>
+    <dimen name="searchview_radius">4dp</dimen>
+
 </resources>
