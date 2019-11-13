@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">MovieDB</string>
+
+    <string name="img_portrait_ratio">H,3:4</string>
+
+    <string name="youAreNotUpdatedTitle">Update Available</string>
+    <string name="youAreNotUpdatedMessage">A new version of JCGV is available. Please update to version</string>
+    <string name="update">Update</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="ok">Ok</string>
+    <string name="incorrect_user_name_or_password">Incorrect username or password</string>
+    <string name="error_connecting">Error connecting</string>
+    <string name="please_check_your_internet_connection">Please check your internet connection</string>
+    <string name="error_retrieving_data">Error retrieving data. Please try again later</string>
+    <string name="error">Error</string>
+    <string name="please_fill_in_username">Please fill in username</string>
+    <string name="please_fill_in_password">Please fill in password</string>
+
+    <string name="password_description">show password</string>
+</resources>
