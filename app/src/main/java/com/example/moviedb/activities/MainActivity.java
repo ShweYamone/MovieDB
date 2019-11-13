@@ -1,5 +1,5 @@
 package com.example.moviedb.activities;
-//Hello Testing
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
