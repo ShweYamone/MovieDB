@@ -44,7 +44,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 //    protected void setupToolbar(boolean isChild) {
 //
+
+
+//    protected void setupToolbar(boolean isChild) {
 //
+//
+
 //        if (toolbar != null)
 //            setSupportActionBar(toolbar);
 //
