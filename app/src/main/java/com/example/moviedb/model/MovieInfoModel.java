@@ -1,8 +1,10 @@
 package com.example.moviedb.model;
 
+import com.example.moviedb.common.Pageable;
+
 import java.io.Serializable;
 
-public class MovieInfoModel implements Serializable {
+public class MovieInfoModel implements Serializable, Pageable {
     int id;
     String title;
     String poster_path;

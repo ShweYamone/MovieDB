@@ -23,7 +23,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginBottom="?android:attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -31,7 +34,6 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_movie"
-                android:background="@color/color_app_background"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
@@ -53,14 +55,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.kks.trainingapp.custom_control.MyanTextView
+                    <com.example.moviedb.custom_control.MyanTextView
                         android:layout_marginTop="@dimen/margin_normal"
                         android:gravity="center"
                         android:text="Oops! Couldn't get movies"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
-                    <com.kks.trainingapp.custom_control.MyanTextView
+                    <com.example.moviedb.custom_control.MyanTextView
                         android:layout_marginBottom="@dimen/margin_normal"
                         android:textColor="@color/color_blue"
                         android:gravity="center"
@@ -72,27 +74,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginLeft="@dimen/margin_small"
-            android:layout_marginBottom="?android:attr/actionBarSize"
-            android:scrollbars="vertical" />
 
     </LinearLayout>
-
-
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="48dp">
-
-
-    </androidx.core.widget.NestedScrollView>
 
 
 </FrameLayout>

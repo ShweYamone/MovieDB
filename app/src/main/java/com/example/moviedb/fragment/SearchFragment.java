@@ -4,13 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,7 +34,7 @@ public class SearchFragment extends BaseFragment implements SearchView {
     @BindView(R.id.searchView)
     SearchView searchView;
 
-    @BindView(R.id.recycler_view)
+    @BindView(R.id.recycler_movie)
     RecyclerView recyclerSearchMovie;
 
     private MovieAdapter mAdapter;
@@ -80,11 +76,11 @@ public class SearchFragment extends BaseFragment implements SearchView {
         });
 
 
-        recyclerSearchMovie.setHasFixedSize(true);
-        recyclerSearchMovie.setLayoutManager(new GridLayoutManager(this.getActivity(),2));
-        recyclerSearchMovie.addItemDecoration(new ItemOffsetDecoration(2));
-        recyclerSearchMovie.setAdapter(mAdapter);
-        recyclerSearchMovie.addOnScrollListener(mSmartScrollListener);
+//        recyclerSearchMovie.setHasFixedSize(true);
+//        recyclerSearchMovie.setLayoutManager(new GridLayoutManager(this.getActivity(),2));
+//        recyclerSearchMovie.addItemDecoration(new ItemOffsetDecoration(2));
+//        recyclerSearchMovie.setAdapter(mAdapter);
+//        recyclerSearchMovie.addOnScrollListener(mSmartScrollListener);
 
        // swipeRefreshLayout.setOnRefreshListener(this);
 
@@ -101,21 +97,30 @@ public class SearchFragment extends BaseFragment implements SearchView {
     @Override
     public void showMovieList(List<MovieInfoModel> movieInfoModelList) {
         cvDataError.setVisibility(View.GONE);
+
+        page = 1;
+
+
+        mAdapter.clear();
+        //   mAdapter.showLoading();
+        for (MovieInfoModel model: movieInfoModelList) {
+            mAdapter.add(model);
+        }
     }
 
     @Override
     public void resetPageNumberToDefault() {
-
+        page--;
     }
 
     @Override
     public void showNoMovieInfo() {
-
+        cvDataError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public Context context() {
-        return null;
+        return this.getActivity();
     }
 
     @Override
