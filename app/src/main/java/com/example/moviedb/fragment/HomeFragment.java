@@ -3,13 +3,9 @@ package com.example.moviedb.fragment;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.MovieAdapter;
@@ -20,7 +16,6 @@ import com.example.moviedb.custom_control.MyanProgressDialog;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.mvp.presenter.HomePresenterImpl;
-import com.example.moviedb.mvp.presenter.SearchPresenterImpl;
 import com.example.moviedb.mvp.view.HomeView;
 import com.example.moviedb.util.ServiceHelper;
 
@@ -70,16 +65,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private void init() {
 
 
-
-//        smartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
-//            @Override
-//            public void onListEndReach() {
-//
-//
-//
-//            }
-//        });
-          recyclerNowPlaying.setHasFixedSize(true);
+        recyclerNowPlaying.setHasFixedSize(true);
         recyclerNowPlaying.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerNowPlaying.addItemDecoration(new ItemOffsetDecoration(2));
         recyclerNowPlaying.setAdapter(mAdapter);

@@ -16,7 +16,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
     public HomePresenterImpl(MovieInteractor interactor){ this.interactor = interactor; }
     @Override
     public void onUIReady(){
-
+        getNowPlayingMovies();
     }
 
     @Override
