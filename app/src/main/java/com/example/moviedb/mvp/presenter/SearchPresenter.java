@@ -6,6 +6,6 @@ public interface SearchPresenter {
 
     void onUIReady();
     void onAttachView(SearchView view);
-    void getMoviesByTitle();
-    void getMoviesByTitleWithPaging(int page);
+    void getMoviesByTitle(String query);
+    void getMoviesByTitleWithPaging(String query, int page);
 }

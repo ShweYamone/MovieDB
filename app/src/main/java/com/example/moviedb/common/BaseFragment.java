@@ -26,7 +26,7 @@ public abstract class BaseFragment extends Fragment {
        // View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         View view = inflater.inflate(getLayoutResource(), container, false);
-        unbinder = ButterKnife.bind(container);
+        unbinder = ButterKnife.bind(this, view);
 
         setUpContents(savedInstanceState);
         return view;

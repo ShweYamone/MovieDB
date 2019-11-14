@@ -1,5 +1,7 @@
 package com.example.moviedb.mvp.presenter;
 
+import android.util.Log;
+
 import com.example.moviedb.R;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieListModel;
@@ -18,7 +20,7 @@ public class SearchPresenterImpl extends BasePresenter implements SearchPresente
 
     @Override
     public void onUIReady() {
-        getMoviesByTitle();
+       // getMoviesByTitle();
     }
 
     @Override
@@ -27,10 +29,8 @@ public class SearchPresenterImpl extends BasePresenter implements SearchPresente
     }
 
     @Override
-    public void getMoviesByTitle() {
-       // mView.showLoading();
-
-        this.mInteractor.getNowShowingMovieList(1)
+    public void getMoviesByTitle(String query) {
+        this.mInteractor.getMoviesByTitle(query, 1)
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -46,7 +46,8 @@ public class SearchPresenterImpl extends BasePresenter implements SearchPresente
                             if (movieListModel.getResults().isEmpty()) {
                                 mView.showNoMovieInfo();
                             } else {
-                                mView.showMovieList(movieListModel.getResults());
+                                Log.i("Page", "Add page1 movies");
+                                mView.showMovieListByQuery(movieListModel.getResults());
 
                             }
 
@@ -69,14 +70,12 @@ public class SearchPresenterImpl extends BasePresenter implements SearchPresente
 
                     }
                 });
-
     }
 
     @Override
-    public void getMoviesByTitleWithPaging(int page) {
-        mView.showLoading();
-
-        this.mInteractor.getNowShowingMovieList(page)
+    public void getMoviesByTitleWithPaging(String query, int page) {
+        Log.i("Page", "Add more movies page");
+        this.mInteractor.getMoviesByTitle(query, page)
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -87,12 +86,16 @@ public class SearchPresenterImpl extends BasePresenter implements SearchPresente
                     @Override
                     public void onNext(MovieListModel movieListModel) {
 
+
                         if (movieListModel != null) {
 
                             if (movieListModel.getResults().isEmpty()) {
+                                Log.i("Page::", "Empty");
                                 mView.resetPageNumberToDefault();
                             } else {
-                                mView.addMoreMoviesToTheList(movieListModel.getResults());
+                                Log.i("Page::", "Add more movies" + movieListModel.getResults().get(1).getTitle());
+
+                                mView.addMoreMoviesToTheListByQuery(movieListModel.getResults());
 
                             }
 
@@ -116,4 +119,6 @@ public class SearchPresenterImpl extends BasePresenter implements SearchPresente
                     }
                 });
     }
+
+
 }

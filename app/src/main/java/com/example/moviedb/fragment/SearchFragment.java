@@ -7,8 +7,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.MovieAdapter;
@@ -32,9 +33,9 @@ public class SearchFragment extends BaseFragment implements SearchView {
     CardView cvDataError;
 
     @BindView(R.id.searchView)
-    SearchView searchView;
+    androidx.appcompat.widget.SearchView searchView;
 
-    @BindView(R.id.recycler_movie)
+    @BindView(R.id.recycler_search_movie)
     RecyclerView recyclerSearchMovie;
 
     private MovieAdapter mAdapter;
@@ -48,6 +49,8 @@ public class SearchFragment extends BaseFragment implements SearchView {
     private MyanProgressDialog mDialog;
 
     private int page = 1;
+
+    private String query;
 
 
     @Override
@@ -69,20 +72,45 @@ public class SearchFragment extends BaseFragment implements SearchView {
             @Override
             public void onListEndReach() {
 
+
                 page++;
-                mPresenter.getMoviesByTitle();
+                Log.i("Page:", page+"");
+               // Toast.makeText(getContext(), page, Toast.LENGTH_SHORT).show();
+                mPresenter.getMoviesByTitleWithPaging(query, page);
 
             }
         });
 
 
-//        recyclerSearchMovie.setHasFixedSize(true);
-//        recyclerSearchMovie.setLayoutManager(new GridLayoutManager(this.getActivity(),2));
-//        recyclerSearchMovie.addItemDecoration(new ItemOffsetDecoration(2));
-//        recyclerSearchMovie.setAdapter(mAdapter);
-//        recyclerSearchMovie.addOnScrollListener(mSmartScrollListener);
 
-       // swipeRefreshLayout.setOnRefreshListener(this);
+
+
+        recyclerSearchMovie.setHasFixedSize(true);
+        recyclerSearchMovie.setLayoutManager(new GridLayoutManager(this.getActivity(),2));
+        recyclerSearchMovie.addItemDecoration(new ItemOffsetDecoration(2));
+        recyclerSearchMovie.setAdapter(mAdapter);
+        recyclerSearchMovie.addOnScrollListener(mSmartScrollListener);
+
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mAdapter.clear();
+                mPresenter.getMoviesByTitle(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                mAdapter.clear();
+                mPresenter.getMoviesByTitle(query);
+                return false;
+            }
+        });
+
+
+
+        // swipeRefreshLayout.setOnRefreshListener(this);
 
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
@@ -90,19 +118,22 @@ public class SearchFragment extends BaseFragment implements SearchView {
     }
 
     @Override
-    public void addMoreMoviesToTheList(List<MovieInfoModel> movieInfoModelList) {
+    public void addMoreMoviesToTheListByQuery(List<MovieInfoModel> movieInfoModelList) {
 
+        Log.i("Page", movieInfoModelList.size()+"");
+        for (MovieInfoModel model: movieInfoModelList) {
+
+            mAdapter.add(model);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
-    public void showMovieList(List<MovieInfoModel> movieInfoModelList) {
+    public void showMovieListByQuery(List<MovieInfoModel> movieInfoModelList) {
         cvDataError.setVisibility(View.GONE);
 
         page = 1;
-
-
         mAdapter.clear();
-        //   mAdapter.showLoading();
         for (MovieInfoModel model: movieInfoModelList) {
             mAdapter.add(model);
         }
