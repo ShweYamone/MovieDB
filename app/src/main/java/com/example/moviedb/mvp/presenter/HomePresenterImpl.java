@@ -17,6 +17,9 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
     @Override
     public void onUIReady(){
         getNowPlayingMovies();
+        getPopularMovies();
+        getTopRatedMovies();
+        getUpComingMovies();
     }
 
     @Override
@@ -68,7 +71,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
 
     @Override
     public void getTopRatedMovies(){
-        this.interactor.getNowShowingMovieList(1)
+        this.interactor.getTopRatedMovieList(1)
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -110,7 +113,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
 
     @Override
     public void getUpComingMovies(){
-        this.interactor.getNowShowingMovieList(1)
+        this.interactor.getUpcomingMovieList(1)
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -152,7 +155,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
 
     @Override
     public void getPopularMovies(){
-        this.interactor.getNowShowingMovieList(1)
+        this.interactor.getPopularMovieList(1)
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {

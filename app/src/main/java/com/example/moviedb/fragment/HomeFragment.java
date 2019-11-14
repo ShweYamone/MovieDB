@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.moviedb.R;
-import com.example.moviedb.adapters.MovieAdapter;
+import com.example.moviedb.adapters.MovieAdapter2;
 import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
@@ -32,7 +32,16 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @BindView(R.id.rv_now_playing)
     RecyclerView recyclerNowPlaying;
 
-    private MovieAdapter mAdapter;
+    @BindView(R.id.rv_top_rated)
+    RecyclerView recyclerTopRated;
+
+    @BindView(R.id.rv_popular)
+    RecyclerView recyclerPopular;
+
+    @BindView(R.id.rv_upcoming)
+    RecyclerView recyclerUpcoming;
+
+    private MovieAdapter2 _NowShowing, _Popular, _TopRated, _Upcoming;
 
     private ServiceHelper.ApiService mService;
 
@@ -51,7 +60,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
-        mAdapter = new MovieAdapter();
+        _NowShowing = new MovieAdapter2();
+        _Popular = new MovieAdapter2();
+        _TopRated = new MovieAdapter2();
+        _Upcoming = new MovieAdapter2();
 
         mDialog = new MyanProgressDialog(this.getActivity());
 
@@ -64,11 +76,30 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     private void init() {
 
-
+        //Recycler Now Playing
         recyclerNowPlaying.setHasFixedSize(true);
         recyclerNowPlaying.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerNowPlaying.addItemDecoration(new ItemOffsetDecoration(2));
-        recyclerNowPlaying.setAdapter(mAdapter);
+        recyclerNowPlaying.setAdapter(_NowShowing);
+
+        //Recycler popular
+        recyclerPopular.setHasFixedSize(true);
+        recyclerPopular.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerPopular.addItemDecoration(new ItemOffsetDecoration(2));
+        recyclerPopular.setAdapter(_Popular);
+
+        //Recycler Upcoming
+        recyclerUpcoming.setHasFixedSize(true);
+        recyclerUpcoming.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false));
+        recyclerUpcoming.addItemDecoration(new ItemOffsetDecoration(2));
+        recyclerUpcoming.setAdapter(_Upcoming);
+
+        //Recycler Top rated
+        recyclerTopRated.setHasFixedSize(true);
+        recyclerTopRated.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerTopRated.addItemDecoration(new ItemOffsetDecoration(2));
+        recyclerTopRated.setAdapter(_TopRated);
+
 
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
@@ -77,25 +108,37 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void showUpComingMovieList(List<MovieInfoModel> movieInfoModelList){
+        _Upcoming.clear();
+        for(MovieInfoModel model: movieInfoModelList){
+            _Upcoming.add(model);
+        }
 
     }
 
     @Override
     public void showPopularMovieList(List<MovieInfoModel> movieInfoModelList){
+        _Popular.clear();
+        for(MovieInfoModel model: movieInfoModelList){
+            _Popular.add(model);
+        }
 
     }
 
     @Override
     public void showTopRatedMovieList(List<MovieInfoModel> movieInfoModelList){
+        _TopRated.clear();
+        for(MovieInfoModel model: movieInfoModelList){
+            _TopRated.add(model);
+        }
 
     }
 
     @Override
     public void showNowShowingMovieList(List<MovieInfoModel> movieInfoModelList){
-        mAdapter.clear();
+        _NowShowing.clear();
         //   mAdapter.showLoading();
         for (MovieInfoModel model: movieInfoModelList) {
-            mAdapter.add(model);
+            _NowShowing.add(model);
         }
 
     }
