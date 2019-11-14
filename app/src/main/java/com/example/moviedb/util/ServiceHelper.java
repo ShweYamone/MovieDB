@@ -3,6 +3,8 @@ package com.example.moviedb.util;
 import android.content.Context;
 
 
+import com.example.moviedb.model.MovieListModel;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -125,14 +127,22 @@ public class ServiceHelper {
         Observable<ProfileInfoModel> getSession(@Query("api_key") String apiKey,
                                                 @Body RequestTokenBody requestTokenBody);
 
+
+        @GET("movie/{movie_id}")
+        Observable<MovieDetailModel> getMovieDetail(@Path("movie_id") int id, @Query("api_key") String apiKey);
+*/
         @GET("movie/now_playing")
         Observable<MovieListModel> getNowShowingMovies(@Query("api_key") String apiKey,
                                                        @Query("language") String language,
                                                        @Query("page") int page);
 
-        @GET("movie/{movie_id}")
-        Observable<MovieDetailModel> getMovieDetail(@Path("movie_id") int id, @Query("api_key") String apiKey);
-*/
+        @GET("search/movie")
+        Observable<MovieListModel> getMoviesByTitle(@Query("api_key") String apiKey,
+                                                    @Query("language") String language,
+                                                    @Query("query") String query,
+                                                    @Query("page") int page);
+
+
     }
 
 }

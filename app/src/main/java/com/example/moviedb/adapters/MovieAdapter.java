@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moviedb.R;
+import com.example.moviedb.activities.MovieDetailActivity;
 import com.example.moviedb.common.BaseAdapter;
+import com.example.moviedb.model.MovieInfoModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +30,7 @@ public class MovieAdapter extends BaseAdapter {
 
     @Override
     protected void onBindCustomViewHolder(RecyclerView.ViewHolder holder, int position) {
-    //    ((MovieAdapter.ViewHolder)holder).bindView((MovieInfoModel)getItemsList().get(position),position);
+        ((MovieAdapter.ViewHolder)holder).bindView((MovieInfoModel)getItemsList().get(position),position);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class MovieAdapter extends BaseAdapter {
         ImageView ivMoviePoster;
 
 
-    //    MovieInfoModel mMovieModel;
+        MovieInfoModel mMovieModel;
 
         private Context context;
 
@@ -63,7 +65,7 @@ public class MovieAdapter extends BaseAdapter {
                 }
             });
         }
-/*
+
         public void bindView(MovieInfoModel model, int position) {
 
             this.mMovieModel = model;
@@ -72,6 +74,6 @@ public class MovieAdapter extends BaseAdapter {
                     .load(BASE_IMG_URL+model.getPoster_path())
                     .into(ivMoviePoster);
 
-        }*/
+        }
     }
 }
