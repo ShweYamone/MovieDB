@@ -136,6 +136,21 @@ public class ServiceHelper {
                                                        @Query("language") String language,
                                                        @Query("page") int page);
 
+        @GET("movie/top_rated")
+        Observable<MovieListModel> getTopRatedMovies(@Query("api_key") String apiKey,
+                                                    @Query("language") String language,
+                                                    @Query("page") int page);
+
+        @GET("movie/upcoming")
+        Observable<MovieListModel> getUpComingMovies(@Query("api_key") String apiKey,
+                                                     @Query("language") String language,
+                                                     @Query("page") int page);
+
+        @GET("movie/popular")
+        Observable<MovieListModel> getPopularMovies(@Query("api_key") String apiKye,
+                                                    @Query("language") String language,
+                                                    @Query("page") int page);
+
         @GET("search/movie")
         Observable<MovieListModel> getMoviesByTitle(@Query("api_key") String apiKey,
                                                     @Query("language") String language,

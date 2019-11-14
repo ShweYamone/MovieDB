@@ -23,6 +23,12 @@ public class MovieInteractor {
 
     }
 
+    //Get Top Rated Movies
+    public Observable<MovieListModel> getTopRatedMovieList(int page){
+        return this.movieListModel.getTopRatedMoviesFromApi(mService, page);
+    }
+
+    //Search
     public Observable<MovieListModel> getMoviesByTitle(String query, int page) {
         return this.movieListModel.getMoviesByTitleFromApi(mService, query, page);
     }

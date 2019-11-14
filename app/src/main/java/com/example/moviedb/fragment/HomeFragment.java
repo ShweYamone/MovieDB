@@ -1,31 +1,151 @@
 package com.example.moviedb.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.moviedb.R;
+import com.example.moviedb.adapters.MovieAdapter;
+import com.example.moviedb.common.BaseFragment;
+import com.example.moviedb.common.ItemOffsetDecoration;
+import com.example.moviedb.common.SmartScrollListener;
+import com.example.moviedb.custom_control.MyanProgressDialog;
+import com.example.moviedb.interactor.MovieInteractor;
+import com.example.moviedb.model.MovieInfoModel;
+import com.example.moviedb.mvp.presenter.HomePresenterImpl;
+import com.example.moviedb.mvp.presenter.SearchPresenterImpl;
+import com.example.moviedb.mvp.view.HomeView;
+import com.example.moviedb.util.ServiceHelper;
 
-public class HomeFragment extends Fragment {
+import java.util.List;
 
-    public HomeFragment() {
-        // Required empty public constructor
+import butterknife.BindView;
+
+public class HomeFragment extends BaseFragment implements HomeView {
+
+
+
+    SmartScrollListener smartScrollListener;
+
+    @BindView(R.id.rv_now_playing)
+    RecyclerView recyclerNowPlaying;
+
+    private MovieAdapter mAdapter;
+
+    private ServiceHelper.ApiService mService;
+
+    private HomePresenterImpl mPresenter;
+
+    private SmartScrollListener mSmartScrollListener;
+
+    private MyanProgressDialog mDialog;
+
+    private int page = 1;
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.fragment_home;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setUpContents(Bundle savedInstanceState) {
+        mAdapter = new MovieAdapter();
+
+        mDialog = new MyanProgressDialog(this.getActivity());
+
+        mService = ServiceHelper.getClient(this.getActivity());
+
+        mPresenter = new HomePresenterImpl(new MovieInteractor(mService));
+        init();
+
+    }
+
+    private void init() {
+
+
+
+//        smartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
+//            @Override
+//            public void onListEndReach() {
+//
+//
+//
+//            }
+//        });
+          recyclerNowPlaying.setHasFixedSize(true);
+        recyclerNowPlaying.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerNowPlaying.addItemDecoration(new ItemOffsetDecoration(2));
+        recyclerNowPlaying.setAdapter(mAdapter);
+
+        mPresenter.onAttachView(this);
+        mPresenter.onUIReady();
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+    public void showUpComingMovieList(List<MovieInfoModel> movieInfoModelList){
+
     }
 
+    @Override
+    public void showPopularMovieList(List<MovieInfoModel> movieInfoModelList){
+
+    }
+
+    @Override
+    public void showTopRatedMovieList(List<MovieInfoModel> movieInfoModelList){
+
+    }
+
+    @Override
+    public void showNowShowingMovieList(List<MovieInfoModel> movieInfoModelList){
+        mAdapter.clear();
+        //   mAdapter.showLoading();
+        for (MovieInfoModel model: movieInfoModelList) {
+            mAdapter.add(model);
+        }
+
+    }
+
+    @Override
+    public void resetPageNumberToDefault(){
+
+    }
+
+    @Override
+    public void showNoMovieInfo(){
+
+    }
+
+    @Override
+    public Context context() {
+        return this.getActivity();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showToastMsg(String msg) {
+
+    }
+
+    @Override
+    public void showDialogMsg(String title, String msg) {
+
+    }
 }

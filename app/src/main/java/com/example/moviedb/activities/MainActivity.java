@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity {
     }
     private void init() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        loadFragment(new HomeFragment());
     }
 
 

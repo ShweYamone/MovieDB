@@ -15,6 +15,38 @@
             android:orientation="vertical">
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="@string/now_playing"
+                    android:textSize="16dp"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="@dimen/alerter_text_medium"
+                    android:layout_marginTop="@dimen/margin_small"/>
+
+                <TextView
+                    android:id="@+id/tv_now_playing"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="See All>>"
+                    android:textColor="@color/colorWhite"
+                    android:layout_marginStart="@dimen/alerter_text_medium"
+                    android:layout_marginTop="@dimen/margin_small"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_now_playing"
+                android:padding="@dimen/margin_small"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,7 +97,7 @@
                     android:layout_marginStart="@dimen/alerter_text_medium"/>
 
                 <TextView
-                    android:id="@+id/tv_most_read"
+                    android:id="@+id/tv_top_rated"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -78,7 +110,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_most_read_book"
+                android:id="@+id/rv_top_rated"
                 android:padding="@dimen/margin_small"/>
 
             <LinearLayout
@@ -97,7 +129,7 @@
                     android:layout_marginStart="@dimen/alerter_text_medium"/>
 
                 <TextView
-                    android:id="@+id/tv_books"
+                    android:id="@+id/tv_upcoming"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -110,7 +142,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_books"
+                android:id="@+id/rv_upcoming"
                 android:padding="@dimen/margin_small"/>
 
 
