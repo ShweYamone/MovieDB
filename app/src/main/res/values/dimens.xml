@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -18,6 +18,10 @@
     <dimen name="margin_large">24dp</dimen>
     <dimen name="margin_xlarge">32dp</dimen>
     <dimen name="margin_xxlarge">64dp</dimen>
+    <dimen name="margin_xxxlarge">86dp</dimen>
+    <dimen name="margin_xxxxlarge">100dp</dimen>
+
+    <dimen name="edittext_height">46dp</dimen>
 
     <dimen name="card_corner_radius">1dp</dimen>
     <dimen name="card_elevation">5dp</dimen>
@@ -41,7 +45,8 @@
 
     <dimen name="searchview_corner">10dp</dimen>
 
-    <dimen name="searchview_radius">3dp</dimen>
- 
+    <dimen name="searchview_radius">4dp</dimen>
+
+    <dimen name="bottom_navigation_icon_size" tools:override="true">27dp</dimen>
 
 </resources>

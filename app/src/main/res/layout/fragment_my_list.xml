@@ -1,11 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLightBlack"
-    tools:context=".fragment.MyListFragment">
+    android:background="@color/colorTextColorPrimary"
+    tools:context=".fragment.SearchFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_rated_movies"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:background="@color/colorTextColorPrimary"
+            android:layout_marginBottom="@dimen/margin_xlarge"
+            android:gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:text="@string/movie_quote"
+                android:textColor="@color/color_palette3"
+                android:textStyle="italic"
+                android:fontFamily=""
+                android:textSize="@dimen/txt_size_large"
+                android:layout_marginBottom="@dimen/margin_xxxxlarge"
+                android:layout_height="@dimen/edittext_height"/>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/margin_xxlarge"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:gravity="center"
+                    android:text="@string/mylist_not_login_text"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height"/>
+
+                <Button
+                    android:text="Sign In"
+                    android:background="@drawable/bg_button"
+                    android:layout_marginLeft="@dimen/margin_large"
+                    android:layout_marginRight="@dimen/margin_large"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height"/>
+
+            </LinearLayout>
 
 
+        </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

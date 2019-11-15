@@ -22,7 +22,8 @@
         app:itemIconTint="@color/colorWhite"
         app:itemTextColor="@color/colorWhite"
         android:background="@color/colorBlack"
-        app:menu="@menu/navigation" />
+        app:menu="@menu/navigation"
+        app:itemIconSize="@dimen/bottom_navigation_icon_size"/>
 
 
 </RelativeLayout>
