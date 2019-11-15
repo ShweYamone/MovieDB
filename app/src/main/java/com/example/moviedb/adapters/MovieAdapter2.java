@@ -52,8 +52,8 @@ public class MovieAdapter2 extends BaseAdapter {
         @BindView(R.id.iv_movie_poster)
         ImageView ivMoviePoster;
 
-//        @BindView(R.id.cv_item)
-//        CardView cv_item;
+        @BindView(R.id.cv_item)
+        CardView cv_item;
 
         MovieInfoModel mMovieModel;
 
@@ -77,6 +77,22 @@ public class MovieAdapter2 extends BaseAdapter {
         public void bindView(MovieInfoModel model, int position) {
 
             this.mMovieModel = model;
+            //resize item view of editor car list
+            Display display = ((Activity) cv_item.getContext()).getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            try {
+                display.getRealSize(size);
+            } catch (NoSuchMethodError err) {
+                display.getSize(size);
+            }
+            int width = size.x;
+            int height = size.y;
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width/1.3),
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 0, 30, 0);
+
+            cv_item.setLayoutParams(lp);
 
             Glide.with(context)
                     .load(BASE_IMG_URL+model.getPoster_path())
