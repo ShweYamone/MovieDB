@@ -19,7 +19,7 @@
     <dimen name="margin_xlarge">32dp</dimen>
     <dimen name="margin_xxlarge">64dp</dimen>
 
-    <dimen name="card_corner_radius">5dp</dimen>
+    <dimen name="card_corner_radius">1dp</dimen>
     <dimen name="card_elevation">5dp</dimen>
 
     <dimen name="margin_bottom_navigation">55dp</dimen>
@@ -28,6 +28,8 @@
     <dimen name="placeholderImage">60dp</dimen>
     <dimen name="placeholderTextHeight">8dp</dimen>
     <dimen name="padding_10">10dp</dimen>
+
+    <dimen name="padding_4">4dp</dimen>
 
     <dimen name="placeholder_width">105dp</dimen>
     <dimen name="placeholder_height">170dp</dimen>
@@ -38,7 +40,8 @@
     <dimen name="movie_poster_height">150dp</dimen>
 
     <dimen name="searchview_corner">10dp</dimen>
-    <dimen name="searchview_radius">4dp</dimen>
 
+    <dimen name="searchview_radius">3dp</dimen>
+ 
 
 </resources>

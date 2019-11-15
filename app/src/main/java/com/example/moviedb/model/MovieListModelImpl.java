@@ -1,6 +1,8 @@
 package com.example.moviedb.model;
 
 
+import android.util.Log;
+
 import com.example.moviedb.util.ServiceHelper;
 
 import io.reactivex.Observable;
@@ -16,6 +18,9 @@ import static com.example.moviedb.util.AppConstant.DEVELOPER_KEY;
  * Created by kaungkhantsoe on 2019-10-21.
  **/
 public class MovieListModelImpl implements IMovieListModel {
+
+    private static final String TAG = "MovieListModelImpl";
+
     @Override
     public Observable<MovieListModel> getNowShowingMoviesFromApi(ServiceHelper.ApiService service, int page) {
 

@@ -30,6 +30,8 @@
     <string name="my_list">My List</string>
     <string name="profile">Profile</string>
 
+    <string name="movies_tv">Movies &amp; TV </string>
+
     <string name="popular">Popular</string>
     <string name="top_related">Top Rated</string>
     <string name="upcoming">Upcoming</string>
