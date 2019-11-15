@@ -52,8 +52,8 @@ public class MovieAdapter2 extends BaseAdapter {
         @BindView(R.id.iv_movie_poster)
         ImageView ivMoviePoster;
 
-        @BindView(R.id.cv_item)
-        CardView cv_item;
+        @BindView(R.id.ll_cardview)
+        LinearLayout cv_item;
 
         MovieInfoModel mMovieModel;
 
@@ -88,7 +88,7 @@ public class MovieAdapter2 extends BaseAdapter {
             int width = size.x;
             int height = size.y;
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width/1.3),
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width * ( 1.0 / 2.5)),
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(0, 0, 30, 0);
 

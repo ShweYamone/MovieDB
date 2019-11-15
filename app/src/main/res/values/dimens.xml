@@ -40,6 +40,7 @@
     <dimen name="movie_poster_height">150dp</dimen>
 
     <dimen name="searchview_corner">10dp</dimen>
+
     <dimen name="searchview_radius">3dp</dimen>
  
 
