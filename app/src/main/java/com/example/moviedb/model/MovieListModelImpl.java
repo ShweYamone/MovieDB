@@ -6,8 +6,10 @@ import android.util.Log;
 import com.example.moviedb.util.ServiceHelper;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.http.Query;
 
 import static com.example.moviedb.util.AppConstant.DEVELOPER_KEY;
 
@@ -35,5 +37,24 @@ public class MovieListModelImpl implements IMovieListModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public Observable<MovieListModel> getTopRatedMoviesFromApi(ServiceHelper.ApiService service, int page){
+        return service.getTopRatedMovies(DEVELOPER_KEY,"en_US",page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
+    @Override
+    public Observable<MovieListModel> getUpComingMoviesFromApi(ServiceHelper.ApiService service, int page){
+        return service.getUpComingMovies(DEVELOPER_KEY,"en_US", page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<MovieListModel> getPopularMoviesFromApi(ServiceHelper.ApiService service, int page){
+        return service.getPopularMovies(DEVELOPER_KEY, "en_US", page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }
