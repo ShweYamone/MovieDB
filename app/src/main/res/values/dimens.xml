@@ -39,6 +39,6 @@
 
     <dimen name="searchview_corner">10dp</dimen>
     <dimen name="searchview_radius">4dp</dimen>
- 
+
 
 </resources>
