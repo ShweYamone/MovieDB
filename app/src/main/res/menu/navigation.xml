@@ -5,24 +5,24 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:iconTint="@color/colorWhite"
-        android:title="@string/home" />
+        android:title=" " />
 
     <item
         android:id="@+id/navigation_search"
         android:icon="@drawable/ic_search_black_24dp"
         android:iconTint="@color/colorWhite"
-        android:title="@string/search" />
+        android:title=" " />
 
     <item
         android:id="@+id/navigation_my_list"
         android:icon="@drawable/ic_list_black_24dp"
         android:iconTint="@color/colorWhite"
-        android:title="@string/my_list" />
+        android:title=" " />
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_account_circle_black_24dp"
         android:iconTint="@color/colorWhite"
-        android:title="@string/profile"/>
+        android:title=" "/>
 
 </menu>

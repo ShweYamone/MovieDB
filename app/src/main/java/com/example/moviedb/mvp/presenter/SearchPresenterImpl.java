@@ -74,7 +74,8 @@ public class SearchPresenterImpl extends BasePresenter implements SearchPresente
 
     @Override
     public void getMoviesByTitleWithPaging(String query, int page) {
-        Log.i("Page", "Add more movies page");
+
+        Log.e(" !!!! ", "getMoviesByTitleWithPaging: " + query );
         this.mInteractor.getMoviesByTitle(query, page)
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
@@ -100,6 +101,7 @@ public class SearchPresenterImpl extends BasePresenter implements SearchPresente
                             }
 
                         } else {
+                            Log.i("Page::", "null");
                             mView.resetPageNumberToDefault();
                             mView.showDialogMsg(mView.context().getResources().getString(R.string.error_connecting),
                                     mView.context().getResources().getString(R.string.please_check_your_internet_connection));
