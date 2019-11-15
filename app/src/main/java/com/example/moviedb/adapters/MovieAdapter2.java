@@ -88,7 +88,7 @@ public class MovieAdapter2 extends BaseAdapter {
             int width = size.x;
             int height = size.y;
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width * ( 1.0 / 2.5)),
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width * ( 1.0 / 3.4)),
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(0, 0, 30, 0);
 

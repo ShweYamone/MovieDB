@@ -3,9 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorLightBlack"
     tools:context=".fragment.HomeFragment">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        shimmer:duration="1000">
+
+        <!-- Adding 7 rows of placeholders -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/data_placeholder_layout" />
+            <include layout="@layout/data_placeholder_layout" />
+            <include layout="@layout/data_placeholder_layout" />
+            <include layout="@layout/data_placeholder_layout" />
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
     <ScrollView
+        android:id="@+id/sv_home"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -46,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_now_playing"
-                android:padding="@dimen/margin_small"/>
+                android:padding="3dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

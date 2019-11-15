@@ -45,8 +45,14 @@
 
     <dimen name="searchview_corner">10dp</dimen>
 
-    <dimen name="searchview_radius">4dp</dimen>
 
     <dimen name="bottom_navigation_icon_size" tools:override="true">27dp</dimen>
+
+    <dimen name="searchview_radius">3dp</dimen>
+
+
+    <dimen name="home_list_width">110dp</dimen>
+    <dimen name="home_list_hight">190dp</dimen>
+
 
 </resources>
