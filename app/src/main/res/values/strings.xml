@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MovieDB</string>
 
-    <string name="img_portrait_ratio">H,3:4</string>
+    <string name="img_portrait_ratio">H,3:5</string>
 
     <string name="youAreNotUpdatedTitle">Update Available</string>
     <string name="youAreNotUpdatedMessage">A new version of JCGV is available. Please update to version</string>

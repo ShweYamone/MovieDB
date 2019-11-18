@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.moviedb.R;
 
 public class MyanProgressDialog {
@@ -21,9 +22,9 @@ public class MyanProgressDialog {
 
         ImageView imageView = dialog.findViewById(R.id.ivImage);
 
-//        Glide.with(context)
-//                .load(R.drawable.popcorngif)
-//                .into(imageView);
+        Glide.with(context)
+                .load(R.drawable.popcorngif)
+                .into(imageView);
     }
 
     public void showDialog()

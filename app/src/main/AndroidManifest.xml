@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.PlayMovieTrailer" ></activity>
-        <activity android:name=".activities.MovieDetailActivity"></activity>
+        <activity android:name=".activities.SeeAllActivity"></activity>
+        <activity android:name=".activities.PlayMovieTrailer" />
+        <activity android:name=".activities.MovieDetailActivity" />
         <activity
             android:name=".activities.MainActivity"
             android:windowSoftInputMode="adjustPan">

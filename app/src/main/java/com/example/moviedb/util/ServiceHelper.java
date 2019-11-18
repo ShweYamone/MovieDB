@@ -9,6 +9,9 @@ import com.example.moviedb.model.MovieListModel;
 import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.model.WatchListModel;
 
+import com.example.moviedb.model.MovieRateListModel;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -160,6 +163,12 @@ public class ServiceHelper {
                                                     @Query("language") String language,
                                                     @Query("query") String query,
                                                     @Query("page") int page);
+
+        @GET("account/{account_id}/rated/movies")
+        Observable<MovieRateListModel> getOwnRatedMovies(@Query("api_key") String apiKey,
+                                                         @Query("session_id") String sessionId,
+                                                         @Query("page") int page);
+
 
         @GET("movie/{movie_id}")
         Observable<MovieInfoModel> getDetails(@Path("movie_id") int movieId,
