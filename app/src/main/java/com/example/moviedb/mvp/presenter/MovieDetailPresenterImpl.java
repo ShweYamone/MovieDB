@@ -1,10 +1,15 @@
 package com.example.moviedb.mvp.presenter;
 
+import android.widget.Toast;
+
 import com.example.moviedb.R;
 import com.example.moviedb.interactor.MovieDetailInteractor;
 import com.example.moviedb.interactor.MovieInteractor;
+import com.example.moviedb.interactor.WatchListInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieListModel;
+import com.example.moviedb.model.WatchListBody;
+import com.example.moviedb.model.WatchListModel;
 import com.example.moviedb.mvp.view.MovieDetailView;
 
 import io.reactivex.Observer;
@@ -14,10 +19,12 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
     private MovieDetailView movieDetailView;
     private MovieDetailInteractor movieDetailInteractor;
     private MovieInteractor movieInteractor;
+    private WatchListInteractor watchListInteractor;
 
-    public MovieDetailPresenterImpl(MovieDetailInteractor movieDetailInteractor,MovieInteractor movieInteractor ) {
+    public MovieDetailPresenterImpl(MovieDetailInteractor movieDetailInteractor,MovieInteractor movieInteractor,WatchListInteractor watchListInteractor ) {
         this.movieDetailInteractor = movieDetailInteractor;
         this.movieInteractor=movieInteractor;
+        this.watchListInteractor=watchListInteractor;
 
     }
     public MovieDetailPresenterImpl(MovieDetailInteractor movieDetailInteractor) {
@@ -158,5 +165,42 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
                     }
                 });
     }
+
+    @Override
+    public void addOrRemoveMovieFromWatchList(String sessionId, WatchListBody watchListBody) {
+        movieDetailView.showLoading();
+        this.watchListInteractor.addOrRemoveMovieFromWatchList(sessionId,watchListBody)
+                .subscribe(new Observer<WatchListModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                addDisposableOberver(d);
+            }
+
+            @Override
+            public void onNext(WatchListModel watchListModel) {
+
+
+//                if(watchListModel.getStatus_message()=="Success."){
+//                    movieDetailView.showToastMsg("add to watchlist complete");
+//                }
+//                else{
+//                    movieDetailView.showToastMsg("Failed");
+//                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                movieDetailView.hideLoading();
+                movieDetailView.showDialogMsg(movieDetailView.context().getResources().getString(R.string.error_connecting),
+                        e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                movieDetailView.hideLoading();
+            }
+        });
+    }
+
 
 }

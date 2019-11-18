@@ -6,6 +6,8 @@ import android.content.Context;
 import com.example.moviedb.model.GetVideoResultModel;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieListModel;
+import com.example.moviedb.model.WatchListBody;
+import com.example.moviedb.model.WatchListModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -178,6 +180,11 @@ public class ServiceHelper {
         Observable<MovieListModel> getRecommendedVideos(@Path("movie_id")int movieId,
                                                     @Query("api_key") String apiKey,
                                                     @Query("page") int page);
+
+        @POST("account/{account_id}/watchlist")
+        Observable<WatchListModel> addOrRemoveMovieFromWatchList(@Query("api_key") String apiKey,
+                                                            @Query("session_id") String sessionId,
+                                                            @Body WatchListBody watchListBody);
     }
 
 }

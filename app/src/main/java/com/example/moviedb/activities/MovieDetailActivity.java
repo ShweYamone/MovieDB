@@ -34,7 +34,9 @@ import com.example.moviedb.custom_control.BlurImage;
 import com.example.moviedb.custom_control.MyanProgressDialog;
 import com.example.moviedb.interactor.MovieDetailInteractor;
 import com.example.moviedb.interactor.MovieInteractor;
+import com.example.moviedb.interactor.WatchListInteractor;
 import com.example.moviedb.model.MovieInfoModel;
+import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenter;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenterImpl;
 import com.example.moviedb.mvp.view.MovieDetailView;
@@ -92,6 +94,13 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     @BindView(R.id.iv_cancel)
     ImageView cancelbtn;
 
+    @BindView(R.id.iv_plus)
+    ImageView plusbtn;
+
+    @BindView(R.id.iv_rate)
+    ImageView ratebtn;
+
+
 
     private MyanProgressDialog mDialog;
     private MovieDetailPresenter mPresenter;
@@ -100,6 +109,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private MovieAdapter2 _RECOMMEND;
     private MovieInfoModel movieInfoModel;
     private ServiceHelper.ApiService mService;
+    private String sessionId="b0f14d1104e7fdb867b578bf3331d979d16e4139";
+
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
 
         Intent intent = new Intent(context, MovieDetailActivity.class);
@@ -126,7 +137,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         mDialog = new MyanProgressDialog(this);
 
 
-        mPresenter = new MovieDetailPresenterImpl(new MovieDetailInteractor(this.mService),new MovieInteractor(this.mService));
+        mPresenter = new MovieDetailPresenterImpl(new MovieDetailInteractor(this.mService),new MovieInteractor(this.mService),new WatchListInteractor(this.mService));
 
 
         _SIMILAR = new MovieAdapter2();
@@ -157,6 +168,13 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        plusbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
             }
         });
 
