@@ -121,7 +121,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 shimmerFrameLayout.setVisibility(View.GONE);
                 scrollView.setVisibility(View.VISIBLE);
             }
-        }, 1000);
+        }, 500);
         //shimmerFrameLayout.setVisibility(View.GONE);
 
     }
