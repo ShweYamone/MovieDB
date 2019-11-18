@@ -173,6 +173,11 @@ public class ServiceHelper {
                                                  @Query("api_key") String apiKey );
 
 
+
+        @GET("movie/{movie_id}/recommendations")
+        Observable<MovieListModel> getRecommendedVideos(@Path("movie_id")int movieId,
+                                                    @Query("api_key") String apiKey,
+                                                    @Query("page") int page);
     }
 
 }

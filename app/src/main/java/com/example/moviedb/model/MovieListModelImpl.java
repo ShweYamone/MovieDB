@@ -65,5 +65,12 @@ public class MovieListModelImpl implements IMovieListModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public Observable<MovieListModel> getRecommendedVideosFromApi(ServiceHelper.ApiService service, int movieId, int page) {
+        return service.getRecommendedVideos(movieId,DEVELOPER_KEY,page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 
 }

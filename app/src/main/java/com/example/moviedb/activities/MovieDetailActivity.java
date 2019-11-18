@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -83,7 +84,10 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     ImageView ivBackground;
 
     @BindView(R.id.similar_movie_recycler_view)
-    RecyclerView recyclerView;
+    RecyclerView similarMovieRecyclerView;
+
+    @BindView(R.id.recommend_movie_recycler_view)
+    RecyclerView recommendMovieRecycleView;
 
     @BindView(R.id.iv_cancel)
     ImageView cancelbtn;
@@ -92,7 +96,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private MyanProgressDialog mDialog;
     private MovieDetailPresenter mPresenter;
     private static int mmovieId;
-    private MovieAdapter2 mAdapter;
+    private MovieAdapter2 _SIMILAR;
+    private MovieAdapter2 _RECOMMEND;
     private MovieInfoModel movieInfoModel;
     private ServiceHelper.ApiService mService;
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
@@ -124,12 +129,19 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         mPresenter = new MovieDetailPresenterImpl(new MovieDetailInteractor(this.mService),new MovieInteractor(this.mService));
 
 
-        mAdapter = new MovieAdapter2();
-        recyclerView.setHasFixedSize(true);
-        //recyclerMovie.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        recyclerView.addItemDecoration(new ItemOffsetDecoration(2));
-        recyclerView.setAdapter(mAdapter);
+        _SIMILAR = new MovieAdapter2();
+        _RECOMMEND=new MovieAdapter2();
+        similarMovieRecyclerView.setHasFixedSize(true);
+        similarMovieRecyclerView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        similarMovieRecyclerView.addItemDecoration(new ItemOffsetDecoration(2));
+        similarMovieRecyclerView.setAdapter(_SIMILAR);
+
+        recommendMovieRecycleView.setHasFixedSize(true);
+        recommendMovieRecycleView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        recommendMovieRecycleView.addItemDecoration(new ItemOffsetDecoration(2));
+        recommendMovieRecycleView.setAdapter(_RECOMMEND);
+
+
         mPresenter.onAttachView(this);
         mPresenter.onUIReady(mmovieId);
 
@@ -250,10 +262,19 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @Override
     public void showSimilarVideos(List<MovieInfoModel> similarVideoListModel) {
-        mAdapter.clear();
+        _SIMILAR.clear();
         // mAdapter.showLoading();
         for (MovieInfoModel model: similarVideoListModel) {
-            mAdapter.add(model);
+            _SIMILAR.add(model);
+        }
+    }
+
+    @Override
+    public void showRecommendedVideos(List<MovieInfoModel> recommendedVideoListModel) {
+        _RECOMMEND.clear();
+        // mAdapter.showLoading();
+        for (MovieInfoModel model : recommendedVideoListModel) {
+            _RECOMMEND.add(model);
         }
     }
 }

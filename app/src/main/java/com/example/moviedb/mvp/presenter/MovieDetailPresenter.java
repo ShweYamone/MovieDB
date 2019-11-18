@@ -7,4 +7,5 @@ public interface MovieDetailPresenter {
     void onAttachView(MovieDetailView view);
     void showMovieDetailsById(int movieId);
     void showSimilarVideosById(int movieId);
+    void showRecommendedVideosById(int movieId);
 }

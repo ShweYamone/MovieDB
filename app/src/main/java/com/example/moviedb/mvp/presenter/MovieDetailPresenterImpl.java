@@ -30,6 +30,7 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
     public void onUIReady(int movieId) {
         showMovieDetailsById(movieId);
         showSimilarVideosById(movieId);
+        showRecommendedVideosById(movieId);
     }
 
     @Override
@@ -88,6 +89,52 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
                             } else {
 
                                 movieDetailView.showSimilarVideos(movieListModel.getResults());
+
+                            }
+
+                        } else {
+                            movieDetailView.showDialogMsg(movieDetailView.context().getResources().getString(R.string.error_connecting),
+                                    movieDetailView.context().getResources().getString(R.string.please_check_your_internet_connection));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        movieDetailView.hideLoading();
+                        movieDetailView.showDialogMsg(movieDetailView.context().getResources().getString(R.string.error_connecting),
+                                e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        movieDetailView.hideLoading();
+
+                    }
+                });
+    }
+
+    @Override
+    public void showRecommendedVideosById(int movieId) {
+        movieDetailView.showLoading();
+
+        this.movieInteractor.getRecommendedVideosById(movieId,1)
+                .subscribe(new Observer<MovieListModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        addDisposableOberver(d);
+
+                    }
+
+                    @Override
+                    public void onNext(MovieListModel movieListModel) {
+
+                        if (movieListModel != null) {
+
+                            if (movieListModel.getResults().isEmpty()) {
+
+                            } else {
+
+                                movieDetailView.showRecommendedVideos(movieListModel.getResults());
 
                             }
 
