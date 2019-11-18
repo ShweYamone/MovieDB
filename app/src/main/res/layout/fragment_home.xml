@@ -10,13 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:gravity="left|center"
+        android:gravity="center"
+        android:background="@color/colorBlackTransparent"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="@dimen/padding_10"
             android:src="@drawable/themoviedb"
             />
 
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="37dp"
         android:orientation="vertical"
         shimmer:duration="1000">
 
@@ -67,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/now_playing"
+                    android:fontFamily="@font/sourcesanspro"
                     android:textSize="16dp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginTop="@dimen/margin_small"/>
@@ -77,6 +78,7 @@
                     android:layout_height="28dp"
                     android:layout_weight="1"
                     android:text="@string/see_all"
+                    android:fontFamily="@font/sourcesanspro"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:background="@drawable/rounded_button"
@@ -99,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/popular"
+                    android:fontFamily="@font/sourcesanspro"
                     android:textSize="16dp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginTop="@dimen/margin_small"/>
@@ -109,6 +112,7 @@
                     android:layout_height="28dp"
                     android:layout_weight="1"
                     android:text="@string/see_all"
+                    android:fontFamily="@font/sourcesanspro"
                     android:textColor="@color/colorWhite"
                     android:textAllCaps="false"
                     android:background="@drawable/rounded_button"
@@ -132,6 +136,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:text="@string/top_related"
+                    android:fontFamily="@font/sourcesanspro"
                     android:textSize="16dp"
                     android:textColor="@color/colorWhite"
                     android:layout_marginTop="@dimen/margin_small"/>
@@ -142,6 +147,7 @@
                     android:layout_height="28dp"
                     android:layout_weight="1"
                     android:text="@string/see_all"
+                    android:fontFamily="@font/sourcesanspro"
                     android:textColor="@color/colorWhite"
                     android:textAllCaps="false"
                     android:background="@drawable/rounded_button"
@@ -164,6 +170,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
+                    android:fontFamily="@font/sourcesanspro"
                     android:text="@string/upcoming"
                     android:textSize="16dp"
                     android:textColor="@color/colorWhite"
@@ -175,6 +182,7 @@
                     android:layout_height="28dp"
                     android:layout_weight="1"
                     android:text="@string/see_all"
+                    android:fontFamily="@font/sourcesanspro"
                     android:textColor="@color/colorWhite"
                     android:textAllCaps="false"
                     android:background="@drawable/rounded_button"

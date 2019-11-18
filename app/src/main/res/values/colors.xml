@@ -44,7 +44,7 @@
 
     <color name="colorRecyclerBgLight">#F0F6F8</color>
     <color name="colorTransparent">#00000000</color>
-    <color name="colorBlackTransparent">#80000000</color>
+    <color name="colorBlackTransparent">#292929</color>
     <color name="colorView">#DDDDDD</color>
     <color name="colorVioletDark">#8030BA</color>
 

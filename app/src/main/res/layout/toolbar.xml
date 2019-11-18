@@ -5,7 +5,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/colorLightBlack"
+    android:background="@color/colorBlackTransparent"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     >
@@ -21,8 +21,9 @@
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end"
+            android:fontFamily="@font/sourcesanspro"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/txt_size_normal"
+            android:textSize="16sp"
             android:text="@string/app_name"/>
     </LinearLayout>
 
