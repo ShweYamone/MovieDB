@@ -24,7 +24,7 @@
 
     <dimen name="edittext_height">46dp</dimen>
 
-    <dimen name="card_corner_radius">1dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
     <dimen name="card_elevation">10dp</dimen>
 
     <dimen name="margin_bottom_navigation">55dp</dimen>
