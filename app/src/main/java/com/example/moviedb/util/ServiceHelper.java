@@ -3,6 +3,8 @@ package com.example.moviedb.util;
 import android.content.Context;
 
 
+import com.example.moviedb.model.GetVideoResultModel;
+import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieListModel;
 
 import java.io.File;
@@ -156,6 +158,19 @@ public class ServiceHelper {
                                                     @Query("language") String language,
                                                     @Query("query") String query,
                                                     @Query("page") int page);
+
+        @GET("movie/{movie_id}")
+        Observable<MovieInfoModel> getDetails(@Path("movie_id") int movieId,
+                                              @Query("api_key") String apiKey);
+
+        @GET("movie/{movie_id}/similar")
+        Observable<MovieListModel> getSimilarVideos(@Path("movie_id")int movieId,
+                                                    @Query("api_key") String apiKey,
+                                                    @Query("page") int page);
+
+        @GET("movie/{movie_id}/videos")
+        Observable<GetVideoResultModel> getVideo(@Path("movie_id")int movieId,
+                                                 @Query("api_key") String apiKey );
 
 
     }

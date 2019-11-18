@@ -37,7 +37,7 @@ public class MovieAdapter extends BaseAdapter {
     protected RecyclerView.ViewHolder onCreateCustomHeaderViewHolder(ViewGroup parent, int viewType) {
         return null;
     }
-
+    private MovieInfoModel movieInfoModel;
     @Override
     protected void onBindCustomHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
 
@@ -49,7 +49,7 @@ public class MovieAdapter extends BaseAdapter {
         ImageView ivMoviePoster;
 
 
-        MovieInfoModel mMovieModel;
+        private MovieInfoModel mMovieModel;
 
         private Context context;
 
@@ -60,7 +60,7 @@ public class MovieAdapter extends BaseAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                //    context.startActivity(MovieDetailActivity.getMainActivityIntent(context,mMovieModel.getId()));
+                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,movieInfoModel.getId()));
 
                 }
             });

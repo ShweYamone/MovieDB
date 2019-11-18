@@ -11,14 +11,18 @@ public class MovieInfoModel implements Serializable, Pageable {
     String release_date;
     boolean adult;
     String overview;
+    int runtime;
 
-    public MovieInfoModel(int id, String title, String poster_path, String release_date, boolean adult, String overview) {
+
+
+    public MovieInfoModel(int id, String title, String poster_path, String release_date, boolean adult, String overview,int runtime) {
         this.id = id;
         this.title = title;
         this.poster_path = poster_path;
         this.release_date = release_date;
         this.adult = adult;
         this.overview = overview;
+        this.runtime=runtime;
     }
 
     public int getId() {
@@ -68,4 +72,13 @@ public class MovieInfoModel implements Serializable, Pageable {
     public void setOverview(String overview) {
         this.overview = overview;
     }
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        this.runtime = runtime;
+    }
+
+
 }

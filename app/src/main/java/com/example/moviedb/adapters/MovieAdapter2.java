@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moviedb.R;
+import com.example.moviedb.activities.MovieDetailActivity;
 import com.example.moviedb.common.BaseAdapter;
 import com.example.moviedb.model.MovieInfoModel;
 
@@ -55,7 +56,7 @@ public class MovieAdapter2 extends BaseAdapter {
         @BindView(R.id.ll_cardview)
         LinearLayout cv_item;
 
-        MovieInfoModel mMovieModel;
+        private MovieInfoModel mMovieModel;
 
         private Context context;
 
@@ -67,7 +68,7 @@ public class MovieAdapter2 extends BaseAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //    context.startActivity(MovieDetailActivity.getMainActivityIntent(context,mMovieModel.getId()));
+                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,mMovieModel.getId()));
 
                 }
             });

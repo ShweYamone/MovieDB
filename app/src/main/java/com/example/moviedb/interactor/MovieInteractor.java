@@ -39,4 +39,10 @@ public class MovieInteractor {
     public Observable<MovieListModel> getMoviesByTitle(String query, int page) {
         return this.movieListModel.getMoviesByTitleFromApi(mService, query, page);
     }
+
+    public Observable<MovieListModel> getSimilarVideosById(int movieId,int page){
+        return this.movieListModel.getSimilarVideosFromApi(mService,movieId,page);
+    }
+
+
 }

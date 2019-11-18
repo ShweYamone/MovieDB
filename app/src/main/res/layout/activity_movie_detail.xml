@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movie_details_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".activities.MovieDetailActivity">
 
-
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
 
         <ImageView
             android:id="@+id/iv_cancel"
@@ -26,17 +30,44 @@
             android:layout_gravity="right"
             android:layout_marginTop="@dimen/margin_normal"
             android:paddingRight="@dimen/margin_normal"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@drawable/icons8_cancel_35" />
 
-        <ImageView
-            android:id="@+id/iv_movie_poster"
-            android:layout_width="250dp"
-            android:layout_height="280dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_xlarge"
-            android:scaleType="fitXY"
-            android:src="@drawable/maleficent" />
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/card_elevation"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/card_margin"
+                app:layout_constraintDimensionRatio="@string/img_portrait_ratio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cv_item">
+
+                <ImageView
+                    android:id="@+id/iv_movie_poster"
+                    android:layout_width="250dp"
+                    android:layout_height="280dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/maleficent"/>
+             </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/txt_movie_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:text="Maleficent"
+                android:textColor="@color/color_grey_stroke"
+                android:textSize="@dimen/txt_size_ex_large"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,7 +87,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txt_is_adult"
+                android:id="@+id/txt_adult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_normal"
@@ -125,7 +156,7 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:src="@drawable/icons8_plus_24" />
 
@@ -155,7 +186,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="MyList"
+                    android:text="Rate"
                     android:textColor="@color/color_grey_stroke"
                     android:textSize="@dimen/txt_size_large"
                     android:textStyle="bold" />
@@ -174,11 +205,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/similar_movie_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginHorizontal="@dimen/margin_normal"
+            android:layout_gravity="center_horizontal">
 
 
         </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
