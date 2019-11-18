@@ -56,6 +56,9 @@ public class RatedMovieAdapter extends BaseAdapter {
         @BindView(R.id.ratingBar)
         RatingBar ratingBar;
 
+        @BindView(R.id.tvOverview)
+        TextView tvOverview;
+
         MovieRateInfoModel mMovieModel;
 
         private Context context;
@@ -67,7 +70,6 @@ public class RatedMovieAdapter extends BaseAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, mMovieModel.getRating(), Toast.LENGTH_SHORT).show();
                     //    context.startActivity(MovieDetailActivity.getMainActivityIntent(context,mMovieModel.getId()));
 
                 }
@@ -81,6 +83,8 @@ public class RatedMovieAdapter extends BaseAdapter {
             tvTitle.setText(model.getTitle());
 
             ratingBar.setRating(Float.parseFloat(model.getRating()/2.0+""));
+
+            tvOverview.setText(model.getOverview());
 
 
             Glide.with(context)

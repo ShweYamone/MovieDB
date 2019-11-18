@@ -29,6 +29,7 @@
     <color name="color_et_normal">#6D6D6D</color>
     <color name="color_et_focus">#575656</color>
 
+    <color name="color_rated_card">#E0DEDE</color>
     <color name="color_cancel">#ECF0F1</color>
 
     <color name="background">#70898D</color>
