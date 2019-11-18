@@ -60,8 +60,8 @@ public class MovieAdapter extends BaseAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,movieInfoModel.getId()));
 
+                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,mMovieModel.getId()));
                 }
             });
         }
