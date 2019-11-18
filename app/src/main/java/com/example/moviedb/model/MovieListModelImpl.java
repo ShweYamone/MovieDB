@@ -57,4 +57,6 @@ public class MovieListModelImpl implements IMovieListModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+
 }

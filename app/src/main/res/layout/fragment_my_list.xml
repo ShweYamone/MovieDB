@@ -22,7 +22,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             android:background="@color/colorTextColorPrimary"
             android:layout_marginBottom="@dimen/margin_xlarge"
             android:gravity="bottom"
