@@ -100,6 +100,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     @BindView(R.id.iv_rate)
     ImageView ratebtn;
 
+    @BindView(R.id.tv_MoreLikeThis)
+    TextView labelMoreLikeThis;
+
+    @BindView(R.id.tv_Recommendation)
+    TextView labelRecommendation;
+
 
 
     private MyanProgressDialog mDialog;
@@ -294,5 +300,20 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         for (MovieInfoModel model : recommendedVideoListModel) {
             _RECOMMEND.add(model);
         }
+    }
+
+    @Override
+    public void hideLabelMoreLikeThis() {
+        labelMoreLikeThis.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideLabelRecommendation() {
+        labelRecommendation.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void changeMyListIcon() {
+
     }
 }

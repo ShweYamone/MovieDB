@@ -183,7 +183,7 @@
                     android:id="@+id/iv_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icons8_thumbs_up_24" />
+                    android:src="@drawable/icons8_facebook_like_24" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -197,12 +197,15 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_MoreLikeThis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="MORE LIKE THIS"
             android:textColor="@color/color_grey_stroke"
             android:textSize="@dimen/txt_size_ex_large"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginHorizontal="@dimen/margin_normal"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/similar_movie_recycler_view"
@@ -216,12 +219,15 @@
         </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
+                android:id="@+id/tv_Recommendation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="RECOMMENDATION"
                 android:textColor="@color/color_grey_stroke"
                 android:textSize="@dimen/txt_size_ex_large"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginHorizontal="@dimen/margin_normal"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recommend_movie_recycler_view"
@@ -229,6 +235,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_small"
                 android:layout_gravity="center_horizontal">
 
 

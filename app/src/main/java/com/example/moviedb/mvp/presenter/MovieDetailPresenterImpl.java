@@ -92,7 +92,7 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
                         if (movieListModel != null) {
 
                             if (movieListModel.getResults().isEmpty()) {
-
+                                movieDetailView.hideLabelMoreLikeThis();
                             } else {
 
                                 movieDetailView.showSimilarVideos(movieListModel.getResults());
@@ -138,7 +138,7 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
                         if (movieListModel != null) {
 
                             if (movieListModel.getResults().isEmpty()) {
-
+                                    movieDetailView.hideLabelRecommendation();
                             } else {
 
                                 movieDetailView.showRecommendedVideos(movieListModel.getResults());
