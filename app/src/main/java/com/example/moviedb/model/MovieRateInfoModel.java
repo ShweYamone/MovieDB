@@ -9,12 +9,14 @@ public class MovieRateInfoModel implements Serializable, Pageable {
     String title;
     String poster_path;
     int rating;
+    String overview;
 
-    public MovieRateInfoModel(int id, String title, String poster_path, int rating) {
+    public MovieRateInfoModel(int id, String title, String poster_path, int rating, String overview) {
         this.id = id;
         this.title = title;
         this.poster_path = poster_path;
         this.rating = rating;
+        this.overview = overview;
     }
 
     public int getId() {
@@ -47,5 +49,13 @@ public class MovieRateInfoModel implements Serializable, Pageable {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 }
