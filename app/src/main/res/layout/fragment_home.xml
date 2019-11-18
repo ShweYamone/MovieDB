@@ -46,12 +46,14 @@
     <ScrollView
         android:id="@+id/sv_home"
         android:layout_marginTop="?attr/actionBarSize"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/padding_10"
             android:orientation="vertical">
 
 
@@ -67,11 +69,10 @@
                     android:text="@string/now_playing"
                     android:textSize="16dp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="@dimen/alerter_text_medium"
                     android:layout_marginTop="@dimen/margin_small"/>
 
                 <Button
-                    android:id="@+id/tv_now_playing"
+                    android:id="@+id/btn_now_playing"
                     android:layout_width="0dp"
                     android:layout_height="28dp"
                     android:layout_weight="1"
@@ -79,16 +80,14 @@
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:background="@drawable/rounded_button"
-                    android:layout_marginStart="@dimen/alerter_text_medium"
-                    android:layout_marginTop="@dimen/margin_small"/>
+                    android:layout_margin="@dimen/margin_small"/>
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_now_playing"
-                android:padding="3dp"/>
+                android:id="@+id/rv_now_playing"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,11 +101,10 @@
                     android:text="@string/popular"
                     android:textSize="16dp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="@dimen/alerter_text_medium"
                     android:layout_marginTop="@dimen/margin_small"/>
 
                 <Button
-                    android:id="@+id/tv_sell_all_popular"
+                    android:id="@+id/btn_popular"
                     android:layout_width="0dp"
                     android:layout_height="28dp"
                     android:layout_weight="1"
@@ -114,16 +112,14 @@
                     android:textColor="@color/colorWhite"
                     android:textAllCaps="false"
                     android:background="@drawable/rounded_button"
-                    android:layout_marginStart="@dimen/alerter_text_medium"
-                    android:layout_marginTop="@dimen/margin_small"/>
+                    android:layout_margin="@dimen/margin_small"/>
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_popular"
-                android:padding="@dimen/margin_small"/>
+                android:id="@+id/rv_popular"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -138,10 +134,10 @@
                     android:text="@string/top_related"
                     android:textSize="16dp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="@dimen/alerter_text_medium"/>
+                    android:layout_marginTop="@dimen/margin_small"/>
 
                 <Button
-                    android:id="@+id/tv_top_rated"
+                    android:id="@+id/btn_top_rated"
                     android:layout_width="0dp"
                     android:layout_height="28dp"
                     android:layout_weight="1"
@@ -149,16 +145,14 @@
                     android:textColor="@color/colorWhite"
                     android:textAllCaps="false"
                     android:background="@drawable/rounded_button"
-                    android:layout_marginStart="@dimen/alerter_text_medium"
-                    android:layout_marginTop="@dimen/margin_small"/>
+                    android:layout_margin="@dimen/margin_small"/>
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_top_rated"
-                android:padding="@dimen/margin_small"/>
+                android:id="@+id/rv_top_rated"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -173,10 +167,10 @@
                     android:text="@string/upcoming"
                     android:textSize="16dp"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginStart="@dimen/alerter_text_medium"/>
+                    android:layout_marginTop="@dimen/margin_small"/>
 
                 <Button
-                    android:id="@+id/tv_upcoming"
+                    android:id="@+id/btn_upcoming"
                     android:layout_width="0dp"
                     android:layout_height="28dp"
                     android:layout_weight="1"
@@ -184,16 +178,14 @@
                     android:textColor="@color/colorWhite"
                     android:textAllCaps="false"
                     android:background="@drawable/rounded_button"
-                    android:layout_marginStart="@dimen/alerter_text_medium"
-                    android:layout_marginTop="@dimen/margin_small"/>
+                    android:layout_margin="@dimen/margin_small"/>
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_upcoming"
-                android:padding="@dimen/margin_small"/>
+                android:id="@+id/rv_upcoming"/>
 
 
 

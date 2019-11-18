@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ScrollView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.moviedb.R;
+import com.example.moviedb.activities.SeeAllActivity;
 import com.example.moviedb.adapters.MovieAdapter2;
 import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.common.ItemOffsetDecoration;
@@ -26,6 +28,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import java.util.List;
 
 import butterknife.BindView;
+import retrofit2.http.GET;
 
 public class HomeFragment extends BaseFragment implements HomeView {
 
@@ -44,6 +47,18 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @BindView(R.id.rv_upcoming)
     RecyclerView recyclerUpcoming;
+
+    @BindView(R.id.btn_now_playing)
+    Button btnNowPlaying;
+
+    @BindView(R.id.btn_top_rated)
+    Button btnTopRated;
+
+    @BindView(R.id.btn_popular)
+    Button btnPopular;
+
+    @BindView(R.id.btn_upcoming)
+    Button btnUpcoming;
 
     @BindView(R.id.shimmer_view_container)
     ShimmerFrameLayout shimmerFrameLayout;
@@ -122,6 +137,34 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 scrollView.setVisibility(View.VISIBLE);
             }
         }, 500);
+
+        btnNowPlaying.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Now Playing"));
+            }
+        });
+
+        btnPopular.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Popular"));
+            }
+        });
+
+        btnTopRated.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Top Rated"));
+            }
+        });
+
+        btnUpcoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Upcoming"));
+            }
+        });
         //shimmerFrameLayout.setVisibility(View.GONE);
 
     }
