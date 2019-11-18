@@ -10,6 +10,7 @@
     <dimen name="txt_size_large">16sp</dimen>
     <dimen name="txt_size_ex_large">18sp</dimen>
     <dimen name="txt_size_xx_large">30sp</dimen>
+    <dimen name="txt_size_x_large">20sp</dimen>
 
     <dimen name="margin_xxsmall">1dp</dimen>
     <dimen name="margin_xsmall">3dp</dimen>
@@ -19,7 +20,7 @@
     <dimen name="margin_xlarge">32dp</dimen>
     <dimen name="margin_xxlarge">64dp</dimen>
     <dimen name="margin_xxxlarge">86dp</dimen>
-    <dimen name="margin_xxxxlarge">100dp</dimen>
+    <dimen name="margin_xxxxlarge">110dp</dimen>
 
     <dimen name="edittext_height">46dp</dimen>
 
