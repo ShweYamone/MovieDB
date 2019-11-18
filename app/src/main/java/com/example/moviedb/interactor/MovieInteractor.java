@@ -50,4 +50,14 @@ public class MovieInteractor {
     public Observable<MovieRateListModel> getOwnRatedMovies(String sessionId, int page) {
         return this.movieRateListModel.getOwnRatedMoviesFromApi(mService, sessionId, page);
     }
+
+
+    public Observable<MovieListModel> getSimilarVideosById(int movieId,int page){
+        return this.movieListModel.getSimilarVideosFromApi(mService,movieId,page);
+    }
+
+    public Observable<MovieListModel> getRecommendedVideosById(int movieId,int page){
+        return this.movieListModel.getRecommendedVideosFromApi(mService,movieId,page);
+    }
+
 }

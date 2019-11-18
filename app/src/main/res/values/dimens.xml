@@ -8,7 +8,7 @@
     <dimen name="txt_size_small">12sp</dimen>
     <dimen name="txt_size_normal">14sp</dimen>
     <dimen name="txt_size_large">16sp</dimen>
-    <dimen name="txt_size_ex_large">18sp</dimen>
+    <dimen name="txt_size_ex_large">20sp</dimen>
     <dimen name="txt_size_xx_large">30sp</dimen>
     <dimen name="txt_size_x_large">20sp</dimen>
 
@@ -25,7 +25,7 @@
     <dimen name="edittext_height">46dp</dimen>
 
     <dimen name="card_corner_radius">1dp</dimen>
-    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="card_elevation">10dp</dimen>
 
     <dimen name="margin_bottom_navigation">55dp</dimen>
 
@@ -52,8 +52,10 @@
     <dimen name="searchview_radius">3dp</dimen>
 
 
+
     <dimen name="home_list_width">110dp</dimen>
     <dimen name="home_list_hight">190dp</dimen>
+
 
 
 </resources>
