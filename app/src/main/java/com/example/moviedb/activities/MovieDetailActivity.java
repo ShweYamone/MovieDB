@@ -17,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -92,7 +93,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     RecyclerView recommendMovieRecycleView;
 
     @BindView(R.id.iv_cancel)
-    ImageView cancelbtn;
+    ImageButton cancelbtn;
 
     @BindView(R.id.iv_plus)
     ImageView plusbtn;
