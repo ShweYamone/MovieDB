@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -89,7 +88,8 @@ public class MovieAdapter2 extends BaseAdapter {
             int width = size.x;
             int height = size.y;
 
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width * ( 1.0 / 2.5)),
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width * ( 1.0 / 3.6)),
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(0, 0, 30, 0);
 

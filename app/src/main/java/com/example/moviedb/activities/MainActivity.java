@@ -1,6 +1,7 @@
 package com.example.moviedb.activities;
 
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 
 import com.example.moviedb.R;
 import com.example.moviedb.common.BaseActivity;
+import com.example.moviedb.common.BottomNavigationBehavior;
 import com.example.moviedb.fragment.HomeFragment;
 import com.example.moviedb.fragment.MyListFragment;
 import com.example.moviedb.fragment.ProfileFragment;
@@ -43,6 +45,9 @@ public class MainActivity extends BaseActivity {
     }
     private void init() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());
         loadFragment(new HomeFragment());
     }
 
@@ -85,6 +90,12 @@ public class MainActivity extends BaseActivity {
         transaction.replace(R.id.frame_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 
 

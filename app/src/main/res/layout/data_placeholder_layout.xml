@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLightBlack"
+    android:layout_marginLeft="10dp"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        >
+        <View
+            android:layout_width="200dp"
+            android:layout_height="@dimen/alerter_text_medium"
+            android:background="@color/background" />
+        <View
+            android:layout_width="64dp"
+            android:layout_height="@dimen/alerter_text_medium"
+            android:layout_alignParentRight="true"
+            android:background="@color/background" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/padding_10"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="@dimen/home_list_width"
+            android:layout_height="@dimen/home_list_hight"
+            android:layout_marginRight="@dimen/activityPadding"
+            android:layout_marginTop="@dimen/padding_10"
+            android:background="@color/background"
+            />
+        <View
+            android:layout_width="@dimen/home_list_width"
+            android:layout_height="@dimen/home_list_hight"
+            android:layout_marginRight="@dimen/activityPadding"
+            android:layout_marginTop="@dimen/padding_10"
+            android:background="@color/background"
+            />
+        <View
+            android:layout_width="@dimen/home_list_width"
+            android:layout_height="@dimen/home_list_hight"
+            android:layout_marginRight="@dimen/activityPadding"
+            android:layout_marginTop="@dimen/padding_10"
+            android:background="@color/background"
+            />
+        <View
+            android:layout_width="@dimen/home_list_width"
+            android:layout_height="@dimen/home_list_hight"
+            android:layout_marginRight="@dimen/activityPadding"
+            android:layout_marginTop="@dimen/padding_10"
+            android:background="@color/background"
+            />
+    </LinearLayout>
+</LinearLayout>

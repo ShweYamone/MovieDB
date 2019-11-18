@@ -2,6 +2,9 @@ package com.example.moviedb.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ScrollView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +21,7 @@ import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.mvp.presenter.HomePresenterImpl;
 import com.example.moviedb.mvp.view.HomeView;
 import com.example.moviedb.util.ServiceHelper;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -40,6 +44,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @BindView(R.id.rv_upcoming)
     RecyclerView recyclerUpcoming;
+
+    @BindView(R.id.shimmer_view_container)
+    ShimmerFrameLayout shimmerFrameLayout;
+
+    @BindView(R.id.sv_home)
+    ScrollView scrollView;
 
     private MovieAdapter2 _NowShowing, _Popular, _TopRated, _Upcoming;
 
@@ -100,9 +110,19 @@ public class HomeFragment extends BaseFragment implements HomeView {
         recyclerTopRated.addItemDecoration(new ItemOffsetDecoration(2));
         recyclerTopRated.setAdapter(_TopRated);
 
-
+        shimmerFrameLayout.startShimmerAnimation();
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                shimmerFrameLayout.stopShimmerAnimation();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        }, 500);
+        //shimmerFrameLayout.setVisibility(View.GONE);
 
     }
 
