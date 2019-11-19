@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorLightBlack">
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="80dp"
+        android:background="@color/colorBlack">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating!"
+            android:textSize="20dp"
+            android:layout_marginStart="@dimen/margin_large"
+            android:textColor="@color/colorWhite"
+            android:layout_centerVertical="true"/>
 
-    </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
-    <RatingBar
-        android:id="@+id/rb_rate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rating="2.5"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/txt_size_ex_large"
-        android:layout_centerHorizontal="true"
-        android:progressTint="@color/color_palette3"
-        />
+        android:background="@color/colorLightBlack"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/dialogButtonOK"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OK"
-        android:fontFamily="@font/sourcesanspro"
-        android:textSize="20sp"
-        android:textColor="@color/colorWhite"
-        android:layout_gravity="right"
-        android:layout_margin="@dimen/margin_large"
-        />
-    </LinearLayout>
+        <RatingBar
+            android:id="@+id/rb_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:progressTint="@color/color_palette3"
+            android:rating="2.5" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/buttonOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="32dp"
+            android:text="OK"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/color_white_trans"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

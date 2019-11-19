@@ -14,7 +14,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -239,56 +241,37 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             public void onClick(View v) {
              //   mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
                 // custom dialog
-                final Dialog dialog = new Dialog(MovieDetailActivity.this);
-                dialog.setContentView(R.layout.custom_dialog);
-                TextView toolbar_text = dialog.findViewById(R.id.toolbar_text);
-                toolbar_text.setText("Rating!");
-                // Get screen width and height in pixels
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                // The absolute width of the available display size in pixels.
-                int displayWidth = displayMetrics.widthPixels;
-                // The absolute height of the available display size in pixels.
-                int displayHeight = displayMetrics.heightPixels;
 
-                // Initialize a new window manager layout parameters
-                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                ViewGroup viewGroup = findViewById(android.R.id.content);
 
-                // Copy the alert dialog window attributes to new layout parameter instance
-                layoutParams.copyFrom(dialog.getWindow().getAttributes());
+                //then we will inflate the custom alert dialog xml that we created
+                View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog, viewGroup, false);
 
-                // Set the alert dialog window width and height
-                // Set alert dialog width equal to screen width 90%
-                // int dialogWindowWidth = (int) (displayWidth * 0.9f);
-                // Set alert dialog height equal to screen height 90%
-                // int dialogWindowHeight = (int) (displayHeight * 0.9f);
 
-                // Set alert dialog width equal to screen width 70%
-                int dialogWindowWidth = (int) (displayWidth * 0.9f);
-                // Set alert dialog height equal to screen height 70%
-                int dialogWindowHeight = (int) (displayHeight * 0.3f);
+                //Now we need an AlertDialog.Builder object
+                AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
 
-                // Set the width and height for the layout parameters
-                // This will bet the width and height of alert dialog
-                layoutParams.width = dialogWindowWidth;
-                layoutParams.height = dialogWindowHeight;
+                //setting the view of the builder to our custom view that we already inflated
+                builder.setView(dialogView);
 
-                // Apply the newly created layout parameters to the alert dialog window
-                dialog.getWindow().setAttributes(layoutParams);
+                //finally creating the alert dialog and displaying it
+                AlertDialog alertDialog = builder.create();
 
-                RatingBar ratingBar = dialog.findViewById(R.id.rb_rate);
+
+                RatingBar ratingBar = dialogView.findViewById(R.id.rb_rate);
 
                 // if button is clicked, close the custom dialog
-                TextView dialogButton = dialog.findViewById(R.id.dialogButtonOK);
+                TextView dialogButton = dialogView.findViewById(R.id.buttonOk);
                 dialogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showToastMsg(ratingBar.getRating()+"");
-                        dialog.dismiss();
+                        alertDialog.dismiss();
                     }
                 });
 
-                dialog.show();
+                alertDialog.show();
+
 
                 mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
                 dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,4.0f));
