@@ -16,15 +16,15 @@ public class MyanProgressDialog {
     public MyanProgressDialog(Context context)
     {
         dialog = new Dialog(context);
-        dialog.setContentView(R.layout.progress_dialog);
+        dialog.setContentView(R.layout.custom_progress_bar);
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ImageView imageView = dialog.findViewById(R.id.ivImage);
-
-        Glide.with(context)
-                .load(R.drawable.popcorngif)
-                .into(imageView);
+//        ImageView imageView = dialog.findViewById(R.id.ivImage);
+//
+//        Glide.with(context)
+//                .load(R.drawable.popcorngif)
+//                .into(imageView);
     }
 
     public void showDialog()

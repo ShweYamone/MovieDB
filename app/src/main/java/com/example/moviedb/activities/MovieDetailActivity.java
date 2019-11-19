@@ -3,31 +3,30 @@ package com.example.moviedb.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.moviedb.DB.InitializeDatabase;
+import com.example.moviedb.Entity.MyList;
+import com.example.moviedb.Entity.MyRateList;
 import com.example.moviedb.R;
-import com.example.moviedb.adapters.MovieAdapter;
 import com.example.moviedb.adapters.MovieAdapter2;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.common.ItemOffsetDecoration;
@@ -37,6 +36,7 @@ import com.example.moviedb.interactor.MovieDetailInteractor;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.interactor.WatchListInteractor;
 import com.example.moviedb.model.MovieInfoModel;
+import com.example.moviedb.model.MovieRateBody;
 import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenter;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenterImpl;
@@ -58,12 +58,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @BindView(R.id.play_button_layout)
     LinearLayout playButtonLayout;
-
-    @BindView(R.id.btn_myList_layout)
-    LinearLayout myListLayout;
-
-    @BindView(R.id.btn_rate_layout)
-    LinearLayout rateLayout;
 
     @BindView(R.id.iv_movie_poster)
     ImageView moviePoster;
@@ -107,6 +101,15 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     @BindView(R.id.tv_Recommendation)
     TextView labelRecommendation;
 
+    @BindView(R.id.btn_myList_layout)
+    LinearLayout btnMyList;
+
+    @BindView(R.id.btn_rate_layout)
+    LinearLayout btnRate;
+
+    @BindView(R.id.ratingBar)
+    RatingBar ratingBar;
+
 
 
     private MyanProgressDialog mDialog;
@@ -117,6 +120,10 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private MovieInfoModel movieInfoModel;
     private ServiceHelper.ApiService mService;
     private String sessionId="b0f14d1104e7fdb867b578bf3331d979d16e4139";
+    public InitializeDatabase dbHelper;
+    private int movieCount;
+    private int ratedMovieCount;
+
 
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
 
@@ -134,10 +141,33 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
         //setupToolbar(false);
+        dbHelper = InitializeDatabase.getInstance(MovieDetailActivity.this);
         init();
     }
 
     private void init(){
+
+        movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId);
+        if(movieCount==1){
+
+            changeMyListIcon("checkIcon");
+
+        }
+        else if (movieCount==0){
+
+            changeMyListIcon("plusIcon");
+        }
+        ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId);
+
+        if(ratedMovieCount==1){
+            ratingBar.setRating(Float.parseFloat(dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId)/2.0+""));
+        }
+        else if (ratedMovieCount==0){
+            ratingBar.setVisibility(View.GONE);
+        }
+
+
+
 
 
         mService = ServiceHelper.getClient(this);
@@ -167,7 +197,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         playButtonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(PlayMovieTrailer.gePlayMovieTrailerIntent(getApplicationContext(),mmovieId));
+                startActivity(PlayMovieTrailerActivity.gePlayMovieTrailerIntent(getApplicationContext(),mmovieId));
             }
         });
 
@@ -178,10 +208,35 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             }
         });
 
-        plusbtn.setOnClickListener(new View.OnClickListener() {
+        btnMyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
+               movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId);
+
+                if(movieCount==1){
+
+                    mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
+                    dbHelper.myListDAO().deleteById(mmovieId);
+                    changeMyListIcon("plusIcon");
+
+                }
+                else if(movieCount==0) {
+
+                    mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
+                    dbHelper.myListDAO().insert(new MyList(mmovieId));
+                    changeMyListIcon("checkIcon");
+                }
+
+            }
+        });
+
+        btnRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
+                dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,4.0f));
+
             }
         });
 
@@ -201,8 +256,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @Override
     public void hideLoading() {
-
-
         if (!isFinishing()) {
             mDialog.hideDialog();
         }
@@ -314,7 +367,14 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     }
 
     @Override
-    public void changeMyListIcon() {
+    public void changeMyListIcon(String status) {
+        if(status=="checkIcon"){
+            plusbtn.setImageResource(R.drawable.icons8_checked_24);
+        }
+        else if(status=="plusIcon"){
+            plusbtn.setImageResource(R.drawable.icons8_plus_24);
+        }
+
 
     }
 }

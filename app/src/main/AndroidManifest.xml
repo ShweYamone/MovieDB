@@ -19,7 +19,7 @@
             android:name=".activities.SeeAllActivity">
         </activity>
         <activity
-            android:name=".activities.PlayMovieTrailer"
+            android:name=".activities.PlayMovieTrailerActivity"
             android:screenOrientation="landscape"></activity>
         <activity android:name=".activities.MovieDetailActivity" />
         <activity

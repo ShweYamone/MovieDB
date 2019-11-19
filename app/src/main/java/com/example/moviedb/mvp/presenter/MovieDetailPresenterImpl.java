@@ -2,12 +2,15 @@ package com.example.moviedb.mvp.presenter;
 
 import android.widget.Toast;
 
+import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.R;
 import com.example.moviedb.interactor.MovieDetailInteractor;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.interactor.WatchListInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieListModel;
+import com.example.moviedb.model.MovieRateBody;
+import com.example.moviedb.model.MovieRateListModel;
 import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.model.WatchListModel;
 import com.example.moviedb.mvp.view.MovieDetailView;
@@ -168,7 +171,9 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
 
     @Override
     public void addOrRemoveMovieFromWatchList(String sessionId, WatchListBody watchListBody) {
+
         movieDetailView.showLoading();
+
         this.watchListInteractor.addOrRemoveMovieFromWatchList(sessionId,watchListBody)
                 .subscribe(new Observer<WatchListModel>() {
             @Override
@@ -178,14 +183,16 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
 
             @Override
             public void onNext(WatchListModel watchListModel) {
+              //  movieDetailView.changeMyListIcon("added");
 
 
 //                if(watchListModel.getStatus_message()=="Success."){
-//                    movieDetailView.showToastMsg("add to watchlist complete");
+//                    movieDetailView.showToastMsg("Successfully added");
 //                }
-//                else{
-//                    movieDetailView.showToastMsg("Failed");
+//                else if(watchListModel.getStatus_message()=="The item/record was deleted successfully."){
+//                    movieDetailView.showToastMsg("Successfully removed");
 //                }
+
             }
 
             @Override
@@ -200,6 +207,37 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
                 movieDetailView.hideLoading();
             }
         });
+    }
+
+    @Override
+    public void rateMovie(int movieId,String sessionId, MovieRateBody movieRateBody) {
+        movieDetailView.showLoading();
+
+        this.movieInteractor.rateMovie(movieId,sessionId,movieRateBody)
+                .subscribe(new Observer<MovieRateListModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        addDisposableOberver(d);
+                    }
+
+                    @Override
+                    public void onNext(MovieRateListModel movieRateListModel) {
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        movieDetailView.hideLoading();
+                        movieDetailView.showDialogMsg(movieDetailView.context().getResources().getString(R.string.error_connecting),
+                                e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        movieDetailView.hideLoading();
+                    }
+                });
     }
 
 

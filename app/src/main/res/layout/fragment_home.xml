@@ -43,160 +43,172 @@
         </LinearLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
-    <ScrollView
-        android:id="@+id/sv_home"
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_marginTop="?attr/actionBarSize"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        android:layout_height="wrap_content">
+        <ScrollView
+            android:id="@+id/sv_home"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/padding_10"
-            android:orientation="vertical">
-
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/padding_10"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="0dp"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@string/now_playing"
-                    android:fontFamily="@font/sourcesanspro"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/margin_small"/>
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_now_playing"
-                    android:layout_width="0dp"
-                    android:layout_height="28dp"
-                    android:layout_weight="1"
-                    android:text="@string/see_all"
-                    android:fontFamily="@font/sourcesanspro"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:background="@drawable/rounded_button"
-                    android:layout_margin="@dimen/margin_small"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/now_playing"
+                        android:fontFamily="@font/sourcesanspro"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginTop="@dimen/margin_small"/>
+
+                    <Button
+                        android:id="@+id/btn_now_playing"
+                        android:layout_width="0dp"
+                        android:layout_height="28dp"
+                        android:layout_weight="1"
+                        android:text="@string/see_all"
+                        android:fontFamily="@font/sourcesanspro"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:background="@drawable/rounded_button"
+                        android:layout_margin="@dimen/margin_small"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rv_now_playing"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/popular"
+                        android:fontFamily="@font/sourcesanspro"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginTop="@dimen/margin_small"/>
+
+                    <Button
+                        android:id="@+id/btn_popular"
+                        android:layout_width="0dp"
+                        android:layout_height="28dp"
+                        android:layout_weight="1"
+                        android:text="@string/see_all"
+                        android:fontFamily="@font/sourcesanspro"
+                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:background="@drawable/rounded_button"
+                        android:layout_margin="@dimen/margin_small"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rv_popular"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/txt_size_ex_small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="@string/top_related"
+                        android:fontFamily="@font/sourcesanspro"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginTop="@dimen/margin_small"/>
+
+                    <Button
+                        android:id="@+id/btn_top_rated"
+                        android:layout_width="0dp"
+                        android:layout_height="28dp"
+                        android:layout_weight="1"
+                        android:text="@string/see_all"
+                        android:fontFamily="@font/sourcesanspro"
+                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:background="@drawable/rounded_button"
+                        android:layout_margin="@dimen/margin_small"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rv_top_rated"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/txt_size_ex_small"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:fontFamily="@font/sourcesanspro"
+                        android:text="@string/upcoming"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginTop="@dimen/margin_small"/>
+
+                    <Button
+                        android:id="@+id/btn_upcoming"
+                        android:layout_width="0dp"
+                        android:layout_height="28dp"
+                        android:layout_weight="1"
+                        android:text="@string/see_all"
+                        android:fontFamily="@font/sourcesanspro"
+                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:background="@drawable/rounded_button"
+                        android:layout_margin="@dimen/margin_small"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rv_upcoming"
+                    android:layout_marginBottom="@dimen/margin_small"/>
+
+
 
             </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rv_now_playing"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@string/popular"
-                    android:fontFamily="@font/sourcesanspro"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/margin_small"/>
-
-                <Button
-                    android:id="@+id/btn_popular"
-                    android:layout_width="0dp"
-                    android:layout_height="28dp"
-                    android:layout_weight="1"
-                    android:text="@string/see_all"
-                    android:fontFamily="@font/sourcesanspro"
-                    android:textColor="@color/colorWhite"
-                    android:textAllCaps="false"
-                    android:background="@drawable/rounded_button"
-                    android:layout_margin="@dimen/margin_small"/>
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rv_popular"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/txt_size_ex_small"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@string/top_related"
-                    android:fontFamily="@font/sourcesanspro"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/margin_small"/>
-
-                <Button
-                    android:id="@+id/btn_top_rated"
-                    android:layout_width="0dp"
-                    android:layout_height="28dp"
-                    android:layout_weight="1"
-                    android:text="@string/see_all"
-                    android:fontFamily="@font/sourcesanspro"
-                    android:textColor="@color/colorWhite"
-                    android:textAllCaps="false"
-                    android:background="@drawable/rounded_button"
-                    android:layout_margin="@dimen/margin_small"/>
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rv_top_rated"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/txt_size_ex_small"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:fontFamily="@font/sourcesanspro"
-                    android:text="@string/upcoming"
-                    android:textSize="16dp"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/margin_small"/>
-
-                <Button
-                    android:id="@+id/btn_upcoming"
-                    android:layout_width="0dp"
-                    android:layout_height="28dp"
-                    android:layout_weight="1"
-                    android:text="@string/see_all"
-                    android:fontFamily="@font/sourcesanspro"
-                    android:textColor="@color/colorWhite"
-                    android:textAllCaps="false"
-                    android:background="@drawable/rounded_button"
-                    android:layout_margin="@dimen/margin_small"/>
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rv_upcoming"/>
-
-
-
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

@@ -1,5 +1,6 @@
 package com.example.moviedb.mvp.presenter;
 
+import com.example.moviedb.R;
 import com.example.moviedb.interactor.GetVideoResultInteractor;
 import com.example.moviedb.model.GetVideoResultModel;
 import com.example.moviedb.mvp.view.MovieTrailerView;
@@ -17,6 +18,7 @@ public class MovieTrailerPresenterImpl extends  BasePresenter implements MovieTr
 
     @Override
     public void getVideo(int movie_id) {
+        movieTrailerView.showLoading();
         this.getVideoResultInteractor.getVideoById(movie_id)
                 .subscribe(new Observer<GetVideoResultModel>() {
 
@@ -32,12 +34,14 @@ public class MovieTrailerPresenterImpl extends  BasePresenter implements MovieTr
 
                     @Override
                     public void onError(Throwable e) {
-
+                        movieTrailerView.hideLoading();
+                        movieTrailerView.showDialogMsg(movieTrailerView.context().getResources().getString(R.string.error_connecting),
+                                e.getLocalizedMessage());
                     }
 
                     @Override
                     public void onComplete() {
-
+                        movieTrailerView.hideLoading();
                     }
                 });
     }
