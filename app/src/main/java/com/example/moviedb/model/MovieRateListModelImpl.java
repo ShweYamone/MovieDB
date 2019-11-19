@@ -15,4 +15,11 @@ public class MovieRateListModelImpl implements IMovieRateListModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Observable<MovieRateListModel> rateMovieFromApi(ServiceHelper.ApiService service,int movieId, String sessionId, MovieRateBody movieRateBody) {
+        return service.rateMovie(movieId,DEVELOPER_KEY, sessionId, movieRateBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

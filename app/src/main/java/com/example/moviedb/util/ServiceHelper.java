@@ -7,6 +7,7 @@ import com.example.moviedb.model.GetVideoResultModel;
 import com.example.moviedb.model.LoginRequestBody;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieListModel;
+import com.example.moviedb.model.MovieRateBody;
 import com.example.moviedb.model.ProfileInfoModel;
 import com.example.moviedb.model.RequestTokenBody;
 import com.example.moviedb.model.WatchListBody;
@@ -211,6 +212,13 @@ public class ServiceHelper {
         Observable<WatchListModel> addOrRemoveMovieFromWatchList(@Query("api_key") String apiKey,
                                                             @Query("session_id") String sessionId,
                                                             @Body WatchListBody watchListBody);
+
+
+        @POST("movie/{movie_id}/rating")
+        Observable<MovieRateListModel> rateMovie(@Path("movie_id")int movieId,
+                                                 @Query("api_key") String apiKey,
+                                                 @Query("session_id") String sessionId,
+                                                 @Body MovieRateBody movieRateBody);
 
 
     }

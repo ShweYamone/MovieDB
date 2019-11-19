@@ -5,6 +5,7 @@ import com.example.moviedb.model.IMovieListModel;
 import com.example.moviedb.model.IMovieRateListModel;
 import com.example.moviedb.model.MovieListModel;
 import com.example.moviedb.model.MovieListModelImpl;
+import com.example.moviedb.model.MovieRateBody;
 import com.example.moviedb.model.MovieRateListModel;
 import com.example.moviedb.model.MovieRateListModelImpl;
 import com.example.moviedb.util.ServiceHelper;
@@ -58,6 +59,10 @@ public class MovieInteractor {
 
     public Observable<MovieListModel> getRecommendedVideosById(int movieId,int page){
         return this.movieListModel.getRecommendedVideosFromApi(mService,movieId,page);
+    }
+
+    public Observable<MovieRateListModel> rateMovie(int movieId,String sessionId, MovieRateBody movieRateBody) {
+        return this.movieRateListModel.rateMovieFromApi(mService,movieId, sessionId,movieRateBody);
     }
 
 }

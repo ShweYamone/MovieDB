@@ -34,6 +34,7 @@ import com.example.moviedb.interactor.MovieDetailInteractor;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.interactor.WatchListInteractor;
 import com.example.moviedb.model.MovieInfoModel;
+import com.example.moviedb.model.MovieRateBody;
 import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenter;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenterImpl;
@@ -55,12 +56,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @BindView(R.id.play_button_layout)
     LinearLayout playButtonLayout;
-
-    @BindView(R.id.btn_myList_layout)
-    LinearLayout myListLayout;
-
-    @BindView(R.id.btn_rate_layout)
-    LinearLayout rateLayout;
 
     @BindView(R.id.iv_movie_poster)
     ImageView moviePoster;
@@ -103,6 +98,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @BindView(R.id.tv_Recommendation)
     TextView labelRecommendation;
+
+    @BindView(R.id.btn_myList_layout)
+    LinearLayout btnMyList;
+
+    @BindView(R.id.btn_rate_layout)
+    LinearLayout btnRate;
 
 
 
@@ -190,7 +191,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             }
         });
 
-        plusbtn.setOnClickListener(new View.OnClickListener() {
+        btnMyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId);
@@ -208,6 +209,14 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                     dbHelper.myListDAO().insert(new MyList(mmovieId));
                     changeMyListIcon("checkIcon");
                 }
+
+            }
+        });
+
+        btnRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
 
             }
         });
