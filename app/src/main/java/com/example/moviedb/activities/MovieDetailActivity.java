@@ -3,17 +3,13 @@ package com.example.moviedb.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +25,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.Entity.MyList;
 import com.example.moviedb.R;
-import com.example.moviedb.adapters.MovieAdapter;
 import com.example.moviedb.adapters.MovieAdapter2;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.common.ItemOffsetDecoration;
@@ -184,7 +179,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         playButtonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(PlayMovieTrailer.gePlayMovieTrailerIntent(getApplicationContext(),mmovieId));
+                startActivity(PlayMovieTrailerActivity.gePlayMovieTrailerIntent(getApplicationContext(),mmovieId));
             }
         });
 
@@ -233,8 +228,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @Override
     public void hideLoading() {
-
-
         if (!isFinishing()) {
             mDialog.hideDialog();
         }
