@@ -110,9 +110,8 @@
             android:layout_height="@dimen/layout_button_height"
             android:layout_margin="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
-            android:background="@color/color_red"
+            android:background="@drawable/bg_button1"
             android:gravity="center"
-            android:foreground="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -152,7 +151,7 @@
                 android:layout_margin="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:orientation="vertical"
-                android:foreground="?attr/selectableItemBackground">
+                android:background="@drawable/bg_button2">
 
                 <ImageView
                     android:id="@+id/iv_plus"
@@ -178,7 +177,7 @@
                 android:layout_margin="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:orientation="vertical"
-                android:foreground="?attr/selectableItemBackground">
+                android:background="@drawable/bg_button2">
 
                 <ImageView
                     android:id="@+id/iv_rate"
