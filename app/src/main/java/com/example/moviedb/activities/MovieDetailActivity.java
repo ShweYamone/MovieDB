@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.Entity.MyList;
+import com.example.moviedb.Entity.MyRateList;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.MovieAdapter2;
 import com.example.moviedb.common.BaseActivity;
@@ -105,6 +107,9 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     @BindView(R.id.btn_rate_layout)
     LinearLayout btnRate;
 
+    @BindView(R.id.ratingBar)
+    RatingBar ratingBar;
+
 
 
     private MyanProgressDialog mDialog;
@@ -117,6 +122,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private String sessionId="b0f14d1104e7fdb867b578bf3331d979d16e4139";
     public InitializeDatabase dbHelper;
     private int movieCount;
+    private int ratedMovieCount;
+
 
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
 
@@ -150,6 +157,16 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
             changeMyListIcon("plusIcon");
         }
+        ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId);
+
+        if(ratedMovieCount==1){
+            ratingBar.setRating(Float.parseFloat(dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId)/2.0+""));
+        }
+        else if (ratedMovieCount==0){
+            ratingBar.setVisibility(View.GONE);
+        }
+
+
 
 
 
@@ -216,7 +233,9 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         btnRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
+                dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,4.0f));
 
             }
         });

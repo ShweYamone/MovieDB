@@ -11,13 +11,16 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.example.moviedb.DAO.MyListDAO;
+import com.example.moviedb.DAO.MyRateListDAO;
 import com.example.moviedb.Entity.MyList;
+import com.example.moviedb.Entity.MyRateList;
 
-@Database(entities = {MyList.class}, version = 1,exportSchema = false)
+@Database(entities = {MyList.class, MyRateList.class}, version = 1,exportSchema = false)
 public abstract class InitializeDatabase extends RoomDatabase {
     private static InitializeDatabase INSTANCE;
 
     public abstract MyListDAO myListDAO();
+    public abstract MyRateListDAO myRateListDAO();
 
 
 
