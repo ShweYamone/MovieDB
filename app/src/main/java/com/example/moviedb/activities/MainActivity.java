@@ -14,7 +14,7 @@ import com.example.moviedb.R;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.common.BottomNavigationBehavior;
 import com.example.moviedb.fragment.HomeFragment;
-import com.example.moviedb.fragment.MyListFragment;
+import com.example.moviedb.fragment.MyRatedListFragment;
 import com.example.moviedb.fragment.ProfileFragment;
 import com.example.moviedb.fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity {
                     return true;
 
                 case R.id.navigation_my_list:
-                    fragment = new MyListFragment();
+                    fragment = new MyRatedListFragment();
                     loadFragment(fragment);
                     return true;
 
