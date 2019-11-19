@@ -194,6 +194,8 @@ public class ServiceHelper {
         Observable<WatchListModel> addOrRemoveMovieFromWatchList(@Query("api_key") String apiKey,
                                                             @Query("session_id") String sessionId,
                                                             @Body WatchListBody watchListBody);
+
+
     }
 
 }

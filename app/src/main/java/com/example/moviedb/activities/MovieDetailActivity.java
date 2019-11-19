@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.moviedb.DB.InitializeDatabase;
+import com.example.moviedb.Entity.MyList;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.MovieAdapter;
 import com.example.moviedb.adapters.MovieAdapter2;
@@ -117,6 +119,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private MovieInfoModel movieInfoModel;
     private ServiceHelper.ApiService mService;
     private String sessionId="b0f14d1104e7fdb867b578bf3331d979d16e4139";
+    public InitializeDatabase dbHelper;
+    private int movieCount;
 
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
 
@@ -134,10 +138,23 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
         //setupToolbar(false);
+        dbHelper = InitializeDatabase.getInstance(MovieDetailActivity.this);
         init();
     }
 
     private void init(){
+
+        movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId);
+        if(movieCount==1){
+
+            changeMyListIcon("checkIcon");
+
+        }
+        else if (movieCount==0){
+
+            changeMyListIcon("plusIcon");
+        }
+
 
 
         mService = ServiceHelper.getClient(this);
@@ -181,7 +198,22 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         plusbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
+               movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId);
+
+                if(movieCount==1){
+
+                    mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
+                    dbHelper.myListDAO().deleteById(mmovieId);
+                    changeMyListIcon("plusIcon");
+
+                }
+                else if(movieCount==0) {
+
+                    mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
+                    dbHelper.myListDAO().insert(new MyList(mmovieId));
+                    changeMyListIcon("checkIcon");
+                }
+
             }
         });
 
@@ -314,7 +346,14 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     }
 
     @Override
-    public void changeMyListIcon() {
+    public void changeMyListIcon(String status) {
+        if(status=="checkIcon"){
+            plusbtn.setImageResource(R.drawable.icons8_checked_24);
+        }
+        else if(status=="plusIcon"){
+            plusbtn.setImageResource(R.drawable.icons8_plus_24);
+        }
+
 
     }
 }

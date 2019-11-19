@@ -2,6 +2,7 @@ package com.example.moviedb.mvp.presenter;
 
 import android.widget.Toast;
 
+import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.R;
 import com.example.moviedb.interactor.MovieDetailInteractor;
 import com.example.moviedb.interactor.MovieInteractor;
@@ -169,6 +170,7 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
     @Override
     public void addOrRemoveMovieFromWatchList(String sessionId, WatchListBody watchListBody) {
         movieDetailView.showLoading();
+
         this.watchListInteractor.addOrRemoveMovieFromWatchList(sessionId,watchListBody)
                 .subscribe(new Observer<WatchListModel>() {
             @Override
@@ -178,14 +180,16 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
 
             @Override
             public void onNext(WatchListModel watchListModel) {
+              //  movieDetailView.changeMyListIcon("added");
 
 
 //                if(watchListModel.getStatus_message()=="Success."){
-//                    movieDetailView.showToastMsg("add to watchlist complete");
+//                    movieDetailView.showToastMsg("Successfully added");
 //                }
-//                else{
-//                    movieDetailView.showToastMsg("Failed");
+//                else if(watchListModel.getStatus_message()=="The item/record was deleted successfully."){
+//                    movieDetailView.showToastMsg("Successfully removed");
 //                }
+
             }
 
             @Override
