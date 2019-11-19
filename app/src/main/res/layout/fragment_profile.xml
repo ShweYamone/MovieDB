@@ -6,6 +6,57 @@
     android:background="@color/colorLightBlack"
     tools:context=".fragment.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:text="@string/movie_quote"
+            android:textColor="@color/color_palette3"
+            android:fontFamily="@font/parisienne"
+            android:textSize="@dimen/txt_size_x_large"
+            android:layout_marginBottom="@dimen/margin_xxxxlarge"
+            android:layout_height="@dimen/edittext_height"/>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_xxlarge"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:gravity="center"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="@string/profile_not_login_text"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/titillium_web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnSignIn"
+                android:text="Sign In"
+                android:fontFamily="@font/titillium_web"
+                android:background="@drawable/bg_button"
+                android:layout_marginLeft="@dimen/margin_large"
+                android:layout_marginRight="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_height"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
 
 </FrameLayout>

@@ -51,6 +51,8 @@
 
     <dimen name="searchview_radius">3dp</dimen>
 
+    <dimen name="et_radius">6dp</dimen>
+
 
 
     <dimen name="home_list_width">110dp</dimen>

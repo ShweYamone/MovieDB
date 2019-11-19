@@ -39,8 +39,11 @@
     <string name="see_all">See All</string>
 
     <string name="movie_quote">The whole of life is just like watching a film</string>
+    <string name="not_rated_yet">You have not rated any movies yet.</string>
+
     <string name="mylist_not_login_text">Login to rate your favourite movies</string>
-    <string name="profile_not_login_text"></string>
+    <string name="profile_not_login_text">Login and play your favourites</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
