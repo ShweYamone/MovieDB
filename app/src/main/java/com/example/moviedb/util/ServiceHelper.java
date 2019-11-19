@@ -3,6 +3,7 @@ package com.example.moviedb.util;
 import android.content.Context;
 
 
+import com.example.moviedb.model.AccountModel;
 import com.example.moviedb.model.GetVideoResultModel;
 import com.example.moviedb.model.LoginRequestBody;
 import com.example.moviedb.model.MovieInfoModel;
@@ -155,6 +156,12 @@ public class ServiceHelper {
         Observable<ProfileInfoModel> getSession(@Query("api_key") String apiKey,
                                                 @Body RequestTokenBody requestTokenBody);
 
+        @GET("account")
+        Observable<AccountModel> getAccount(@Query("api_key") String apiKey,
+                                            @Query("session_id") String sessionId);
+
+
+
         @GET("movie/now_playing")
         Observable<MovieListModel> getNowShowingMovies(@Query("api_key") String apiKey,
                                                        @Query("language") String language,
@@ -211,6 +218,11 @@ public class ServiceHelper {
         Observable<WatchListModel> addOrRemoveMovieFromWatchList(@Query("api_key") String apiKey,
                                                             @Query("session_id") String sessionId,
                                                             @Body WatchListBody watchListBody);
+
+        @GET("account/{account_id}/watchlist/movies")
+        Observable<MovieListModel> getMyWatchListMovies(@Query("api_key") String apiKey,
+                                                        @Query("session_id") String sessionId,
+                                                        @Query("page") int page);
     }
 
 }

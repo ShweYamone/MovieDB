@@ -60,4 +60,9 @@ public class MovieInteractor {
         return this.movieListModel.getRecommendedVideosFromApi(mService,movieId,page);
     }
 
+
+  //  public Observable<MovieListModel> getWatchListMovies(String sessionId, int page) {
+        //
+   // }
+
 }

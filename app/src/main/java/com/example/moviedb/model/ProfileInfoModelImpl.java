@@ -18,7 +18,7 @@ public class ProfileInfoModelImpl implements IProfileModel {
 
     @Override
     public Observable<ProfileInfoModel> getRequestTokenFromApi(ServiceHelper.ApiService service) {
-        Log.i("!!!!", DEVELOPER_KEY);
+      //  Log.i("!!!!", DEVELOPER_KEY);
 
         return service.getRequestToken(DEVELOPER_KEY)
                 .subscribeOn(Schedulers.io())
