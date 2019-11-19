@@ -1,11 +1,11 @@
 package com.example.moviedb.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,10 +24,15 @@ import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
 import com.example.moviedb.custom_control.MyanProgressDialog;
 import com.example.moviedb.interactor.MovieInteractor;
+import com.example.moviedb.model.MovieInfoModel;
+import com.example.moviedb.model.MovieRateInfoModel;
+import com.example.moviedb.mvp.presenter.ProfilePresenterImpl;
 import com.example.moviedb.mvp.presenter.SearchPresenterImpl;
 import com.example.moviedb.mvp.view.ProfileView;
 import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -39,8 +44,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     @BindView(R.id.btnLogOut)
     Button btnLogOut;
 
-    @BindView(R.id.ivUserImage)
-    ImageView ivUserImage;
+    @BindView(R.id.tvLetters)
+    TextView tvLetters;
 
     @BindView(R.id.tvUserName)
     TextView tvUserName;
@@ -58,7 +63,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private ServiceHelper.ApiService mService;
 
-    private SearchPresenterImpl mPresenter;
+    private ProfilePresenterImpl mPresenter;
 
     private SmartScrollListener mSmartScrollListener;
 
@@ -84,37 +89,44 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
         mService = ServiceHelper.getClient(this.getActivity());
 
-        mPresenter = new SearchPresenterImpl(new MovieInteractor(mService));
+
 
         if(mSharePreferenceHelper.isLogin()) {
-         //   this.getContext().startActivity(LoginActivity.getMovieDetailActivityIntent(this.getContext()));
+
+            mPresenter = new ProfilePresenterImpl(new MovieInteractor(mService), mSharePreferenceHelper.getSessionId());
+
             layoutToLogin.setVisibility(View.GONE);
             layoutAlreadyLogin.setVisibility(View.VISIBLE);
 
-            Toast.makeText(this.getActivity(), mSharePreferenceHelper.getUserName() ,
-                    Toast.LENGTH_SHORT).show();
+            showUserInfo();
 
-
-            tvUserName.setText(mSharePreferenceHelper.getUserName());
 
             btnLogOut.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     mSharePreferenceHelper.logoutSharePreference();
-                    v.getContext().startActivity(LoginActivity.getMovieDetailActivityIntent(v.getContext()));
+
+                    Intent intent = MainActivity.getMainActivityIntent(v.getContext());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    v.getContext().startActivity(MainActivity.getMainActivityIntent(v.getContext()));
 
                 }
             });
-
-
-
 
 
             recyclerViewWatchList.setHasFixedSize(true);
             recyclerViewWatchList.setLayoutManager(new GridLayoutManager(this.getActivity(),3));
             recyclerViewWatchList.addItemDecoration(new ItemOffsetDecoration(2));
             recyclerViewWatchList.setAdapter(mAdapter);
-            recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
+
+         //   recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
+
+            mPresenter.onAttachView(this);
+            mPresenter.onUIReady();
+
+
 
         }
         else {
@@ -132,29 +144,57 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     }
 
     @Override
-    public void showUserInfo(String userName) {
-       // Log.i("!!!", userName);
-     //   tvUserName.setText(userName);
+    public void showUserInfo() {
+        String userName = mSharePreferenceHelper.getUserName();
+        String letters = userName.charAt(0) + "";
+
+
+        int spaceIndex = userName.indexOf(" ");
+        if(spaceIndex > 0) {
+            letters += userName.charAt(spaceIndex + 1);
+        }
+
+        tvUserName.setText(userName);
+
+        tvLetters.setText(letters.toUpperCase());
+
+    }
+
+
+    @Override
+    public void showMyWatchList(List<MovieInfoModel> movieInfoModelList) {
+      //  cvDataError.setVisibility(View.GONE);
+
+        page = 1;
+        mAdapter.clear();
+        for (MovieInfoModel model: movieInfoModelList) {
+            mAdapter.add(model);
+        }
     }
 
     @Override
-    public void setUserNameandIDToSharePreference(String userName, int userId){
-        mSharePreferenceHelper.setUserName_Id(userName, userId);
+    public void showMoreWatchList(List<MovieInfoModel> movieInfoModelList) {
+        Log.i("Page", movieInfoModelList.size()+"");
+        for (MovieInfoModel model: movieInfoModelList) {
 
-        Toast.makeText(this.getActivity(), "Manual" + userName ,
-                Toast.LENGTH_SHORT).show();
-
-
+            mAdapter.add(model);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
-    public void showMyWatchList() {
+    public void resetPageNumberToDefault() {
+        page--;
+    }
+
+    @Override
+    public void showNoMovieInfo() {
 
     }
 
     @Override
     public Context context() {
-        return null;
+        return this.getActivity();
     }
 
     @Override
