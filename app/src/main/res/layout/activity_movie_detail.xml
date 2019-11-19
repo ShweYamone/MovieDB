@@ -139,6 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"
             android:text="hello"
+            android:fontFamily="@font/publicsans_variable"
             android:textColor="@color/color_grey_stroke"
             android:textSize="@dimen/margin_normal" />
 
@@ -153,7 +154,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:foreground="?attr/selectableItemBackground">
 
                 <ImageView
                     android:id="@+id/iv_plus"
@@ -167,6 +169,7 @@
                     android:text="MyList"
                     android:textColor="@color/color_grey_stroke"
                     android:textSize="@dimen/txt_size_large"
+                    android:fontFamily="@font/lora_regular"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -177,7 +180,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:foreground="?attr/selectableItemBackground">
 
                 <ImageView
                     android:id="@+id/iv_rate"
@@ -191,6 +195,7 @@
                     android:text="Rate"
                     android:textColor="@color/color_grey_stroke"
                     android:textSize="@dimen/txt_size_large"
+                    android:fontFamily="@font/lora_regular"
                     android:textStyle="bold" />
 
             </LinearLayout>

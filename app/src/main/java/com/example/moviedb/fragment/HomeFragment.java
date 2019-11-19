@@ -9,6 +9,7 @@ import android.widget.ScrollView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.moviedb.R;
@@ -30,7 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import retrofit2.http.GET;
 
-public class HomeFragment extends BaseFragment implements HomeView {
+public class HomeFragment extends BaseFragment implements HomeView , SwipeRefreshLayout.OnRefreshListener{
 
 
 
@@ -65,6 +66,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @BindView(R.id.sv_home)
     ScrollView scrollView;
+
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private MovieAdapter2 _NowShowing, _Popular, _TopRated, _Upcoming;
 
@@ -125,6 +130,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         recyclerTopRated.addItemDecoration(new ItemOffsetDecoration(2));
         recyclerTopRated.setAdapter(_TopRated);
 
+        swipeRefreshLayout.setOnRefreshListener(this);
         shimmerFrameLayout.startShimmerAnimation();
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
@@ -239,5 +245,13 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void showDialogMsg(String title, String msg) {
 
+    }
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
+        this.mPresenter.getNowPlayingMovies();
+        this.mPresenter.getUpComingMovies();
+        this.mPresenter.getTopRatedMovies();
+        this.mPresenter.getPopularMovies();
     }
 }
