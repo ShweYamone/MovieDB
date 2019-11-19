@@ -10,5 +10,5 @@ public interface MovieDetailView extends BaseView {
     void showRecommendedVideos(List<MovieInfoModel> recommendedVideoListModel);
     void hideLabelMoreLikeThis();
     void hideLabelRecommendation();
-    void changeMyListIcon();
+    void changeMyListIcon(String status);
 }
