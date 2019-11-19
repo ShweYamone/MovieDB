@@ -19,9 +19,23 @@ public class MyList implements Pageable {
     @ColumnInfo(name = "movieId")
     private int movieId;
 
-    public MyList(int movieId) {
+    @ColumnInfo(name = "accountId")
+    private int accountId;
+
+    public MyList(int movieId, int accountId) {
         this.movieId = movieId;
+        this.accountId = accountId;
     }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+
 
     public int getListId() {
         return listId;

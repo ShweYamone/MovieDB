@@ -3,9 +3,7 @@ package com.example.moviedb.fragment;
 import android.content.Context;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,12 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviedb.R;
 import com.example.moviedb.activities.LoginActivity;
-import com.example.moviedb.activities.MainActivity;
 import com.example.moviedb.adapters.MovieAdapter;
 import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
-import com.example.moviedb.custom_control.MyanProgressDialog;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.mvp.presenter.SearchPresenterImpl;
 import com.example.moviedb.mvp.view.ProfileView;
@@ -87,7 +83,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
         mPresenter = new SearchPresenterImpl(new MovieInteractor(mService));
 
         if(mSharePreferenceHelper.isLogin()) {
-         //   this.getContext().startActivity(LoginActivity.getMovieDetailActivityIntent(this.getContext()));
+         //   this.getContext().startActivity(LoginActivity.getLoginActivityIntent(this.getContext()));
             layoutToLogin.setVisibility(View.GONE);
             layoutAlreadyLogin.setVisibility(View.VISIBLE);
 
@@ -101,7 +97,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
                 @Override
                 public void onClick(View v) {
                     mSharePreferenceHelper.logoutSharePreference();
-                    v.getContext().startActivity(LoginActivity.getMovieDetailActivityIntent(v.getContext()));
+                    v.getContext().startActivity(LoginActivity.getLoginActivityIntent(v.getContext()));
 
                 }
             });
@@ -124,7 +120,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             btnSignIn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    v.getContext().startActivity(LoginActivity.getMovieDetailActivityIntent(v.getContext()));
+                    v.getContext().startActivity(LoginActivity.getLoginActivityIntent(v.getContext()));
                 }
             });
         }

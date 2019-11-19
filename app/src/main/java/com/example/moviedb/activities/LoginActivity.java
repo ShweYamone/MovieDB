@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         return R.layout.activity_login;
     }
 
-    public static Intent getMovieDetailActivityIntent(Context context) {
+    public static Intent getLoginActivityIntent(Context context) {
 
         Intent intent = new Intent(context, LoginActivity.class);
         return intent;
