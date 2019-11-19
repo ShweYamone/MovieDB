@@ -9,6 +9,8 @@ import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.interactor.WatchListInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieListModel;
+import com.example.moviedb.model.MovieRateBody;
+import com.example.moviedb.model.MovieRateListModel;
 import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.model.WatchListModel;
 import com.example.moviedb.mvp.view.MovieDetailView;
@@ -205,6 +207,37 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
                 movieDetailView.hideLoading();
             }
         });
+    }
+
+    @Override
+    public void rateMovie(int movieId,String sessionId, MovieRateBody movieRateBody) {
+        movieDetailView.showLoading();
+
+        this.movieInteractor.rateMovie(movieId,sessionId,movieRateBody)
+                .subscribe(new Observer<MovieRateListModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        addDisposableOberver(d);
+                    }
+
+                    @Override
+                    public void onNext(MovieRateListModel movieRateListModel) {
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        movieDetailView.hideLoading();
+                        movieDetailView.showDialogMsg(movieDetailView.context().getResources().getString(R.string.error_connecting),
+                                e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        movieDetailView.hideLoading();
+                    }
+                });
     }
 
 
