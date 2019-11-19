@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTextColorPrimary"
+    android:background="@color/colorLightBlack"
     tools:context=".fragment.SearchFragment">
 
     <LinearLayout
@@ -28,6 +28,7 @@
             android:textColor="@color/colorWhite"
             android:inputType="text"
             android:hint="@string/search"/>
+
         <TextView
             android:text="@string/movies_tv"
             android:textColor="@color/colorWhite"
@@ -52,7 +53,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_search_movie"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/margin_small"/>
 
 
             <androidx.cardview.widget.CardView

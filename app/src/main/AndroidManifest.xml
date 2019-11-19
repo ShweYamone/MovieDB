@@ -12,8 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.SeeAllActivity"></activity>
-        <activity android:name=".activities.PlayMovieTrailer"
+
+        <activity android:name=".activities.LoginActivity"></activity>
+
+        <activity
+            android:name=".activities.SeeAllActivity">
+        </activity>
+        <activity
+            android:name=".activities.PlayMovieTrailer"
             android:screenOrientation="landscape"></activity>
         <activity android:name=".activities.MovieDetailActivity" />
         <activity

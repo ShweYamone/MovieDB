@@ -4,8 +4,11 @@ import android.content.Context;
 
 
 import com.example.moviedb.model.GetVideoResultModel;
+import com.example.moviedb.model.LoginRequestBody;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieListModel;
+import com.example.moviedb.model.ProfileInfoModel;
+import com.example.moviedb.model.RequestTokenBody;
 import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.model.WatchListModel;
 
@@ -138,6 +141,20 @@ public class ServiceHelper {
         @GET("movie/{movie_id}")
         Observable<MovieDetailModel> getMovieDetail(@Path("movie_id") int id, @Query("api_key") String apiKey);
 */
+
+
+        @GET("authentication/token/new")
+        Observable<ProfileInfoModel> getRequestToken(@Query("api_key") String apiKey);
+
+
+        @POST("authentication/token/validate_with_login")
+        Observable<ProfileInfoModel> getLoginValidate(@Query("api_key") String apiKey,
+                                                      @Body LoginRequestBody requestBody);
+
+        @POST("authentication/session/new")
+        Observable<ProfileInfoModel> getSession(@Query("api_key") String apiKey,
+                                                @Body RequestTokenBody requestTokenBody);
+
         @GET("movie/now_playing")
         Observable<MovieListModel> getNowShowingMovies(@Query("api_key") String apiKey,
                                                        @Query("language") String language,

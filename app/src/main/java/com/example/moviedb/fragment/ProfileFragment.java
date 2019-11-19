@@ -9,25 +9,49 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.moviedb.R;
+import com.example.moviedb.activities.LoginActivity;
+import com.example.moviedb.activities.MainActivity;
+import com.example.moviedb.common.BaseFragment;
+import com.example.moviedb.util.SharePreferenceHelper;
 
-public class ProfileFragment extends Fragment {
+import butterknife.BindView;
 
-    public ProfileFragment() {
-        // Required empty public constructor
+public class ProfileFragment extends BaseFragment{
+
+    @BindView(R.id.btnSignIn)
+    Button btnSignIn;
+
+    private SharePreferenceHelper mSharePreferenceHelper;
+
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.fragment_profile;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setUpContents(Bundle savedInstanceState) {
+        init();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
-    }
+    private void init() {
+        mSharePreferenceHelper = new SharePreferenceHelper(this.getActivity());
 
+        if(mSharePreferenceHelper.isLogin()) {
+            this.getContext().startActivity(LoginActivity.getMovieDetailActivityIntent(this.getContext()));
+        }
+        else {
+            btnSignIn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    v.getContext().startActivity(LoginActivity.getMovieDetailActivityIntent(v.getContext()));
+                }
+            });
+        }
+
+    }
 }
