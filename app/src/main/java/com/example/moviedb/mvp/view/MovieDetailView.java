@@ -8,4 +8,7 @@ public interface MovieDetailView extends BaseView {
     void showMovieDetail(MovieInfoModel movieInfoModel);
     void showSimilarVideos(List<MovieInfoModel> similarVideoListModel);
     void showRecommendedVideos(List<MovieInfoModel> recommendedVideoListModel);
+    void hideLabelMoreLikeThis();
+    void hideLabelRecommendation();
+    void changeMyListIcon();
 }

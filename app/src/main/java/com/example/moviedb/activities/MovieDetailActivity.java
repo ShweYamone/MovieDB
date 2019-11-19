@@ -17,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -92,13 +93,19 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     RecyclerView recommendMovieRecycleView;
 
     @BindView(R.id.iv_cancel)
-    ImageView cancelbtn;
+    ImageButton cancelbtn;
 
     @BindView(R.id.iv_plus)
     ImageView plusbtn;
 
     @BindView(R.id.iv_rate)
     ImageView ratebtn;
+
+    @BindView(R.id.tv_MoreLikeThis)
+    TextView labelMoreLikeThis;
+
+    @BindView(R.id.tv_Recommendation)
+    TextView labelRecommendation;
 
 
 
@@ -294,5 +301,20 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         for (MovieInfoModel model : recommendedVideoListModel) {
             _RECOMMEND.add(model);
         }
+    }
+
+    @Override
+    public void hideLabelMoreLikeThis() {
+        labelMoreLikeThis.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideLabelRecommendation() {
+        labelRecommendation.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void changeMyListIcon() {
+
     }
 }
