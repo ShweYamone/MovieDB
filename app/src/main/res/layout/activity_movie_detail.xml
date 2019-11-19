@@ -112,6 +112,7 @@
             android:layout_marginTop="@dimen/margin_normal"
             android:background="@color/color_red"
             android:gravity="center"
+            android:foreground="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView

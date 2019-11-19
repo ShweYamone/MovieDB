@@ -45,9 +45,9 @@ public class MainActivity extends BaseActivity {
     }
     private void init() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
+//
+//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+//        layoutParams.setBehavior(new BottomNavigationBehavior());
         loadFragment(new HomeFragment());
     }
 
