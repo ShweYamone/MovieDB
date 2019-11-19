@@ -74,7 +74,7 @@
                         android:layout_weight="3"
                         android:text="@string/now_playing"
                         android:fontFamily="@font/sourcesanspro"
-                        android:textSize="16dp"
+                        android:textSize="20dp"
                         android:textColor="@color/colorWhite"
                         android:layout_marginTop="@dimen/margin_small"/>
 
@@ -109,7 +109,7 @@
                         android:layout_weight="3"
                         android:text="@string/popular"
                         android:fontFamily="@font/sourcesanspro"
-                        android:textSize="16dp"
+                        android:textSize="20dp"
                         android:textColor="@color/colorWhite"
                         android:layout_marginTop="@dimen/margin_small"/>
 
@@ -145,7 +145,7 @@
                         android:layout_weight="3"
                         android:text="@string/top_related"
                         android:fontFamily="@font/sourcesanspro"
-                        android:textSize="16dp"
+                        android:textSize="20dp"
                         android:textColor="@color/colorWhite"
                         android:layout_marginTop="@dimen/margin_small"/>
 
@@ -181,7 +181,7 @@
                         android:layout_weight="3"
                         android:fontFamily="@font/sourcesanspro"
                         android:text="@string/upcoming"
-                        android:textSize="16dp"
+                        android:textSize="20dp"
                         android:textColor="@color/colorWhite"
                         android:layout_marginTop="@dimen/margin_small"/>
 

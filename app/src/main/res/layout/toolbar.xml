@@ -23,7 +23,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/sourcesanspro"
             android:textColor="@color/colorWhite"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:text="@string/app_name"/>
     </LinearLayout>
 
