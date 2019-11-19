@@ -7,18 +7,23 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -110,7 +115,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @BindView(R.id.ratingBar)
     RatingBar ratingBar;
-
 
 
     private MyanProgressDialog mDialog;
@@ -248,6 +252,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         btnRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(sharePreferenceHelper.isLogin()){
                     mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
                     dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,4.0f,accountId));
@@ -256,6 +261,60 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                     showToastMsg("Please login in to continue.");
                     startActivity(LoginActivity.getLoginActivityIntent(context()));
                 }
+
+
+             //   mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
+                // custom dialog
+                final Dialog dialog = new Dialog(MovieDetailActivity.this);
+                dialog.setContentView(R.layout.custom_dialog);
+                TextView toolbar_text = dialog.findViewById(R.id.toolbar_text);
+                toolbar_text.setText("Rating!");
+                // Get screen width and height in pixels
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                // The absolute width of the available display size in pixels.
+                int displayWidth = displayMetrics.widthPixels;
+                // The absolute height of the available display size in pixels.
+                int displayHeight = displayMetrics.heightPixels;
+
+                // Initialize a new window manager layout parameters
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+                // Copy the alert dialog window attributes to new layout parameter instance
+                layoutParams.copyFrom(dialog.getWindow().getAttributes());
+
+                // Set the alert dialog window width and height
+                // Set alert dialog width equal to screen width 90%
+                // int dialogWindowWidth = (int) (displayWidth * 0.9f);
+                // Set alert dialog height equal to screen height 90%
+                // int dialogWindowHeight = (int) (displayHeight * 0.9f);
+
+                // Set alert dialog width equal to screen width 70%
+                int dialogWindowWidth = (int) (displayWidth * 0.9f);
+                // Set alert dialog height equal to screen height 70%
+                int dialogWindowHeight = (int) (displayHeight * 0.3f);
+
+                // Set the width and height for the layout parameters
+                // This will bet the width and height of alert dialog
+                layoutParams.width = dialogWindowWidth;
+                layoutParams.height = dialogWindowHeight;
+
+                // Apply the newly created layout parameters to the alert dialog window
+                dialog.getWindow().setAttributes(layoutParams);
+
+                RatingBar ratingBar = dialog.findViewById(R.id.rb_rate);
+
+                // if button is clicked, close the custom dialog
+                TextView dialogButton = dialog.findViewById(R.id.dialogButtonOK);
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showToastMsg(ratingBar.getRating()+"");
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
 
 
 
