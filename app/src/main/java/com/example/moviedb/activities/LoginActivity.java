@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.moviedb.R;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.custom_control.MyanBoldTextView;
+import com.example.moviedb.interactor.AccountInteractor;
 import com.example.moviedb.interactor.LoginInteractor;
 import com.example.moviedb.mvp.presenter.LoginPresenterImpl;
 import com.example.moviedb.mvp.view.LoginView;
@@ -72,7 +73,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
         mSharePreferenceHelper = new SharePreferenceHelper(this);
 
-        mPresenter = new LoginPresenterImpl(new LoginInteractor(this.mService));
+        mPresenter = new LoginPresenterImpl(new LoginInteractor(this.mService), new AccountInteractor(this.mService));
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,12 +97,19 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     public void saveLoginData(String sessionId) {
-        Log.e("LOGINACTiVity", "saveLoginData: " + sessionId );
+      //  Log.e("LOGINACTiVity", "saveLoginData: " + sessionId );
         mSharePreferenceHelper.setLogin(sessionId);
+    }
+
+    public void setUserName_ID(String username, int id) {
+        mSharePreferenceHelper.setUserName_Id(username, id);
     }
 
     @Override
     public void onLoginComplete() {
+
+        mSharePreferenceHelper.setUserName_Id(etUserName.getText().toString(), 1);
+
         this.startActivity(MainActivity.getMainActivityIntent(this));
         this.finish();
     }

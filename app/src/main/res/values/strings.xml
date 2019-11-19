@@ -19,6 +19,8 @@
     <string name="please_fill_in_username">Please fill in username</string>
     <string name="please_fill_in_password">Please fill in password</string>
 
+    <string name="logout">Log Out</string>
+
     <string name="password_description">show password</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
@@ -29,6 +31,8 @@
     <string name="search">Search</string>
     <string name="my_list">My List</string>
     <string name="profile">Profile</string>
+
+    <string name="my_watch_list">My WatchList</string>
 
     <string name="movies_tv">Movies &amp; TV </string>
 

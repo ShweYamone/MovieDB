@@ -1,8 +1,5 @@
 package com.example.moviedb.model;
 
-
-import android.util.Log;
-
 import com.example.moviedb.util.ServiceHelper;
 
 import io.reactivex.Observable;

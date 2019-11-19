@@ -11,9 +11,7 @@ import java.io.Serializable;
 
 @Entity(tableName = "MyWatchList")
 public class MyList implements Pageable {
-    public MyList(int movieId) {
-        this.movieId = movieId;
-    }
+
 
     @PrimaryKey(autoGenerate = true)
     private int listId;
@@ -21,7 +19,9 @@ public class MyList implements Pageable {
     @ColumnInfo(name = "movieId")
     private int movieId;
 
-
+    public MyList(int movieId) {
+        this.movieId = movieId;
+    }
 
     public int getListId() {
         return listId;

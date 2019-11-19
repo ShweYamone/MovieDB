@@ -2,6 +2,7 @@ package com.example.moviedb.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class SharePreferenceHelper {
 
@@ -12,6 +13,8 @@ public class SharePreferenceHelper {
 	private static String SESSION_ID_KEY = "sessionId";
 
 	private static String USER_NAME_KEY = "username";
+
+	private static String USER_ID_KEY = "id";
 
 		
 	public SharePreferenceHelper(Context context)
@@ -26,12 +29,24 @@ public class SharePreferenceHelper {
 		editor.commit();
 	}
 
+	public void setUserName_Id(String userName, int id) {
+		SharedPreferences.Editor editor = sharedPreference.edit();
+		editor.putString(USER_NAME_KEY, userName);
+		editor.putInt(USER_ID_KEY, id);
+		editor.commit();
+
+		Log.i("Username", sharedPreference.getString(USER_NAME_KEY,""));
+	}
 	public String getSessionId() {
 		return sharedPreference.getString(SESSION_ID_KEY, "");
 	}
 
 	public String getUserName() {
 		return sharedPreference.getString(USER_NAME_KEY,"");
+	}
+
+	public int getUserId() {
+		return sharedPreference.getInt(USER_ID_KEY, -100);
 	}
 
 	public void logoutSharePreference()

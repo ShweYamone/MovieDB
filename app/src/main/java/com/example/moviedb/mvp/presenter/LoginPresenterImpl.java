@@ -3,7 +3,9 @@ package com.example.moviedb.mvp.presenter;
 import android.util.Log;
 
 import com.example.moviedb.R;
+import com.example.moviedb.interactor.AccountInteractor;
 import com.example.moviedb.interactor.LoginInteractor;
+import com.example.moviedb.model.AccountModel;
 import com.example.moviedb.model.LoginRequestBody;
 import com.example.moviedb.model.ProfileInfoModel;
 import com.example.moviedb.model.RequestTokenBody;
@@ -20,9 +22,11 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
 
     private LoginView mView = null;
     private LoginInteractor mInteractor;
+    private AccountInteractor accountInteractor;
 
-    public LoginPresenterImpl(LoginInteractor interactor) {
+    public LoginPresenterImpl(LoginInteractor interactor, AccountInteractor accountInteractor) {
         this.mInteractor = interactor;
+        this.accountInteractor = accountInteractor;
     }
 
     @Override
@@ -168,6 +172,7 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
                         mView.showDialogMsg(mView.context().getResources().getString(R.string.error),
                                 mView.context().getResources().getString(R.string.error_retrieving_data));
                     } else {
+                        getAccount(profileInfoModel.getSession_id());
                         mView.saveLoginData(profileInfoModel.getSession_id());
                     }
 
@@ -191,5 +196,30 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
                 mView.showToastMsg("login success");
             }
         });
+    }
+
+    public void getAccount(String sessionId) {
+        this.accountInteractor.getAccoount(sessionId)
+                .subscribe(new Observer<AccountModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        addDisposableOberver(d);
+                    }
+
+                    @Override
+                    public void onNext(AccountModel accountModel) {
+                        mView.setUserName_ID(accountModel.getName(), accountModel.getId());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
