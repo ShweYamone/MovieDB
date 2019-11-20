@@ -73,9 +73,11 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
     }
 
     private void init() {
-        mSharePreferenceHelper = new SharePreferenceHelper(this.getActivity());
+        mSharePreferenceHelper = new SharePreferenceHelper(context());
 
-        mNetwork = new Network(this.getActivity());
+        mNetwork = new Network(context());
+
+        if(mNetwork)
 
         if(mSharePreferenceHelper.isLogin()) {
 
