@@ -240,5 +240,36 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
                 });
     }
 
+    @Override
+    public void deleteRating(int movieId, String sessionId) {
+        movieDetailView.showLoading();
+
+        this.movieInteractor.deleteRating(movieId,sessionId)
+                .subscribe(new Observer<MovieRateListModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        addDisposableOberver(d);
+                    }
+
+                    @Override
+                    public void onNext(MovieRateListModel movieRateListModel) {
+
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+                        movieDetailView.hideLoading();
+                        movieDetailView.showDialogMsg(movieDetailView.context().getResources().getString(R.string.error_connecting),
+                                e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        movieDetailView.hideLoading();
+                    }
+                });
+    }
+
 
 }

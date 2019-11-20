@@ -321,18 +321,30 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
 
                             float rateValue=(float) (ratingBarInDailog.getRating()*2.0);
-                            showToastMsg(String.valueOf(rateValue));
-                            mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(rateValue));
-                            ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
-                            if(ratedMovieCount==1){
-                                dbHelper.myRateListDAO().updateRateListByMovieId(mmovieId,accountId,rateValue);
-                            }
-                            else if (ratedMovieCount==0){
-                                dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,rateValue,accountId));
+                            if(rateValue==0){
+                               mPresenter.deleteRating(mmovieId,sessionId);
+
+                                ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
+                                if(ratedMovieCount==1){
+                                    dbHelper.myRateListDAO().deleteByMovieId(mmovieId,accountId);
+                                    ratingBar.setVisibility(View.GONE);
+                                }
+                               
+                            }else{
+                                mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(rateValue));
+                                ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
+                                if(ratedMovieCount==1){
+                                    dbHelper.myRateListDAO().updateRateListByMovieId(mmovieId,accountId,rateValue);
+                                }
+                                else if (ratedMovieCount==0){
+                                    dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,rateValue,accountId));
+                                }
+
+                                ratingBar.setVisibility(View.VISIBLE);
+                                ratingBar.setRating((float) (rateValue/2.0));
                             }
 
-                            ratingBar.setVisibility(View.VISIBLE);
-                            ratingBar.setRating((float) (rateValue/2.0));
+
                             alertDialog.dismiss();
                         }
                     });
