@@ -54,7 +54,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="42dp"
-                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_weight="1"
                 android:text="Cancel"/>
 
             <View
@@ -65,8 +66,9 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="42dp"
-                android:layout_weight="2"
-                android:text="Cancel"/>
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="OK"/>
 
         </LinearLayout>
 

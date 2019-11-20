@@ -11,6 +11,8 @@
     <dimen name="txt_size_ex_large">20sp</dimen>
     <dimen name="txt_size_xx_large">30sp</dimen>
     <dimen name="txt_size_x_large">20sp</dimen>
+    <dimen name="txt_size_xxx_large">35sp</dimen>
+
 
     <dimen name="margin_xxsmall">1dp</dimen>
     <dimen name="margin_xsmall">3dp</dimen>
@@ -25,7 +27,12 @@
     <dimen name="edittext_height">46dp</dimen>
 
     <dimen name="card_corner_radius">2dp</dimen>
+<<<<<<< HEAD
     <dimen name="card_corner_large">10dp</dimen>
+=======
+
+    <dimen name="button_radius">30dp</dimen>
+>>>>>>> 6b3fae1df6ad307673809f907495ae16af1250b6
     <dimen name="card_elevation">10dp</dimen>
 
     <dimen name="margin_bottom_navigation">55dp</dimen>

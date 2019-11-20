@@ -2,6 +2,7 @@ package com.example.moviedb.fragment;
 
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieRateInfoModel;
 import com.example.moviedb.mvp.presenter.RatePresenterImpl;
 import com.example.moviedb.mvp.view.RateView;
+import com.example.moviedb.util.Network;
 import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
 
@@ -57,6 +59,8 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
 
     private SharePreferenceHelper mSharePreferenceHelper;
 
+    private Network mNetwork;
+
 
     @Override
     protected int getLayoutResource() {
@@ -71,7 +75,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
     private void init() {
         mSharePreferenceHelper = new SharePreferenceHelper(this.getActivity());
 
-       // Toast.makeText(this.getActivity(), mSharePreferenceHelper.getSessionId() + "" , Toast.LENGTH_SHORT).show();
+        mNetwork = new Network(this.getActivity());
 
         if(mSharePreferenceHelper.isLogin()) {
 
@@ -114,7 +118,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             btnLogin.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    LoginActivity.getLoginActivityIntent(v.getContext());
+                    v.getContext().startActivity(LoginActivity.getLoginActivityIntent(v.getContext()));
                 }
             });
 
@@ -180,4 +184,5 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
     public void showDialogMsg(String title, String msg) {
 
     }
+
 }

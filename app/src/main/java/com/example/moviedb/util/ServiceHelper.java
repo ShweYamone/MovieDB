@@ -3,6 +3,8 @@ package com.example.moviedb.util;
 import android.content.Context;
 
 
+import androidx.room.Delete;
+
 import com.example.moviedb.model.AccountModel;
 import com.example.moviedb.model.GetVideoResultModel;
 import com.example.moviedb.model.LoginRequestBody;
@@ -31,6 +33,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -231,6 +234,13 @@ public class ServiceHelper {
                                                  @Query("api_key") String apiKey,
                                                  @Query("session_id") String sessionId,
                                                  @Body MovieRateBody movieRateBody);
+
+        @DELETE("movie/{movie_id}/rating")
+        Observable<MovieRateListModel> deleteRating(@Path("movie_id")int movieId,
+                                                 @Query("api_key") String apiKey,
+                                                 @Query("session_id") String sessionId);
+
+
 
     }
 

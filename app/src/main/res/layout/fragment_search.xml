@@ -10,24 +10,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <EditText
-            android:id="@+id/etSearch"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/edittext_height"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
             android:layout_marginLeft="@dimen/padding_10"
             android:layout_marginRight="@dimen/padding_10"
-            android:padding="@dimen/margin_small"
-            android:drawableLeft="@drawable/icon_search"
-            android:drawablePadding="@dimen/margin_xsmall"
-            android:drawableRight="@drawable/icons8_cancel"
-            android:textColorHint="@color/colorTextLightGrey"
-            android:background="@drawable/bg_edittext"
-            android:maxLines="1"
-            android:textColor="@color/colorWhite"
-            android:inputType="text"
-            android:hint="@string/search"/>
+            >
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/margin_small"
+                android:drawableLeft="@drawable/icon_search"
+                android:drawablePadding="@dimen/margin_xsmall"
+                android:textColorHint="@color/colorTextLightGrey"
+                android:background="@drawable/bg_edittext"
+                android:maxLines="1"
+                android:textColor="@color/colorWhite"
+                android:inputType="text"
+                android:hint="@string/search"/>
+
+            <ImageView
+                android:id="@+id/ivSearchCancel"
+                android:layout_alignRight="@id/etSearch"
+                android:src="@drawable/icons8_cancel"
+                android:background="@color/transparent"
+                android:padding="@dimen/padding_10"
+                android:layout_width="46dp"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
 
         <TextView
             android:text="@string/movies_tv"

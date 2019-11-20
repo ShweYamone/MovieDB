@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,9 @@ public class SearchFragment extends BaseFragment implements SearchView {
     @BindView(R.id.etSearch)
     EditText etSearch;
 
+    @BindView(R.id.ivSearchCancel)
+    ImageView ivSearchCancel;
+
     @BindView(R.id.recycler_search_movie)
     RecyclerView recyclerSearchMovie;
 
@@ -60,10 +65,6 @@ public class SearchFragment extends BaseFragment implements SearchView {
 
     private String mQuery;
 
-    //final int DRAWABLE_LEFT = 0;
-    // final int DRAWABLE_TOP = 1;
-    final int DRAWABLE_RIGHT = 2;
-    // final int DRAWABLE_BOTTOM = 3;
 
 
     @Override
@@ -94,10 +95,8 @@ public class SearchFragment extends BaseFragment implements SearchView {
             }
         });
 
-        Drawable drawableRight = etSearch.getCompoundDrawables()[DRAWABLE_RIGHT];
-        drawableRight.setTint(getResources().getColor(R.color.transparent));
 
-
+        ivSearchCancel.setColorFilter(ContextCompat.getColor(this.getActivity(), R.color.transparent), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         recyclerSearchMovie.setHasFixedSize(true);
         recyclerSearchMovie.setLayoutManager(new GridLayoutManager(this.getActivity(),3));
@@ -120,13 +119,17 @@ public class SearchFragment extends BaseFragment implements SearchView {
             public void afterTextChanged(Editable s) {
 
                 if(s.length() != 0) {
-                    drawableRight.setTint(getResources().getColor(R.color.color_cancel));
+
+                    ivSearchCancel.setColorFilter(ContextCompat.getColor(context(), R.color.color_cancel), android.graphics.PorterDuff.Mode.MULTIPLY);
+
                     mQuery = s.toString();
                     mAdapter.clear();
                     mPresenter.getMoviesByTitle(mQuery);
                 }
                 else {
-                    drawableRight.setTint(getResources().getColor(R.color.transparent));
+
+                    ivSearchCancel.setColorFilter(ContextCompat.getColor(context(), R.color.transparent), android.graphics.PorterDuff.Mode.MULTIPLY);
+
                     cvDataError.setVisibility(View.GONE);
                     mAdapter.clear();
                 }
@@ -134,28 +137,13 @@ public class SearchFragment extends BaseFragment implements SearchView {
             }
         });
 
-        etSearch.setOnTouchListener(new View.OnTouchListener() {
+        ivSearchCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                //final int DRAWABLE_LEFT = 0;
-                // final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                // final int DRAWABLE_BOTTOM = 3;
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (etSearch.getRight() - etSearch.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
-                        etSearch.setText("");
-                        mAdapter.clear();
-
-                        return true;
-                    }
-                }
-                return false;
+            public void onClick(View v) {
+                etSearch.setText("");
+                mAdapter.clear();
             }
-
-
         });
-
 
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();

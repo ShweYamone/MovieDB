@@ -22,4 +22,11 @@ public class MovieRateListModelImpl implements IMovieRateListModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Observable<MovieRateListModel> deleteRatingFromApi(ServiceHelper.ApiService service,int movieId, String sessionId) {
+        return service.deleteRating(movieId,DEVELOPER_KEY, sessionId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }
