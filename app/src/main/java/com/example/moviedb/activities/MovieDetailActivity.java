@@ -315,11 +315,16 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                         }
                         else{
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
 
+                    ViewGroup viewGroup = findViewById(android.R.id.content);
 
+                    //then we will inflate the custom alert dialog xml that we created
+                    View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog1, viewGroup, false);
 
-                            // Ask the final question
+                        //Now we need an AlertDialog.Builder object
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+
+                        // Ask the final question
                             builder.setMessage("Please Login to continue!!!");
 
                             // Set the alert dialog yes button click listener
@@ -348,6 +353,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                             dialog.show();
 
                         }
+
+                    
 
                 }
 
@@ -491,7 +498,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                 }
             }
         });
-
 
 
 
