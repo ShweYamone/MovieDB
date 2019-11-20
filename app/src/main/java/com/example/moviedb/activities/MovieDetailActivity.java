@@ -265,42 +265,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                 }
 
 
-             //   mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
-                // custom dialog
-
-                ViewGroup viewGroup = findViewById(android.R.id.content);
-
-                //then we will inflate the custom alert dialog xml that we created
-                View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog, viewGroup, false);
-          //      dialogView.setBackgroundColor(getResources().getColor(R.color.colorRed));
-
-                //Now we need an AlertDialog.Builder object
-                AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
-
-                //setting the view of the builder to our custom view that we already inflated
-                builder.setView(dialogView);
-
-                //finally creating the alert dialog and displaying it
-                AlertDialog alertDialog = builder.create();
-
-
-                RatingBar ratingBar = dialogView.findViewById(R.id.rb_rate);
-
-                // if button is clicked, close the custom dialog
-                TextView dialogButton = dialogView.findViewById(R.id.buttonOk);
-                dialogButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showToastMsg(ratingBar.getRating()+"");
-                        alertDialog.dismiss();
-                    }
-                });
-
-                alertDialog.show();
-
-
-
-
             }
         });
 
