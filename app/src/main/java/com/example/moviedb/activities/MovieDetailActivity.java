@@ -329,7 +329,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                                     dbHelper.myRateListDAO().deleteByMovieId(mmovieId,accountId);
                                     ratingBar.setVisibility(View.GONE);
                                 }
-                               
+
                             }else{
                                 mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(rateValue));
                                 ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
