@@ -72,7 +72,7 @@ public class PlayMovieTrailerActivity extends BaseActivity implements MovieTrail
         //  MovieTrailerModel movieTrailerModel=movieTrailerInteractor.getVideoById(movieId);
         movieTrailerPresenter = new MovieTrailerPresenterImpl(new GetVideoResultInteractor(this.mService));
         movieTrailerPresenter.onAttachView(this);
-        movieTrailerPresenter.getVideo(movieId);
+        movieTrailerPresenter.onUIReady(movieId);
 
     }
     @Override
