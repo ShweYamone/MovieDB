@@ -27,12 +27,10 @@
     <dimen name="edittext_height">46dp</dimen>
 
     <dimen name="card_corner_radius">2dp</dimen>
-<<<<<<< HEAD
     <dimen name="card_corner_large">10dp</dimen>
-=======
+
 
     <dimen name="button_radius">30dp</dimen>
->>>>>>> 6b3fae1df6ad307673809f907495ae16af1250b6
     <dimen name="card_elevation">10dp</dimen>
 
     <dimen name="margin_bottom_navigation">55dp</dimen>
