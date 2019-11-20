@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -169,10 +170,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
             changeMyListIcon("plusIcon");
         }
+
+
         ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
 
         if(ratedMovieCount==1){
-            ratingBar.setRating(Float.parseFloat(dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId,accountId)/2.0+""));
+            ratingBar.setRating( (Float.parseFloat(dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId,accountId)/2.0+"")));
         }
         else if (ratedMovieCount==0){
             ratingBar.setVisibility(View.GONE);
@@ -226,6 +229,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
                 if(sharePreferenceHelper.isLogin()){
                     movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
+                    showToastMsg(movieCount+"");
 
                     if(movieCount==1){
 
@@ -237,13 +241,43 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                     else if(movieCount==0) {
 
                         mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
-                        dbHelper.myListDAO().insert(new MyList(accountId,mmovieId));
+                        dbHelper.myListDAO().insert(new MyList(mmovieId,accountId));
                         changeMyListIcon("checkIcon");
                     }
                 }
                 else{
-                    showToastMsg("Please login in to continue.");
-                    startActivity(LoginActivity.getLoginActivityIntent(context()));
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+
+
+
+                    // Ask the final question
+                    builder.setMessage("Please Login to continue!!!");
+
+                    // Set the alert dialog yes button click listener
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do something when user clicked the Yes button
+                            // Set the TextView visibility GONE
+                            startActivity(LoginActivity.getLoginActivityIntent(context()));
+
+                        }
+                    });
+
+                    // Set the alert dialog no button click listener
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do something when No button clicked
+                            Toast.makeText(getApplicationContext(),
+                                    "' No' Button Clicked",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    // Display the alert dialog on interface
+                    dialog.show();
 
                 }
 
@@ -256,14 +290,90 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             public void onClick(View v) {
 
                 if(sharePreferenceHelper.isLogin()){
-                    mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
-                    dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,4.0f,accountId));
+
+
+                    //   mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
+                    // custom dialog
+
+                    ViewGroup viewGroup = findViewById(android.R.id.content);
+
+                    //then we will inflate the custom alert dialog xml that we created
+                    View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog, viewGroup, false);
+
+
+                    //Now we need an AlertDialog.Builder object
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+
+                    //setting the view of the builder to our custom view that we already inflated
+                    builder.setView(dialogView);
+
+                    //finally creating the alert dialog and displaying it
+                    AlertDialog alertDialog = builder.create();
+
+
+                    RatingBar ratingBarInDailog = dialogView.findViewById(R.id.rb_rate);
+
+                    // if button is clicked, close the custom dialog
+                    Button dialogButton = dialogView.findViewById(R.id.buttonOk);
+                    dialogButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+
+                            float rateValue=(float) (ratingBarInDailog.getRating()*2.0);
+                            showToastMsg(String.valueOf(rateValue));
+                            mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(rateValue));
+                            ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
+                            if(ratedMovieCount==1){
+                                dbHelper.myRateListDAO().updateRateListByMovieId(mmovieId,accountId,rateValue);
+                            }
+                            else if (ratedMovieCount==0){
+                                dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,rateValue,accountId));
+                            }
+
+                            ratingBar.setVisibility(View.VISIBLE);
+                            ratingBar.setRating((float) (rateValue/2.0));
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    alertDialog.show();
                 }
                 else{
-                    showToastMsg("Please login in to continue.");
-                    startActivity(LoginActivity.getLoginActivityIntent(context()));
-                }
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+
+
+
+                    // Ask the final question
+                    builder.setMessage("Please Login to continue!!!");
+
+                    // Set the alert dialog yes button click listener
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do something when user clicked the Yes button
+                            // Set the TextView visibility GONE
+                            startActivity(LoginActivity.getLoginActivityIntent(context()));
+
+                        }
+                    });
+
+                    // Set the alert dialog no button click listener
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do something when No button clicked
+                            Toast.makeText(getApplicationContext(),
+                                    "' No' Button Clicked",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    // Display the alert dialog on interface
+                    dialog.show();
+
+                }
 
             }
         });

@@ -55,7 +55,7 @@
                     android:layout_margin="@dimen/margin_small"
                     android:text="Rate"
                     android:textAllCaps="false"
-                    android:background="@drawable/bg_button2"
+                    android:background="@drawable/bg_button3"
                     android:textColor="@color/color_white_trans"
                     android:textSize="14sp" />
 
