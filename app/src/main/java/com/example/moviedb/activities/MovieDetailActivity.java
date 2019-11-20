@@ -272,7 +272,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
                 //then we will inflate the custom alert dialog xml that we created
                 View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog, viewGroup, false);
-                dialogView.setBackgroundColor(getResources().getColor(R.color.colorRed));
+          //      dialogView.setBackgroundColor(getResources().getColor(R.color.colorRed));
 
                 //Now we need an AlertDialog.Builder object
                 AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
