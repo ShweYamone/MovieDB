@@ -128,14 +128,22 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             else {
                 mPresenter.onTerminate();
                 dbHelper = InitializeDatabase.getInstance(context());
-                
+
                 ArrayList<MovieRateInfoModel> movieInfoModelList =  new ArrayList<MovieRateInfoModel>();
 
-                List<Movie> ratedMovies = dbHelper.myRateListDAO().getRatedMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
-                Log.i("moviename", ratedMovies.size() + "");
+                List<Integer> ratedMoviesIds = dbHelper.myRateListDAO().getRatedMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
 
-                for(Movie movie:ratedMovies) {
-                    Log.i("moviename", movie.getMovieId() + "");
+                List<Movie> ratedMovies = dbHelper.movieDAO().getMoviesByMoviesId(ratedMoviesIds);
+
+                Log.i("Movies", ratedMovies.size()+"");
+                Log.i("Movies", ratedMovies.get(0).getMovieName()+"");
+
+                for(int movieId:ratedMoviesIds) {
+
+                    Movie movie = dbHelper.movieDAO().getMovieInfobyId(movieId);
+                    Log.i("moviename", movie.getMovieId() + " " );
+                    Log.i("movieoverview", movie.getOverview() + " " );
+
                     movieInfoModelList.add(new MovieRateInfoModel(
                             movie.getMovieId(),
                             movie.getMovieName(),
