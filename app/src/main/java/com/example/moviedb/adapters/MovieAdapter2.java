@@ -99,6 +99,7 @@ public class MovieAdapter2 extends BaseAdapter {
                     .load(BASE_IMG_URL+model.getPoster_path())
                     .into(ivMoviePoster);
 
+
         }
     }
 }

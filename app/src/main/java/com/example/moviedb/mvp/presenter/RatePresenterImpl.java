@@ -95,7 +95,7 @@ public class RatePresenterImpl extends BasePresenter implements RatePresenter{
                         if (movieListModel != null) {
 
                             if (movieListModel.getResults().isEmpty()) {
-                                mView.resetPageNumberToDefault();
+//                                mView.resetPageNumberToDefault();
                             } else {
                                 Log.i("Page", "Add page1 movies");
                                 mView.addMoreRatedMoviesToTheList(movieListModel.getResults());

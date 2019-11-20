@@ -10,7 +10,7 @@ import com.example.moviedb.mvp.view.ProfileView;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class ProfilePresenterImpl implements ProfilePresenter{
+public class ProfilePresenterImpl extends BasePresenter implements ProfilePresenter{
 
     private ProfileView mView = null;
     private MovieInteractor mInteractor;
@@ -42,7 +42,7 @@ public class ProfilePresenterImpl implements ProfilePresenter{
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                       // addDisposableOberver(d);
+                        addDisposableOberver(d);
                     }
 
                     @Override
@@ -80,7 +80,7 @@ public class ProfilePresenterImpl implements ProfilePresenter{
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        addDisposableOberver(d);
                     }
 
                     @Override
