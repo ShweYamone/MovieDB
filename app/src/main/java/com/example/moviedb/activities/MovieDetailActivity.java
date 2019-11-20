@@ -49,8 +49,10 @@ import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenter;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenterImpl;
 import com.example.moviedb.mvp.view.MovieDetailView;
+import com.example.moviedb.util.Network;
 import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -134,6 +136,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private SharePreferenceHelper sharePreferenceHelper;
     private int accountId;
 
+    private Network mNetwork;
+
 
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
 
@@ -152,6 +156,9 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     protected void setUpContents(Bundle savedInstanceState) {
         //setupToolbar(false);
         sharePreferenceHelper=new SharePreferenceHelper(this);
+
+        mNetwork = new Network(context());
+
         accountId=sharePreferenceHelper.getUserId();
         sessionId=sharePreferenceHelper.getSessionId();
         dbHelper = InitializeDatabase.getInstance(MovieDetailActivity.this);
@@ -227,57 +234,66 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             @Override
             public void onClick(View v) {
 
-                if(sharePreferenceHelper.isLogin()){
-                    movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
-                    showToastMsg(movieCount+"");
-
-                    if(movieCount==1){
-
-                        mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
-                        dbHelper.myListDAO().deleteById(mmovieId,accountId);
-                        changeMyListIcon("plusIcon");
-
-                    }
-                    else if(movieCount==0) {
-
-                        mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
-                        dbHelper.myListDAO().insert(new MyList(mmovieId,accountId));
-                        changeMyListIcon("checkIcon");
-                    }
+                //network not available, can't do any actions with mylist and rate
+                if (!mNetwork.isNetworkAvailable()) {
+                    Snackbar.make(v.getRootView(),"Sorry, you're offline", Snackbar.LENGTH_SHORT).show();
                 }
-                else{
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+                else {
 
+                    if(sharePreferenceHelper.isLogin()){
+                        movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
+                        showToastMsg(movieCount+"");
 
+                        if(movieCount==1){
 
-                    // Ask the final question
-                    builder.setMessage("Please Login to continue!!!");
-
-                    // Set the alert dialog yes button click listener
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Do something when user clicked the Yes button
-                            // Set the TextView visibility GONE
-                            startActivity(LoginActivity.getLoginActivityIntent(context()));
+                            mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
+                            dbHelper.myListDAO().deleteById(mmovieId,accountId);
+                            changeMyListIcon("plusIcon");
 
                         }
-                    });
+                        else if(movieCount==0) {
 
-                    // Set the alert dialog no button click listener
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Do something when No button clicked
-                            Toast.makeText(getApplicationContext(),
-                                    "' No' Button Clicked",Toast.LENGTH_SHORT).show();
+                            mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
+                            dbHelper.myListDAO().insert(new MyList(mmovieId,accountId));
+                            changeMyListIcon("checkIcon");
                         }
-                    });
+                    }
+                    else{
 
-                    AlertDialog dialog = builder.create();
-                    // Display the alert dialog on interface
-                    dialog.show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+
+
+
+                        // Ask the final question
+                        builder.setMessage("Please Login to continue!!!");
+
+                        // Set the alert dialog yes button click listener
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Do something when user clicked the Yes button
+                                // Set the TextView visibility GONE
+                                startActivity(LoginActivity.getLoginActivityIntent(context()));
+
+                            }
+                        });
+
+                        // Set the alert dialog no button click listener
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Do something when No button clicked
+                                Toast.makeText(getApplicationContext(),
+                                        "' No' Button Clicked",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        // Display the alert dialog on interface
+                        dialog.show();
+
+                    }
 
                 }
 

@@ -10,4 +10,6 @@ public interface RateView extends BaseView{
     void showRatedMovieList(List<MovieRateInfoModel> movieInfoModelList);
     void resetPageNumberToDefault();
     void showNoRatedMovieInfo();
+
+    void getRatedMovieListFromLocal(List<MovieRateInfoModel> movieInfoModelList);
 }
