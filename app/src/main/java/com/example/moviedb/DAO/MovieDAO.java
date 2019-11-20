@@ -6,6 +6,8 @@ import androidx.room.Query;
 
 import com.example.moviedb.Entity.Movie;
 
+import java.util.List;
+
 @Dao
 public interface MovieDAO {
     @Insert
@@ -20,5 +22,7 @@ public interface MovieDAO {
     @Query("SELECT * from Movie where movieId=:movieId")
     Movie getMovieInfobyId(int movieId);
 
+    @Query("SELECT * from Movie where movieId in (:ids)")
+    List<Movie> getMoviesByMoviesId(List<Integer> ids);
 
 }
