@@ -153,8 +153,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             }
 
 
-            mPresenter.onAttachView(this);
-            mPresenter.onUIReady();
+//            mPresenter.onAttachView(this);
+//            mPresenter.onUIReady();
 
 
             btnLogOut.setOnClickListener(new View.OnClickListener(){
