@@ -52,9 +52,9 @@
             <ImageView
                 android:id="@+id/ivShowPwd"
                 android:layout_alignRight="@id/etPassword"
-                android:src="@drawable/eye_icon"
+                android:src="@drawable/eye_icon8"
                 android:alpha="0.3"
-                android:tint="@color/colorGold"
+                android:tint="@color/colorBlack"
                 android:background="@color/transparent"
                 android:padding="@dimen/padding_10"
                 android:layout_width="46dp"
@@ -67,6 +67,7 @@
         <Button
             android:id="@+id/btnLogin"
             android:text="@string/login"
+            android:textColor="@color/colorWhite"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edittext_height"
