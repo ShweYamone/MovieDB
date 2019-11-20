@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -77,7 +78,10 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
 
         mNetwork = new Network(context());
 
-        if(mNetwork)
+        if(mNetwork.isNetworkAvailable())
+            Toast.makeText(context(),"Network Available", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context(),"Network Unavailable", Toast.LENGTH_SHORT).show();
 
         if(mSharePreferenceHelper.isLogin()) {
 
