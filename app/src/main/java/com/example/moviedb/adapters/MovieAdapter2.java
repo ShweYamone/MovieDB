@@ -91,7 +91,7 @@ public class MovieAdapter2 extends BaseAdapter {
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int)(width * ( 1.0 / 3.6)),
                     LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, 0, 30, 0);
+            lp.setMargins(0, 0, 10, 0);
 
             cv_item.setLayoutParams(lp);
 
