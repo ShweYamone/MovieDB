@@ -10,18 +10,30 @@ import com.example.moviedb.common.Pageable;
 @Entity(tableName = "MyRateList")
 public class MyRateList implements Pageable {
     @PrimaryKey(autoGenerate = true)
-    int rateListId;
+    private int rateListId;
 
     @NonNull
     @ColumnInfo(name = "movieId")
-    int movieId;
+    private int movieId;
 
     @ColumnInfo(name = "rateValue")
-    float rateValue;
+    private float rateValue;
 
-    public MyRateList(int movieId, float rateValue) {
+    @ColumnInfo(name = "accountId")
+    private int accountId;
+
+    public MyRateList(int movieId, float rateValue, int accountId) {
         this.movieId = movieId;
         this.rateValue = rateValue;
+        this.accountId = accountId;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public int getRateListId() {

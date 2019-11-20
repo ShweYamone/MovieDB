@@ -96,7 +96,6 @@ public class SeeAllActivity extends BaseActivity implements SeeAllView, SwipeRef
 
         mPresenter = new SeeAllPresenterImpl(new MovieInteractor(mService));
 
-        showToastMsg(movieTypes);
 
         mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
             @Override

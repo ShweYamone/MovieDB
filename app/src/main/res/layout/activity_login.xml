@@ -34,17 +34,35 @@
             android:layout_margin="@dimen/margin_normal"
             android:paddingLeft="@dimen/margin_small"/>
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:hint="@string/password"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/edittext_height"
-            android:background="@drawable/bg_profile_edittext"
-            android:inputType="text"
             android:layout_marginLeft="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:paddingLeft="@dimen/margin_small"/>
+            android:layout_marginRight="@dimen/margin_normal">
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:hint="@string/password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_profile_edittext"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/margin_small"/>
+
+            <ImageView
+                android:id="@+id/ivShowPwd"
+                android:layout_alignRight="@id/etPassword"
+                android:src="@drawable/eye_icon"
+                android:alpha="0.3"
+                android:tint="@color/colorGold"
+                android:background="@color/transparent"
+                android:padding="@dimen/padding_10"
+                android:layout_width="46dp"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+
+
 
         <Button
             android:id="@+id/btnLogin"

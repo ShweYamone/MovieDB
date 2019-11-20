@@ -2,6 +2,7 @@ package com.example.moviedb.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -22,7 +23,6 @@ import com.example.moviedb.adapters.MovieAdapter;
 import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
-import com.example.moviedb.custom_control.MyanProgressDialog;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieRateInfoModel;
@@ -32,6 +32,7 @@ import com.example.moviedb.mvp.view.ProfileView;
 import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
 
+import java.sql.Time;
 import java.util.List;
 
 import butterknife.BindView;
@@ -49,6 +50,9 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @BindView(R.id.tvUserName)
     TextView tvUserName;
+
+    @BindView(R.id.viewCircle)
+    View circleView;
 
     @BindView(R.id.recycler_watch_list_movie)
     RecyclerView recyclerViewWatchList;
@@ -89,9 +93,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
         mService = ServiceHelper.getClient(this.getActivity());
 
-
-
         if(mSharePreferenceHelper.isLogin()) {
+
 
             mPresenter = new ProfilePresenterImpl(new MovieInteractor(mService), mSharePreferenceHelper.getSessionId());
 
@@ -100,12 +103,21 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
             showUserInfo();
 
+            recyclerViewWatchList.setHasFixedSize(true);
+            recyclerViewWatchList.setLayoutManager(new GridLayoutManager(this.getActivity(),3));
+            recyclerViewWatchList.addItemDecoration(new ItemOffsetDecoration(2));
+            recyclerViewWatchList.setAdapter(mAdapter);
+
+           // recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
+
+            mPresenter.onAttachView(this);
+            mPresenter.onUIReady();
+
 
             btnLogOut.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     mSharePreferenceHelper.logoutSharePreference();
-
                     Intent intent = MainActivity.getMainActivityIntent(v.getContext());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -114,20 +126,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
                 }
             });
-
-
-            recyclerViewWatchList.setHasFixedSize(true);
-            recyclerViewWatchList.setLayoutManager(new GridLayoutManager(this.getActivity(),3));
-            recyclerViewWatchList.addItemDecoration(new ItemOffsetDecoration(2));
-            recyclerViewWatchList.setAdapter(mAdapter);
-
-         //   recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
-
-            mPresenter.onAttachView(this);
-            mPresenter.onUIReady();
-
-
-
         }
         else {
             layoutAlreadyLogin.setVisibility(View.GONE);
@@ -136,18 +134,37 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             btnSignIn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    v.getContext().startActivity(LoginActivity.getMovieDetailActivityIntent(v.getContext()));
+                    v.getContext().startActivity(LoginActivity.getLoginActivityIntent(v.getContext()));
                 }
             });
         }
 
     }
 
+    private void changeCircleViewColor() {
+
+        Drawable background = circleView.getBackground();
+
+        int random =  (int)(Math.random() * 5) + 1;
+
+        switch (random) {
+
+            case 1: background.setTint(getResources().getColor(R.color.color_dark_palette1));break;
+            case 2: background.setTint(getResources().getColor(R.color.color_dark_palette2));break;
+            case 3: background.setTint(getResources().getColor(R.color.color_dark_palette3));break;
+            case 4: background.setTint(getResources().getColor(R.color.color_dark_palette4));break;
+            case 5: background.setTint(getResources().getColor(R.color.color_dark_palette5));break;
+
+           }
+    }
+
+
     @Override
     public void showUserInfo() {
+        changeCircleViewColor();
+
         String userName = mSharePreferenceHelper.getUserName();
         String letters = userName.charAt(0) + "";
-
 
         int spaceIndex = userName.indexOf(" ");
         if(spaceIndex > 0) {
@@ -157,13 +174,10 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
         tvUserName.setText(userName);
 
         tvLetters.setText(letters.toUpperCase());
-
     }
 
-
-    @Override
     public void showMyWatchList(List<MovieInfoModel> movieInfoModelList) {
-      //  cvDataError.setVisibility(View.GONE);
+        //  cvDataError.setVisibility(View.GONE);
 
         page = 1;
         mAdapter.clear();
@@ -194,7 +208,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @Override
     public Context context() {
-        return this.getActivity();
+        return null;
     }
 
     @Override

@@ -26,6 +26,7 @@
     <color name="color_white_trans">#F2ffffff</color>
     <color name="color_noti_background">#F4F4F4</color>
 
+
     <color name="color_et_normal">#6D6D6D</color>
     <color name="color_et_focus">#575656</color>
 
@@ -63,6 +64,14 @@
     <color name="color_palette3">#FAD88F</color>
     <color name="color_palette4">#baffc9</color>
     <color name="color_palette5">#bae1ff</color>
+
+    <color name="color_palette3trans">#4DFAD88F</color>
+
+    <color name="color_dark_palette1">#2e2b2e</color>
+    <color name="color_dark_palette2">#2b2645</color>
+    <color name="color_dark_palette3">#182733</color>
+    <color name="color_dark_palette4">#3b4f5e</color>
+    <color name="color_dark_palette5">#2c2b31</color>
 
     <color name="colorLine">#cbcbcb</color>
     <color name="colorLineFocused">#B4B4B4</color>

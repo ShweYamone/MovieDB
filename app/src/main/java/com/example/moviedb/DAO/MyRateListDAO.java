@@ -10,21 +10,18 @@ import com.example.moviedb.Entity.MyRateList;
 
 @Dao
 public interface MyRateListDAO {
-    @Query("SELECT count(*) FROM MyRateList Where movieId=:movieId")
-    int getRatedMovieCountbyId(int movieId);
+    @Query("SELECT count(*) FROM MyRateList Where movieId=:movieId and accountId=:accountId")
+    int getRatedMovieCountbyId(int movieId,int accountId);
 
     @Insert
     void insert(MyRateList rateList);
 
-    @Delete
-    void delete(MyRateList rateList);
+    @Query("Delete from MyRateList where movieId=:movieId and accountId=:accountId")
+    void deleteByMovieId(int movieId,int accountId);
 
-    @Query("Delete from MyRateList where movieId=:movieId")
-    void deleteByMovieId(int movieId);
+    @Query("Update MyRateList set rateValue=:rateValue where movieId=:movieId and accountId=:accountId")
+    void updateRateListByMovieId(int movieId,int accountId,float rateValue);
 
-    @Query("Update MyRateList set rateValue=:rateValue where movieId=:movieId")
-    void updateRateListByMovieId(int movieId,float rateValue);
-
-    @Query("SELECT rateValue FROM MyRateList Where movieId=:movieId")
-    float getRatedValueByMovieId(int movieId);
+    @Query("SELECT rateValue FROM MyRateList Where movieId=:movieId and accountId=:accountId")
+    float getRatedValueByMovieId(int movieId,int accountId);
 }

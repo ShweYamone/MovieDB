@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -113,7 +112,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             btnLogin.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    LoginActivity.getMovieDetailActivityIntent(v.getContext());
+                    v.getContext().startActivity(LoginActivity.getLoginActivityIntent(v.getContext()));
                 }
             });
 

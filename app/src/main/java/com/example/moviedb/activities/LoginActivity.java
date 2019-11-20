@@ -4,13 +4,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.example.moviedb.R;
 import com.example.moviedb.common.BaseActivity;
@@ -38,6 +42,9 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @BindView(R.id.etPassword)
     EditText etPassword;
 
+    @BindView(R.id.ivShowPwd)
+    ImageView ivShowPwd;
+
     @BindView(R.id.btnLogin)
     Button btnLogin;
 
@@ -53,7 +60,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         return R.layout.activity_login;
     }
 
-    public static Intent getMovieDetailActivityIntent(Context context) {
+    public static Intent getLoginActivityIntent(Context context) {
 
         Intent intent = new Intent(context, LoginActivity.class);
         return intent;
@@ -74,6 +81,27 @@ public class LoginActivity extends BaseActivity implements LoginView {
         mSharePreferenceHelper = new SharePreferenceHelper(this);
 
         mPresenter = new LoginPresenterImpl(new LoginInteractor(this.mService), new AccountInteractor(this.mService));
+
+
+        ivShowPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(etPassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
+                    ivShowPwd.setAlpha(1.0f);
+
+                  //  ivShowPwd.setColorFilter(ContextCompat.getColor(context(), R.color.color_blue), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    //Show Password
+                    etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                else{
+                    ivShowPwd.setAlpha(0.3f);
+                  //  ivShowPwd.setColorFilter(ContextCompat.getColor(context(), R.color.color_edt_grey), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    //Hide Password
+                    etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+                }
+            }
+        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

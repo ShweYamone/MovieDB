@@ -7,18 +7,25 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -42,6 +49,7 @@ import com.example.moviedb.mvp.presenter.MovieDetailPresenter;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenterImpl;
 import com.example.moviedb.mvp.view.MovieDetailView;
 import com.example.moviedb.util.ServiceHelper;
+import com.example.moviedb.util.SharePreferenceHelper;
 
 import java.util.List;
 
@@ -111,7 +119,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     RatingBar ratingBar;
 
 
-
     private MyanProgressDialog mDialog;
     private MovieDetailPresenter mPresenter;
     private static int mmovieId;
@@ -119,10 +126,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private MovieAdapter2 _RECOMMEND;
     private MovieInfoModel movieInfoModel;
     private ServiceHelper.ApiService mService;
-    private String sessionId="b0f14d1104e7fdb867b578bf3331d979d16e4139";
+    private String sessionId;
     public InitializeDatabase dbHelper;
     private int movieCount;
     private int ratedMovieCount;
+    private SharePreferenceHelper sharePreferenceHelper;
+    private int accountId;
 
 
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
@@ -141,13 +150,16 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
         //setupToolbar(false);
+        sharePreferenceHelper=new SharePreferenceHelper(this);
+        accountId=sharePreferenceHelper.getUserId();
+        sessionId=sharePreferenceHelper.getSessionId();
         dbHelper = InitializeDatabase.getInstance(MovieDetailActivity.this);
         init();
     }
 
     private void init(){
 
-        movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId);
+        movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
         if(movieCount==1){
 
             changeMyListIcon("checkIcon");
@@ -157,10 +169,10 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
             changeMyListIcon("plusIcon");
         }
-        ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId);
+        ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
 
         if(ratedMovieCount==1){
-            ratingBar.setRating(Float.parseFloat(dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId)/2.0+""));
+            ratingBar.setRating(Float.parseFloat(dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId,accountId)/2.0+""));
         }
         else if (ratedMovieCount==0){
             ratingBar.setVisibility(View.GONE);
@@ -211,34 +223,91 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         btnMyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId);
 
-                if(movieCount==1){
+                if(sharePreferenceHelper.isLogin()){
+                    movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
 
-                    mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
-                    dbHelper.myListDAO().deleteById(mmovieId);
-                    changeMyListIcon("plusIcon");
+                    if(movieCount==1){
 
+                        mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
+                        dbHelper.myListDAO().deleteById(mmovieId,accountId);
+                        changeMyListIcon("plusIcon");
+
+                    }
+                    else if(movieCount==0) {
+
+                        mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
+                        dbHelper.myListDAO().insert(new MyList(accountId,mmovieId));
+                        changeMyListIcon("checkIcon");
+                    }
                 }
-                else if(movieCount==0) {
+                else{
+                    showToastMsg("Please login in to continue.");
+                    startActivity(LoginActivity.getLoginActivityIntent(context()));
 
-                    mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
-                    dbHelper.myListDAO().insert(new MyList(mmovieId));
-                    changeMyListIcon("checkIcon");
                 }
 
             }
         });
+
 
         btnRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
-                dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,4.0f));
+                if(sharePreferenceHelper.isLogin()){
+                    mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
+                    dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,4.0f,accountId));
+                }
+                else{
+                    showToastMsg("Please login in to continue.");
+                    startActivity(LoginActivity.getLoginActivityIntent(context()));
+                }
+
+
+             //   mPresenter.rateMovie(mmovieId,sessionId,new MovieRateBody(4.0f));
+                // custom dialog
+
+                ViewGroup viewGroup = findViewById(android.R.id.content);
+
+                //then we will inflate the custom alert dialog xml that we created
+                View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog, viewGroup, false);
+
+
+                //Now we need an AlertDialog.Builder object
+                AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+
+                //setting the view of the builder to our custom view that we already inflated
+                builder.setView(dialogView);
+
+                //finally creating the alert dialog and displaying it
+                AlertDialog alertDialog = builder.create();
+
+
+                RatingBar ratingBar = dialogView.findViewById(R.id.rb_rate);
+
+                // if button is clicked, close the custom dialog
+                TextView dialogButton = dialogView.findViewById(R.id.buttonOk);
+                dialogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showToastMsg(ratingBar.getRating()+"");
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog.show();
+
+
+
 
             }
         });
+
+
+
+
+
 
     }
 
