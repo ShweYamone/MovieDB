@@ -71,8 +71,6 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
     private void init() {
         mSharePreferenceHelper = new SharePreferenceHelper(this.getActivity());
 
-       // Toast.makeText(this.getActivity(), mSharePreferenceHelper.getSessionId() + "" , Toast.LENGTH_SHORT).show();
-
         if(mSharePreferenceHelper.isLogin()) {
 
             layoutNotLogin.setVisibility(View.GONE);
@@ -114,7 +112,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             btnLogin.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    LoginActivity.getLoginActivityIntent(v.getContext());
+                    v.getContext().startActivity(LoginActivity.getLoginActivityIntent(v.getContext()));
                 }
             });
 

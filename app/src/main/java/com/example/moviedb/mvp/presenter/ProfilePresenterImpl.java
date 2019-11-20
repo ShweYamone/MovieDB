@@ -2,8 +2,9 @@ package com.example.moviedb.mvp.presenter;
 
 import android.util.Log;
 
-import com.example.moviedb.interactor.AccountInteractor;
-import com.example.moviedb.model.AccountModel;
+import com.example.moviedb.R;
+import com.example.moviedb.interactor.MovieInteractor;
+import com.example.moviedb.model.MovieListModel;
 import com.example.moviedb.mvp.view.ProfileView;
 
 import io.reactivex.Observer;
@@ -12,21 +13,21 @@ import io.reactivex.disposables.Disposable;
 public class ProfilePresenterImpl implements ProfilePresenter{
 
     private ProfileView mView = null;
-    private AccountInteractor mInteractor;
+    private MovieInteractor mInteractor;
     private String mSession_Id;
 
-    public ProfilePresenterImpl(AccountInteractor mInteractor) {
+    public ProfilePresenterImpl(MovieInteractor mInteractor) {
         this.mInteractor = mInteractor;
     }
 
-    public ProfilePresenterImpl(AccountInteractor mInteractor, String mSession_Id) {
+    public ProfilePresenterImpl(MovieInteractor mInteractor, String mSession_Id) {
         this.mInteractor = mInteractor;
         this.mSession_Id = mSession_Id;
     }
 
     @Override
     public void onUIReady() {
-   //     getAccount(mSession_Id);
+        getWatchListMovies(mSession_Id);
     }
 
     @Override
@@ -35,27 +36,34 @@ public class ProfilePresenterImpl implements ProfilePresenter{
     }
 
     @Override
-    public void getAccount(String sessionId) {
-        this.mInteractor.getAccoount(sessionId)
-                .subscribe(new Observer<AccountModel>() {
+    public void getWatchListMovies(String mSession_Id) {
+
+        this.mInteractor.getWatchListMovies(mSession_Id, 1)
+                .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                       // addDisposableOberver(d);
                     }
 
                     @Override
-                    public void onNext(AccountModel accountModel) {
-                        Log.i("!!!", "next");
+                    public void onNext(MovieListModel movieListModel) {
+                        if(movieListModel != null) {
+                            if (movieListModel.getResults().isEmpty()) {
+                                mView.showNoMovieInfo();
+                            } else {
+                                Log.i("Page", "Add page1 movies");
+                                mView.showMyWatchList(movieListModel.getResults());
 
-                        if(accountModel != null) {
-                            mView.setUserNameandIDToSharePreference(accountModel.getName(),
-                                                                    accountModel.getId());
+                            }
+                        }
+                        else {
+
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("!!!", "error");
+
                     }
 
                     @Override
@@ -63,5 +71,50 @@ public class ProfilePresenterImpl implements ProfilePresenter{
 
                     }
                 });
+
     }
+
+    @Override
+    public void getWatchListByPaging(String mSession_Id, int page) {
+        this.mInteractor.getWatchListMovies(mSession_Id, page)
+                .subscribe(new Observer<MovieListModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(MovieListModel movieListModel) {
+                        if (movieListModel != null) {
+
+                            if (movieListModel.getResults().isEmpty()) {
+                                Log.i("Page::", "Empty");
+                                mView.resetPageNumberToDefault();
+                            } else {
+                                Log.i("Page::", "Add more movies" + movieListModel.getResults().get(1).getTitle());
+                                mView.showMoreWatchList(movieListModel.getResults());
+
+                            }
+
+                        } else {
+                            Log.i("Page::", "null");
+                            mView.resetPageNumberToDefault();
+                            mView.showDialogMsg(mView.context().getResources().getString(R.string.error_connecting),
+                                    mView.context().getResources().getString(R.string.please_check_your_internet_connection));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
 }

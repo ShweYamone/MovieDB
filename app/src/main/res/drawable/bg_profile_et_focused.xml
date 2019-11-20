@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <solid android:color="@color/colorLineFocused" />
+    <solid android:color="@color/color_white_trans" />
     <stroke
         android:width="1dip"
         android:color="@color/colorLineFocused" />
-    <corners android:radius="@dimen/searchview_radius" />
+    <corners android:radius="1dp" />
 
 </shape>
