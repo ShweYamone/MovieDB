@@ -220,8 +220,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
         //if internet isn't availabel ,load data from db
         if (!mNetwork.isNetworkAvailable()) {
-
-            movie = dbHelper.movieDAO().getMovieInfobyId(mmovieId);
+            movie=dbHelper.movieDAO().getMovieInfobyId(mmovieId);
 
             movieTitle.setText(movie.getMovieName());
             releaseDate.setText(movie.getReleaseDate());
