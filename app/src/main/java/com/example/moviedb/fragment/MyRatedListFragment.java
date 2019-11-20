@@ -128,7 +128,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             else {
                 mPresenter.onTerminate();
                 dbHelper = InitializeDatabase.getInstance(context());
-
+                
                 ArrayList<MovieRateInfoModel> movieInfoModelList =  new ArrayList<MovieRateInfoModel>();
 
                 List<Movie> ratedMovies = dbHelper.myRateListDAO().getRatedMoviesbyAcoountId(mSharePreferenceHelper.getUserId());

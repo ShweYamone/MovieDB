@@ -16,6 +16,7 @@ public interface MyRateListDAO {
     @Query("SELECT count(*) FROM MyRateList Where movieId=:movieId and accountId=:accountId")
     int getRatedMovieCountbyId(int movieId,int accountId);
 
+
     @Query("SELECT * FROM Movie INNER JOIN MyRateList Where MyRateList.accountId=:accountId AND MyRateList.movieId = Movie.movieId")
     List<Movie> getRatedMoviesbyAcoountId(int accountId);
 
@@ -30,4 +31,6 @@ public interface MyRateListDAO {
 
     @Query("SELECT rateValue FROM MyRateList Where movieId=:movieId and accountId=:accountId")
     float getRatedValueByMovieId(int movieId,int accountId);
+
+
 }
