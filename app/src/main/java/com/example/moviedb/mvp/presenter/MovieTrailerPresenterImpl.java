@@ -47,7 +47,8 @@ public class MovieTrailerPresenterImpl extends  BasePresenter implements MovieTr
     }
 
     @Override
-    public void onUIReady() {
+    public void onUIReady(int movieId) {
+        getVideo(movieId);
 
     }
 

@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.moviedb.DB.InitializeDatabase;
+import com.example.moviedb.Entity.Movie;
 import com.example.moviedb.Entity.MyList;
 import com.example.moviedb.Entity.MyRateList;
 import com.example.moviedb.R;
@@ -49,8 +50,10 @@ import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenter;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenterImpl;
 import com.example.moviedb.mvp.view.MovieDetailView;
+import com.example.moviedb.util.Network;
 import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -133,6 +136,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private int ratedMovieCount;
     private SharePreferenceHelper sharePreferenceHelper;
     private int accountId;
+    private int countOfMovie;
+    private String strMovieName,strReleaseDate,strIsAdult,strDuration,strOverview;
+    private boolean blisAdult;
+
+    private Network mNetwork;
 
 
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
@@ -152,6 +160,9 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     protected void setUpContents(Bundle savedInstanceState) {
         //setupToolbar(false);
         sharePreferenceHelper=new SharePreferenceHelper(this);
+
+        mNetwork = new Network(context());
+
         accountId=sharePreferenceHelper.getUserId();
         sessionId=sharePreferenceHelper.getSessionId();
         dbHelper = InitializeDatabase.getInstance(MovieDetailActivity.this);
@@ -212,10 +223,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         playButtonLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(PlayMovieTrailerActivity.gePlayMovieTrailerIntent(getApplicationContext(),mmovieId));
+                startActivity(PlayMovieTrailerActivity.gePlayMovieTrailerIntent(MovieDetailActivity.this,mmovieId));
             }
         });
 
+        //Back to previous activity
         cancelbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,29 +235,61 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             }
         });
 
+        //add to watchlist
         btnMyList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+                //network not available, can't do any actions with mylist and rate
+                if (!mNetwork.isNetworkAvailable()) {
+                    Snackbar.make(v.getRootView(),"Sorry, you're offline", Snackbar.LENGTH_SHORT).show();
+                }
+
                 if(sharePreferenceHelper.isLogin()){
                     movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
-                    showToastMsg(movieCount+"");
 
-                    if(movieCount==1){
 
-                        mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
-                        dbHelper.myListDAO().deleteById(mmovieId,accountId);
-                        changeMyListIcon("plusIcon");
 
-                    }
-                    else if(movieCount==0) {
+
+                        if(movieCount==1){
+
+                            mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
+                            dbHelper.myListDAO().deleteById(mmovieId,accountId);
+                            changeMyListIcon("plusIcon");
+
+
+                        }
 
                         mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,true));
+
                         dbHelper.myListDAO().insert(new MyList(mmovieId,accountId));
+                        countOfMovie=dbHelper.movieDAO().getMoviebyId(mmovieId);
+                        strMovieName=movieTitle.getText().toString();
+                        strReleaseDate=releaseDate.getText().toString();
+                        strIsAdult=adult.getText().toString();
+                        strDuration=duration.getText().toString();
+                        strOverview=movieOverview.getText().toString();
+                        if(strIsAdult==""){
+                            blisAdult=false;
+                        }else
+                        {
+                            blisAdult=true;
+                        }
+
+
+                        if (countOfMovie==0){
+                            dbHelper.movieDAO().insert(new Movie(mmovieId,strMovieName,strReleaseDate,blisAdult,strDuration,strOverview) );
+                        }
+                        else if (countOfMovie==1){
+                            dbHelper.movieDAO().updateRateListByMovieId(mmovieId,strMovieName,strReleaseDate,blisAdult,strDuration,strOverview);
+                        }
+
                         changeMyListIcon("checkIcon");
+
                     }
-                }
-                else{
+                    else{
+
 
                     ViewGroup viewGroup = findViewById(android.R.id.content);
 
@@ -259,6 +303,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                     //setting the view of the builder to our custom view that we already inflated
                     builder.setView(dialogView);
 
+                    //finally creating the alert dialog and displaying it
                     AlertDialog alertDialog = builder.create();
 
 
@@ -270,6 +315,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                         }
                     });
 
+                    // if button is clicked, close the custom dialog
                     TextView ok = dialogView.findViewById(R.id.tv_ok);
                     ok.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -281,13 +327,14 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                     });
 
                     alertDialog.show();
+                    }
 
                 }
 
-            }
+            
         });
 
-
+        //rate movie
         btnRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -340,12 +387,22 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                                     dbHelper.myRateListDAO().updateRateListByMovieId(mmovieId,accountId,rateValue);
                                 }
                                 else if (ratedMovieCount==0){
+                                    //add movieId to rateList db
                                     dbHelper.myRateListDAO().insert(new MyRateList(mmovieId,rateValue,accountId));
+                                    //add movie to movie db
+                                    countOfMovie=dbHelper.movieDAO().getMoviebyId(mmovieId);
+                                    if (countOfMovie==0){
+                                        dbHelper.movieDAO().insert(new Movie(mmovieId,strMovieName,strReleaseDate,blisAdult,strDuration,strOverview) );
+                                    }
+                                    else if (countOfMovie==1){
+                                        dbHelper.movieDAO().updateRateListByMovieId(mmovieId,strMovieName,strReleaseDate,blisAdult,strDuration,strOverview);
+                                    }
                                 }
 
                                 ratingBar.setVisibility(View.VISIBLE);
                                 ratingBar.setRating((float) (rateValue/2.0));
                             }
+ 
 
 
                             alertDialog.dismiss();

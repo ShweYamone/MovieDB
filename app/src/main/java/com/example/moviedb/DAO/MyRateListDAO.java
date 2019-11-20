@@ -8,10 +8,15 @@ import androidx.room.Query;
 import com.example.moviedb.Entity.MyList;
 import com.example.moviedb.Entity.MyRateList;
 
+import java.util.List;
+
 @Dao
 public interface MyRateListDAO {
     @Query("SELECT count(*) FROM MyRateList Where movieId=:movieId and accountId=:accountId")
     int getRatedMovieCountbyId(int movieId,int accountId);
+
+    @Query("SELECT CONCAT(movieId, \" \", rateValue) movieId, rateValue FROM MyRateList Where accountId=:accountId")
+    List<String> getRatedMoviesbyAcoountId(int accountId);
 
     @Insert
     void insert(MyRateList rateList);

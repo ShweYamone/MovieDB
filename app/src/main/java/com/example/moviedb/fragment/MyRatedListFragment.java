@@ -8,18 +8,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.R;
 import com.example.moviedb.activities.LoginActivity;
+import com.example.moviedb.activities.MovieDetailActivity;
 import com.example.moviedb.adapters.RatedMovieAdapter;
 import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
 import com.example.moviedb.interactor.MovieInteractor;
+import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieRateInfoModel;
 import com.example.moviedb.mvp.presenter.RatePresenterImpl;
 import com.example.moviedb.mvp.view.RateView;
@@ -61,6 +65,8 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
 
     private Network mNetwork;
 
+    public InitializeDatabase dbHelper;
+
 
     @Override
     protected int getLayoutResource() {
@@ -73,9 +79,14 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
     }
 
     private void init() {
-        mSharePreferenceHelper = new SharePreferenceHelper(this.getActivity());
+        mSharePreferenceHelper = new SharePreferenceHelper(context());
 
-        mNetwork = new Network(this.getActivity());
+        mNetwork = new Network(context());
+
+        if(mNetwork.isNetworkAvailable())
+            Toast.makeText(context(),"Network Available", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context(),"Network Unavailable", Toast.LENGTH_SHORT).show();
 
         if(mSharePreferenceHelper.isLogin()) {
 
@@ -106,8 +117,17 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             recyclerRatedView.setAdapter(mAdapter);
             recyclerRatedView.addOnScrollListener(mSmartScrollListener);
 
-            mPresenter.onAttachView(this);
-            mPresenter.onUIReady();
+            if(mNetwork.isNetworkAvailable()) {
+                mPresenter.onAttachView(this);
+                mPresenter.onUIReady();
+            }
+
+            //connection not available, get data from local
+            else {
+                dbHelper = InitializeDatabase.getInstance(context());
+                dbHelper.myRateListDAO().getRatedMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
+
+            }
 
         }
 
@@ -124,7 +144,6 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
 
         }
 
-
     }
 
     @Override
@@ -134,6 +153,15 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             mAdapter.add(model);
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+
+    @Override
+    public void getRatedMovieListFromLocal(List<MovieRateInfoModel> movieInfoModelList) {
+        cvDataError.setVisibility(View.GONE);
+
+        mAdapter.clear();
+
     }
 
     @Override
