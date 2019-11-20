@@ -87,9 +87,16 @@ public class RatedMovieAdapter extends BaseAdapter {
             tvOverview.setText(model.getOverview());
 
 
-            Glide.with(context)
-                    .load(BASE_IMG_URL+model.getPoster_path())
-                    .into(ivMoviePoster);
+            if(!model.getPoster_path().equals("")) {
+                Glide.with(context)
+                        .load(BASE_IMG_URL+model.getPoster_path())
+                        .into(ivMoviePoster);
+            }
+            else {
+                Glide.with(context)
+                        .load(R.drawable.img_placeholder)
+                        .into(ivMoviePoster);
+            }
 
         }
     }

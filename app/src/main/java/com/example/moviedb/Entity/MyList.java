@@ -15,6 +15,7 @@ public class MyList implements Serializable,Pageable {
 
     @PrimaryKey(autoGenerate = true)
     private int listId;
+
     @NonNull
     @ColumnInfo(name = "movieId")
     private int movieId;

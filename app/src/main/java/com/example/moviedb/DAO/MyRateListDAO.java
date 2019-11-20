@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import com.example.moviedb.Entity.Movie;
 import com.example.moviedb.Entity.MyList;
 import com.example.moviedb.Entity.MyRateList;
 
@@ -15,8 +16,8 @@ public interface MyRateListDAO {
     @Query("SELECT count(*) FROM MyRateList Where movieId=:movieId and accountId=:accountId")
     int getRatedMovieCountbyId(int movieId,int accountId);
 
-    @Query("SELECT CONCAT(movieId, \" \", rateValue) movieId, rateValue FROM MyRateList Where accountId=:accountId")
-    List<String> getRatedMoviesbyAcoountId(int accountId);
+    @Query("SELECT * FROM Movie INNER JOIN MyRateList Where MyRateList.accountId=:accountId AND MyRateList.movieId = Movie.movieId")
+    List<Movie> getRatedMoviesbyAcoountId(int accountId);
 
     @Insert
     void insert(MyRateList rateList);

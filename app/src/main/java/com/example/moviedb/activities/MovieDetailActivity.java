@@ -326,7 +326,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
                 }
 
-            
+
         });
 
         //rate movie

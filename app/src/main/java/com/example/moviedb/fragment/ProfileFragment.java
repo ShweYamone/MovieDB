@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviedb.DB.InitializeDatabase;
+import com.example.moviedb.Entity.Movie;
 import com.example.moviedb.R;
 import com.example.moviedb.activities.LoginActivity;
 import com.example.moviedb.activities.MainActivity;
@@ -29,10 +31,12 @@ import com.example.moviedb.model.MovieRateInfoModel;
 import com.example.moviedb.mvp.presenter.ProfilePresenterImpl;
 import com.example.moviedb.mvp.presenter.SearchPresenterImpl;
 import com.example.moviedb.mvp.view.ProfileView;
+import com.example.moviedb.util.Network;
 import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,7 +77,11 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private int page = 1;
 
+    private Network mNetwork;
+
     private SharePreferenceHelper mSharePreferenceHelper;
+
+    public InitializeDatabase dbHelper;
 
 
     @Override
@@ -88,6 +96,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private void init() {
         mSharePreferenceHelper = new SharePreferenceHelper(this.getActivity());
+
+        mNetwork = new Network(this.getActivity());
 
         mAdapter = new MovieAdapter();
 
@@ -109,6 +119,39 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             recyclerViewWatchList.setAdapter(mAdapter);
 
            // recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
+
+
+            if(mNetwork.isNetworkAvailable()) {
+                mPresenter.onAttachView(this);
+                mPresenter.onUIReady();
+            }
+
+            //connection not available, get data from local
+            else {
+
+                mPresenter.onTerminate();
+                dbHelper = InitializeDatabase.getInstance(context());
+
+                ArrayList<MovieInfoModel> movieInfoModelList =  new ArrayList<MovieInfoModel>();
+
+                List<Movie> ratedMovies = dbHelper.myListDAO().getWatchListMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
+                Log.i("moviename", ratedMovies.size() + "");
+                for(Movie movie:ratedMovies) {
+                    Log.i("moviename", movie.getMovieId() + "");
+                    movieInfoModelList.add(new MovieInfoModel(
+                            movie.getMovieId(),
+                            movie.getMovieName(),
+                            "",
+                            "",
+                            false,
+                            "",
+                            0)
+                    );
+                }
+
+                showMyWatchList(movieInfoModelList);
+            }
+
 
             mPresenter.onAttachView(this);
             mPresenter.onUIReady();
@@ -141,13 +184,14 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     }
 
-    private void changeCircleViewColor() {
+    private void changeCircleViewColor(char firstLetter) {
+
 
         Drawable background = circleView.getBackground();
 
-        int random =  (int)(Math.random() * 5) + 1;
+        int letterInt = firstLetter % 5 + 1;
 
-        switch (random) {
+        switch (letterInt) {
 
             case 1: background.setTint(getResources().getColor(R.color.color_dark_palette1));break;
             case 2: background.setTint(getResources().getColor(R.color.color_dark_palette2));break;
@@ -161,9 +205,12 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @Override
     public void showUserInfo() {
-        changeCircleViewColor();
+
 
         String userName = mSharePreferenceHelper.getUserName();
+        changeCircleViewColor(userName.charAt(0));
+
+
         String letters = userName.charAt(0) + "";
 
         int spaceIndex = userName.indexOf(" ");

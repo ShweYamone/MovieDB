@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviedb.DB.InitializeDatabase;
+import com.example.moviedb.Entity.Movie;
 import com.example.moviedb.R;
 import com.example.moviedb.activities.LoginActivity;
 import com.example.moviedb.activities.MovieDetailActivity;
@@ -31,6 +32,7 @@ import com.example.moviedb.util.Network;
 import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -124,9 +126,25 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
 
             //connection not available, get data from local
             else {
+                mPresenter.onTerminate();
                 dbHelper = InitializeDatabase.getInstance(context());
-                dbHelper.myRateListDAO().getRatedMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
 
+                ArrayList<MovieRateInfoModel> movieInfoModelList =  new ArrayList<MovieRateInfoModel>();
+
+                List<Movie> ratedMovies = dbHelper.myRateListDAO().getRatedMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
+                Log.i("moviename", ratedMovies.size() + "");
+
+                for(Movie movie:ratedMovies) {
+                    Log.i("moviename", movie.getMovieId() + "");
+                    movieInfoModelList.add(new MovieRateInfoModel(
+                            movie.getMovieId(),
+                            movie.getMovieName(),
+                            "",
+                            dbHelper.myRateListDAO().getRatedValueByMovieId(movie.getMovieId(), mSharePreferenceHelper.getUserId()),
+                            movie.getOverview()));
+                }
+
+                showRatedMovieList(movieInfoModelList);
             }
 
         }

@@ -8,10 +8,10 @@ public class MovieRateInfoModel implements Serializable, Pageable {
     int id;
     String title;
     String poster_path;
-    int rating;
+    float rating;
     String overview;
 
-    public MovieRateInfoModel(int id, String title, String poster_path, int rating, String overview) {
+    public MovieRateInfoModel(int id, String title, String poster_path, float rating, String overview) {
         this.id = id;
         this.title = title;
         this.poster_path = poster_path;
@@ -43,11 +43,11 @@ public class MovieRateInfoModel implements Serializable, Pageable {
         this.poster_path = poster_path;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 
