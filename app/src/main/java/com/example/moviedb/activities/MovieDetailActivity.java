@@ -247,37 +247,40 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                 }
                 else{
 
+                    ViewGroup viewGroup = findViewById(android.R.id.content);
+
+                    //then we will inflate the custom alert dialog xml that we created
+                    View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog1, viewGroup, false);
+
+
+                    //Now we need an AlertDialog.Builder object
                     AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
 
+                    //setting the view of the builder to our custom view that we already inflated
+                    builder.setView(dialogView);
+
+                    AlertDialog alertDialog = builder.create();
 
 
-                    // Ask the final question
-                    builder.setMessage("Please Login to continue!!!");
-
-                    // Set the alert dialog yes button click listener
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    TextView canecel = dialogView.findViewById(R.id.tv_cancel);
+                    canecel.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Do something when user clicked the Yes button
-                            // Set the TextView visibility GONE
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    TextView ok = dialogView.findViewById(R.id.tv_ok);
+                    ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
                             startActivity(LoginActivity.getLoginActivityIntent(context()));
-
+                            alertDialog.dismiss();
                         }
                     });
 
-                    // Set the alert dialog no button click listener
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Do something when No button clicked
-                            Toast.makeText(getApplicationContext(),
-                                    "' No' Button Clicked",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    AlertDialog dialog = builder.create();
-                    // Display the alert dialog on interface
-                    dialog.show();
+                    alertDialog.show();
 
                 }
 
