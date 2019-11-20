@@ -15,8 +15,8 @@ public interface MyRateListDAO {
     @Query("SELECT count(*) FROM MyRateList Where movieId=:movieId and accountId=:accountId")
     int getRatedMovieCountbyId(int movieId,int accountId);
 
-    @Query("SELECT CONCAT(movieId, \" \", rateValue) movieId, rateValue FROM MyRateList Where accountId=:accountId")
-    List<String> getRatedMoviesbyAcoountId(int accountId);
+//    @Query("SELECT CONCAT(movieId, \" \", rateValue) movieId, rateValue FROM MyRateList Where accountId=:accountId")
+//    List<String> getRatedMoviesbyAcoountId(int accountId);
 
     @Insert
     void insert(MyRateList rateList);
@@ -29,4 +29,6 @@ public interface MyRateListDAO {
 
     @Query("SELECT rateValue FROM MyRateList Where movieId=:movieId and accountId=:accountId")
     float getRatedValueByMovieId(int movieId,int accountId);
+
+
 }

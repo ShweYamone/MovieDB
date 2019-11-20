@@ -125,7 +125,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             //connection not available, get data from local
             else {
                 dbHelper = InitializeDatabase.getInstance(context());
-                dbHelper.myRateListDAO().getRatedMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
+                //dbHelper.myRateListDAO().getRatedMoviesbyAccountId(mSharePreferenceHelper.getUserId());
 
             }
 

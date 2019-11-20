@@ -12,10 +12,13 @@ public interface MovieDAO {
     void insert(Movie movie);
 
     @Query("Update Movie set movieName=:movieName,releaseDate=:releaseDate,isAdult=:isAdult,duration=:duration, overview=:overview where movieId=:movieId ")
-    void updateRateListByMovieId(int movieId,String movieName,String releaseDate,boolean isAdult,String duration,String overview);
+    void updateMovieByMovieId(int movieId,String movieName,String releaseDate,boolean isAdult,String duration,String overview);
 
     @Query("SELECT count(*) FROM Movie Where movieId=:movieId ")
     int getMoviebyId(int movieId );
+
+    @Query("SELECT * from Movie where movieId=:movieId")
+    Movie getMovieInfobyId(int movieId);
 
 
 }
