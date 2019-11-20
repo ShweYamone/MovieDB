@@ -222,7 +222,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         if (!mNetwork.isNetworkAvailable()) {
 
             movie = dbHelper.movieDAO().getMovieInfobyId(mmovieId);
-            
+
             movieTitle.setText(movie.getMovieName());
             releaseDate.setText(movie.getReleaseDate());
             if(movie.getAdult()==true){
