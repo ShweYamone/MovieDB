@@ -12,4 +12,5 @@ public interface MovieDetailPresenter {
     void showRecommendedVideosById(int movieId);
     void addOrRemoveMovieFromWatchList(String sessionId, WatchListBody watchListBody);
     void rateMovie(int movieId,String sessionId, MovieRateBody movieRateBody);
+    void deleteRating(int movieId,String sessionId);
 }
