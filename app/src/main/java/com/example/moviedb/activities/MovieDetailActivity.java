@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -123,6 +124,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     RatingBar ratingBar;
 
 
+
     private MyanProgressDialog mDialog;
     private MovieDetailPresenter mPresenter;
     private static int mmovieId;
@@ -229,10 +231,22 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             }else{
                 adult.setText("");
             }
+
             duration.setText(movie.getDuration());
             movieOverview.setText(movie.getOverview());
             float rateValue=dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId,accountId);
             ratingBar.setRating(rateValue);
+
+            Glide.with(MovieDetailActivity.this)
+                    .load(R.drawable.img_placeholder)
+                    .into(moviePoster);
+            Bitmap bitmapImage= BlurImage.fastblur(BitmapFactory.decodeResource(getResources(), R.drawable.img_placeholder), (float) 0.08,5);
+
+            Glide.with(MovieDetailActivity.this)
+                    .load(bitmapImage)
+                    .into(ivBackground);
+
+
             hideLabelMoreLikeThis();;
             hideLabelRecommendation();
 

@@ -136,7 +136,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
                 List<Movie> ratedMovies = dbHelper.movieDAO().getMoviesByMoviesId(ratedMoviesIds);
 
                 Log.i("Movies", ratedMovies.size()+"");
-                Log.i("Movies", ratedMovies.get(0).getMovieName()+"");
+//                Log.i("Movies", ratedMovies.get(0).getMovieName()+"");
 
                 for(int movieId:ratedMoviesIds) {
 
