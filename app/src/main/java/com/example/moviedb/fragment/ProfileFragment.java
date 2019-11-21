@@ -83,7 +83,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     public InitializeDatabase dbHelper;
 
-
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_profile;
@@ -136,6 +135,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
                 List<Movie> ratedMovies = dbHelper.myListDAO().getWatchListMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
                 Log.i("moviename", ratedMovies.size() + "");
+
                 for(Movie movie:ratedMovies) {
                     Log.i("moviename", movie.getMovieId() + "");
                     movieInfoModelList.add(new MovieInfoModel(
@@ -255,7 +255,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @Override
     public Context context() {
-        return null;
+        return this.getActivity();
     }
 
     @Override

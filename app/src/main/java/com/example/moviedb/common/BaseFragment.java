@@ -29,6 +29,7 @@ public abstract class BaseFragment extends Fragment {
 
         View view = inflater.inflate(getLayoutResource(), container, false);
         unbinder = ButterKnife.bind(this, view);
+
         mContext=view.getContext();
 
         setUpContents(savedInstanceState);
