@@ -145,6 +145,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
 
                 List<Movie> ratedMovies = dbHelper.movieDAO().getMoviesByMoviesId(ratedMoviesIds);
 
+                //NO DATA IN LOCAL RATE LIST
                 if(ratedMovies.size() == 0) {
                     showNoRatedMovieInfo();
                 }
