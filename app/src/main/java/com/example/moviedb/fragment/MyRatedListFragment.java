@@ -127,7 +127,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             //connection not available, get data from local
             else {
                 mPresenter.onTerminate();
-                dbHelper = InitializeDatabase.getInstance(context());
+                dbHelper = InitializeDatabase.getInstance(mContext);
 
                 ArrayList<MovieRateInfoModel> movieInfoModelList =  new ArrayList<MovieRateInfoModel>();
 

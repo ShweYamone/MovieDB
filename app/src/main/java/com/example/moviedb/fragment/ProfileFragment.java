@@ -130,7 +130,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             else {
 
                 mPresenter.onTerminate();
-                dbHelper = InitializeDatabase.getInstance(context());
+                dbHelper = InitializeDatabase.getInstance(mContext);
 
                 ArrayList<MovieInfoModel> movieInfoModelList =  new ArrayList<MovieInfoModel>();
 
