@@ -127,7 +127,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             //connection not available, get data from local
             else {
                 mPresenter.onTerminate();
-                dbHelper = InitializeDatabase.getInstance(context());
+                dbHelper = InitializeDatabase.getInstance(mContext);
 
                 ArrayList<MovieRateInfoModel> movieInfoModelList =  new ArrayList<MovieRateInfoModel>();
 
@@ -138,19 +138,16 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
                 Log.i("Movies", ratedMovies.size()+"");
                 Log.i("Movies", ratedMovies.get(0).getMovieName()+"");
 
-                for(int movieId:ratedMoviesIds) {
-
-                    Movie movie = dbHelper.movieDAO().getMovieInfobyId(movieId);
-                    Log.i("moviename", movie.getMovieId() + " " );
-                    Log.i("movieoverview", movie.getOverview() + " " );
-
+                for(Movie movie:ratedMovies) {
                     movieInfoModelList.add(new MovieRateInfoModel(
                             movie.getMovieId(),
                             movie.getMovieName(),
                             "",
                             dbHelper.myRateListDAO().getRatedValueByMovieId(movie.getMovieId(), mSharePreferenceHelper.getUserId()),
                             movie.getOverview()));
+
                 }
+
 
                 showRatedMovieList(movieInfoModelList);
             }
