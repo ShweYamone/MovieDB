@@ -186,7 +186,7 @@ public class ServiceHelper {
                                                     @Query("language") String language,
                                                     @Query("page") int page);
 
-        @GET("search/multi")
+        @GET("search/movie")
         Observable<MovieListModel> getMoviesByTitle(@Query("api_key") String apiKey,
                                                     @Query("language") String language,
                                                     @Query("query") String query,

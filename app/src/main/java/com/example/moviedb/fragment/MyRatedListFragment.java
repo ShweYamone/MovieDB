@@ -10,9 +10,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.Entity.Movie;
@@ -23,6 +25,7 @@ import com.example.moviedb.adapters.RatedMovieAdapter;
 import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
+import com.example.moviedb.custom_control.MyanProgressDialog;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieRateInfoModel;
@@ -37,10 +40,10 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MyRatedListFragment extends BaseFragment implements RateView {
+public class MyRatedListFragment extends BaseFragment implements RateView, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.cv_data_error)
-    CardView cvDataError;
+    LinearLayout cvDataError;
 
     @BindView(R.id.recycler_rated_movies)
     RecyclerView recyclerRatedView;
@@ -51,6 +54,9 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
     @BindView(R.id.btnLogin)
     Button btnLogin;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private RatedMovieAdapter mAdapter;
 
     private ServiceHelper.ApiService mService;
@@ -58,6 +64,8 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
     private RatePresenterImpl mPresenter;
 
     private SmartScrollListener mSmartScrollListener;
+
+    private MyanProgressDialog mDialog;
 
     private int page = 1;
 
@@ -84,21 +92,20 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
         mSharePreferenceHelper = new SharePreferenceHelper(context());
 
         mNetwork = new Network(context());
+        Log.i("movie", "testlogin");
 
-        if(mNetwork.isNetworkAvailable())
-            Toast.makeText(context(),"Network Available", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(context(),"Network Unavailable", Toast.LENGTH_SHORT).show();
 
         if(mSharePreferenceHelper.isLogin()) {
 
             layoutNotLogin.setVisibility(View.GONE);
+
             mSession_Id = mSharePreferenceHelper.getSessionId();
 
             mAdapter = new RatedMovieAdapter();
 
             mService = ServiceHelper.getClient(this.getActivity());
 
+            mDialog = new MyanProgressDialog(context());
 
             mPresenter = new RatePresenterImpl(new MovieInteractor(mService), mSession_Id);
 
@@ -119,7 +126,10 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
             recyclerRatedView.setAdapter(mAdapter);
             recyclerRatedView.addOnScrollListener(mSmartScrollListener);
 
+            swipeRefreshLayout.setOnRefreshListener(this);
+            Log.i("movie", "testnetwork");
             if(mNetwork.isNetworkAvailable()) {
+                Log.i("movie", "network");
                 mPresenter.onAttachView(this);
                 mPresenter.onUIReady();
             }
@@ -135,21 +145,23 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
 
                 List<Movie> ratedMovies = dbHelper.movieDAO().getMoviesByMoviesId(ratedMoviesIds);
 
-                Log.i("Movies", ratedMovies.size()+"");
-                Log.i("Movies", ratedMovies.get(0).getMovieName()+"");
+                if(ratedMovies.size() == 0) {
+                    showNoRatedMovieInfo();
+                }
+                else {
+                    for(Movie movie:ratedMovies) {
+                        movieInfoModelList.add(new MovieRateInfoModel(
+                                movie.getMovieId(),
+                                movie.getMovieName(),
+                                "",
+                                dbHelper.myRateListDAO().getRatedValueByMovieId(movie.getMovieId(), mSharePreferenceHelper.getUserId()),
+                                movie.getOverview()));
 
-                for(Movie movie:ratedMovies) {
-                    movieInfoModelList.add(new MovieRateInfoModel(
-                            movie.getMovieId(),
-                            movie.getMovieName(),
-                            "",
-                            dbHelper.myRateListDAO().getRatedValueByMovieId(movie.getMovieId(), mSharePreferenceHelper.getUserId()),
-                            movie.getOverview()));
+                    }
 
+                    showRatedMovieList(movieInfoModelList);
                 }
 
-
-                showRatedMovieList(movieInfoModelList);
             }
 
         }
@@ -178,20 +190,12 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
         }
     }
 
-
-    @Override
-    public void getRatedMovieListFromLocal(List<MovieRateInfoModel> movieInfoModelList) {
-        cvDataError.setVisibility(View.GONE);
-
-        mAdapter.clear();
-
-    }
-
     @Override
     public void showRatedMovieList(List<MovieRateInfoModel> movieInfoModelList) {
 
         cvDataError.setVisibility(View.GONE);
 
+        Log.i("movie", movieInfoModelList.size()+"");
         page = 1;
         mAdapter.clear();
         for (MovieRateInfoModel model: movieInfoModelList) {
@@ -207,6 +211,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
     @Override
     public void showNoRatedMovieInfo() {
         mAdapter.clear();
+        Log.i("movie", "NOMOIve");
         cvDataError.setVisibility(View.VISIBLE);
 
     }
@@ -218,22 +223,36 @@ public class MyRatedListFragment extends BaseFragment implements RateView {
 
     @Override
     public void showLoading() {
-
+        if (!getActivity().isFinishing()) {
+            mDialog.showDialog();
+        }
     }
 
     @Override
     public void hideLoading() {
-
+        if (!getActivity().isFinishing()) {
+            mDialog.hideDialog();
+        }
     }
 
     @Override
     public void showToastMsg(String msg) {
-
+        this.hideLoading();
+        Toast.makeText(context(),msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showDialogMsg(String title, String msg) {
-
+        this.hideLoading();
+        new AlertDialog.Builder(context())
+                .setTitle(title)
+                .setMessage(msg)
+                .setPositiveButton(getString(R.string.ok), null).show();
     }
 
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
+        this.mPresenter.getOwnRatedMovies(mSession_Id);
+    }
 }

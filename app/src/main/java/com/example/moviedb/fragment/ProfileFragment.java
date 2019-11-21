@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.Entity.Movie;
@@ -43,6 +45,9 @@ import butterknife.BindView;
 
 public class ProfileFragment extends BaseFragment implements ProfileView {
 
+    @BindView(R.id.cv_data_error)
+    LinearLayout cvDataError;
+
     @BindView(R.id.btnSignIn)
     Button btnSignIn;
 
@@ -67,6 +72,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     @BindView(R.id.layoutLoginShow)
     LinearLayout layoutAlreadyLogin;
 
+
     private MovieAdapter mAdapter;
 
     private ServiceHelper.ApiService mService;
@@ -76,6 +82,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     private SmartScrollListener mSmartScrollListener;
 
     private int page = 1;
+
+    private String mSession_Id;
 
     private Network mNetwork;
 
@@ -96,6 +104,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     private void init() {
         mSharePreferenceHelper = new SharePreferenceHelper(this.getActivity());
 
+        mSession_Id = mSharePreferenceHelper.getSessionId();
+
         mNetwork = new Network(this.getActivity());
 
         mAdapter = new MovieAdapter();
@@ -105,19 +115,31 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
         if(mSharePreferenceHelper.isLogin()) {
 
 
-            mPresenter = new ProfilePresenterImpl(new MovieInteractor(mService), mSharePreferenceHelper.getSessionId());
+            mPresenter = new ProfilePresenterImpl(new MovieInteractor(mService), mSession_Id);
 
             layoutToLogin.setVisibility(View.GONE);
             layoutAlreadyLogin.setVisibility(View.VISIBLE);
 
             showUserInfo();
 
+            mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
+                @Override
+                public void onListEndReach() {
+
+
+                    page++;
+                    Log.i("Page:", page+"");
+                    mPresenter.getWatchListByPaging(mSession_Id, page);
+
+                }
+            });
+
             recyclerViewWatchList.setHasFixedSize(true);
             recyclerViewWatchList.setLayoutManager(new GridLayoutManager(this.getActivity(),3));
             recyclerViewWatchList.addItemDecoration(new ItemOffsetDecoration(2));
             recyclerViewWatchList.setAdapter(mAdapter);
+            recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
 
-           // recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
 
 
             if(mNetwork.isNetworkAvailable()) {
@@ -133,23 +155,29 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
                 ArrayList<MovieInfoModel> movieInfoModelList =  new ArrayList<MovieInfoModel>();
 
-                List<Movie> ratedMovies = dbHelper.myListDAO().getWatchListMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
-                Log.i("moviename", ratedMovies.size() + "");
+                List<Movie> watchlistMovies = dbHelper.myListDAO().getWatchListMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
 
-                for(Movie movie:ratedMovies) {
-                    Log.i("moviename", movie.getMovieId() + "");
-                    movieInfoModelList.add(new MovieInfoModel(
-                            movie.getMovieId(),
-                            movie.getMovieName(),
-                            "",
-                            "",
-                            false,
-                            "",
-                            0)
-                    );
+                if(watchlistMovies.size() == 0) {
+                    showNoMovieInfo();
                 }
 
-                showMyWatchList(movieInfoModelList);
+                else {
+                    for(Movie movie:watchlistMovies) {
+
+                        movieInfoModelList.add(new MovieInfoModel(
+                                movie.getMovieId(),
+                                movie.getMovieName(),
+                                "",
+                                "",
+                                false,
+                                "",
+                                0)
+                        );
+                    }
+
+                    showMyWatchList(movieInfoModelList);
+                }
+
             }
 
 
@@ -165,7 +193,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                    v.getContext().startActivity(MainActivity.getMainActivityIntent(v.getContext()));
+                    v.getContext().startActivity(intent);
 
                 }
             });
@@ -224,7 +252,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     }
 
     public void showMyWatchList(List<MovieInfoModel> movieInfoModelList) {
-        //  cvDataError.setVisibility(View.GONE);
+        cvDataError.setVisibility(View.GONE);
 
         page = 1;
         mAdapter.clear();
@@ -250,7 +278,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @Override
     public void showNoMovieInfo() {
-
+        mAdapter.clear();
+        cvDataError.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -277,4 +306,5 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     public void showDialogMsg(String title, String msg) {
 
     }
+
 }

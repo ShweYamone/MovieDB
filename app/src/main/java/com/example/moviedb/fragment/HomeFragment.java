@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.mvp.presenter.HomePresenterImpl;
 import com.example.moviedb.mvp.view.HomeView;
+import com.example.moviedb.util.Network;
 import com.example.moviedb.util.ServiceHelper;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -36,6 +38,12 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
 
 
     SmartScrollListener smartScrollListener;
+
+    @BindView(R.id.layoutNotInternetShow)
+    LinearLayout layoutForNoInternet;
+
+    @BindView(R.id.layoutHasInternetShow)
+    LinearLayout layoutForHavingInternet;
 
     @BindView(R.id.rv_now_playing)
     RecyclerView recyclerNowPlaying;
@@ -81,6 +89,8 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
 
     private MyanProgressDialog mDialog;
 
+    private Network mNetwork;
+
     private int page = 1;
 
     @Override
@@ -106,72 +116,88 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
 
     private void init() {
 
-        //Recycler Now Playing
-        recyclerNowPlaying.setHasFixedSize(true);
-        recyclerNowPlaying.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerNowPlaying.addItemDecoration(new ItemOffsetDecoration(2));
-        recyclerNowPlaying.setAdapter(_NowShowing);
+        mNetwork = new Network(context());
 
-        //Recycler popular
-        recyclerPopular.setHasFixedSize(true);
-        recyclerPopular.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerPopular.addItemDecoration(new ItemOffsetDecoration(2));
-        recyclerPopular.setAdapter(_Popular);
+        //no internet connection
+        if (!mNetwork.isNetworkAvailable()) {
+            layoutForHavingInternet.setVisibility(View.GONE);
+            layoutForNoInternet.setVisibility(View.VISIBLE);
+        }
 
-        //Recycler Upcoming
-        recyclerUpcoming.setHasFixedSize(true);
-        recyclerUpcoming.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false));
-        recyclerUpcoming.addItemDecoration(new ItemOffsetDecoration(2));
-        recyclerUpcoming.setAdapter(_Upcoming);
+        //have internet connection
+        else {
+            layoutForHavingInternet.setVisibility(View.VISIBLE);
+            layoutForNoInternet.setVisibility(View.GONE);
 
-        //Recycler Top rated
-        recyclerTopRated.setHasFixedSize(true);
-        recyclerTopRated.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerTopRated.addItemDecoration(new ItemOffsetDecoration(2));
-        recyclerTopRated.setAdapter(_TopRated);
+            //Recycler Now Playing
+            recyclerNowPlaying.setHasFixedSize(true);
+            recyclerNowPlaying.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            recyclerNowPlaying.addItemDecoration(new ItemOffsetDecoration(2));
+            recyclerNowPlaying.setAdapter(_NowShowing);
 
-        swipeRefreshLayout.setOnRefreshListener(this);
-        shimmerFrameLayout.startShimmerAnimation();
-        mPresenter.onAttachView(this);
-        mPresenter.onUIReady();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                shimmerFrameLayout.stopShimmerAnimation();
-                shimmerFrameLayout.setVisibility(View.GONE);
-                scrollView.setVisibility(View.VISIBLE);
-            }
-        }, 500);
+            //Recycler popular
+            recyclerPopular.setHasFixedSize(true);
+            recyclerPopular.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            recyclerPopular.addItemDecoration(new ItemOffsetDecoration(2));
+            recyclerPopular.setAdapter(_Popular);
 
-        btnNowPlaying.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Now Playing"));
-            }
-        });
+            //Recycler Upcoming
+            recyclerUpcoming.setHasFixedSize(true);
+            recyclerUpcoming.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false));
+            recyclerUpcoming.addItemDecoration(new ItemOffsetDecoration(2));
+            recyclerUpcoming.setAdapter(_Upcoming);
 
-        btnPopular.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Popular"));
-            }
-        });
+            //Recycler Top rated
+            recyclerTopRated.setHasFixedSize(true);
+            recyclerTopRated.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            recyclerTopRated.addItemDecoration(new ItemOffsetDecoration(2));
+            recyclerTopRated.setAdapter(_TopRated);
 
-        btnTopRated.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Top Rated"));
-            }
-        });
+            swipeRefreshLayout.setOnRefreshListener(this);
+            shimmerFrameLayout.startShimmerAnimation();
+            mPresenter.onAttachView(this);
+            mPresenter.onUIReady();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shimmerFrameLayout.stopShimmerAnimation();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    scrollView.setVisibility(View.VISIBLE);
+                }
+            }, 500);
 
-        btnUpcoming.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Upcoming"));
-            }
-        });
-        //shimmerFrameLayout.setVisibility(View.GONE);
+            btnNowPlaying.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Now Playing"));
+                }
+            });
+
+            btnPopular.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Popular"));
+                }
+            });
+
+            btnTopRated.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Top Rated"));
+                }
+            });
+
+            btnUpcoming.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Upcoming"));
+                }
+            });
+            //shimmerFrameLayout.setVisibility(View.GONE);
+        }
+
+
 
     }
 

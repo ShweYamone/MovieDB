@@ -69,9 +69,18 @@ public class MovieAdapter extends BaseAdapter {
         public void bindView(MovieInfoModel model, int position) {
 
             this.mMovieModel = model;
-            Glide.with(context)
-                    .load(BASE_IMG_URL+model.getPoster_path())
-                    .into(ivMoviePoster);
+            if(model.getPoster_path() == null || model.getPoster_path().equals("")) {
+                Glide.with(context)
+                        .load(R.drawable.img_placeholder)
+                        .into(ivMoviePoster);
+            }
+            else {
+                Glide.with(context)
+                        .load(BASE_IMG_URL+model.getPoster_path())
+                        .into(ivMoviePoster);
+            }
+
+
 
 
 

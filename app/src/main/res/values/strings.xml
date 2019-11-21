@@ -34,7 +34,11 @@
 
     <string name="my_watch_list">WatchList</string>
 
+    <string name="no_internet">Oops! No Internet Connection</string>
+
     <string name="movies_tv">Movies &amp; TV </string>
+
+    <string name="no_watchlist">You have not added any watchlist yet.</string>
 
     <string name="popular">Popular</string>
     <string name="top_related">Top Rated</string>

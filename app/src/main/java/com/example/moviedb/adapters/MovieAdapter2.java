@@ -95,9 +95,18 @@ public class MovieAdapter2 extends BaseAdapter {
 
             cv_item.setLayoutParams(lp);
 
-            Glide.with(context)
-                    .load(BASE_IMG_URL+model.getPoster_path())
-                    .into(ivMoviePoster);
+            if (model.getPoster_path() == null || model.getPoster_path() == "") {
+                Glide.with(context)
+                        .load(R.drawable.img_placeholder)
+                        .into(ivMoviePoster);
+            }
+            else {
+                Glide.with(context)
+                        .load(BASE_IMG_URL+model.getPoster_path())
+                        .into(ivMoviePoster);
+            }
+
+
 
 
         }

@@ -34,6 +34,12 @@ public class MainActivity extends BaseActivity {
         return intent;
     }
 
+    public static Intent clearActivitiesAndGetMainActivityIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
+    }
 
     @Override
     protected int getLayoutResource() {
