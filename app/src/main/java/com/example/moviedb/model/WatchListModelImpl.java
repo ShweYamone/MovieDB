@@ -12,8 +12,8 @@ public class WatchListModelImpl implements IWatchListModel{
 
 
     @Override
-    public Observable<WatchListModel> addOrRemoveMovieFromWatchlistFromApi(ServiceHelper.ApiService service, String sessionId, WatchListBody watchListBody) {
-        return service.addOrRemoveMovieFromWatchList(DEVELOPER_KEY,sessionId,watchListBody)
+    public Observable<WatchListModel> addOrRemoveMovieFromWatchlistFromApi(ServiceHelper.ApiService service, int accountId,String sessionId, WatchListBody watchListBody) {
+        return service.addOrRemoveMovieFromWatchList(accountId,DEVELOPER_KEY,sessionId,watchListBody)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

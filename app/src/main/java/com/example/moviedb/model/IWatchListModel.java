@@ -5,5 +5,5 @@ import com.example.moviedb.util.ServiceHelper;
 import io.reactivex.Observable;
 
 public interface IWatchListModel {
-    Observable<WatchListModel> addOrRemoveMovieFromWatchlistFromApi(ServiceHelper.ApiService service, String sessionId,WatchListBody watchListBody);
+    Observable<WatchListModel> addOrRemoveMovieFromWatchlistFromApi(ServiceHelper.ApiService service,int accountId, String sessionId,WatchListBody watchListBody);
 }

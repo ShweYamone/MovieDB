@@ -10,7 +10,7 @@ public interface MovieDetailPresenter {
     void showMovieDetailsById(int movieId);
     void showSimilarVideosById(int movieId);
     void showRecommendedVideosById(int movieId);
-    void addOrRemoveMovieFromWatchList(String sessionId, WatchListBody watchListBody);
+    void addOrRemoveMovieFromWatchList(int accountId,String sessionId, WatchListBody watchListBody);
     void rateMovie(int movieId,String sessionId, MovieRateBody movieRateBody);
     void deleteRating(int movieId,String sessionId);
 }

@@ -219,9 +219,10 @@ public class ServiceHelper {
                                                     @Query("page") int page);
 
         @POST("account/{account_id}/watchlist")
-        Observable<WatchListModel> addOrRemoveMovieFromWatchList(@Query("api_key") String apiKey,
-                                                            @Query("session_id") String sessionId,
-                                                            @Body WatchListBody watchListBody);
+        Observable<WatchListModel> addOrRemoveMovieFromWatchList(@Path("account_id")int accountId,
+                                                                 @Query("api_key") String apiKey,
+                                                                @Query("session_id") String sessionId,
+                                                                @Body WatchListBody watchListBody);
 
         @GET("account/{account_id}/watchlist/movies")
         Observable<MovieListModel> getMyWatchListMovies(@Query("api_key") String apiKey,

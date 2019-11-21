@@ -20,7 +20,7 @@ public class WatchListInteractor {
         watchListModel = new WatchListModelImpl();
     }
 
-    public Observable<WatchListModel> addOrRemoveMovieFromWatchList(String sessionId, WatchListBody watchListBody){
-        return this.watchListModel.addOrRemoveMovieFromWatchlistFromApi(mService,sessionId,watchListBody);
+    public Observable<WatchListModel> addOrRemoveMovieFromWatchList(int accountId,String sessionId, WatchListBody watchListBody){
+        return this.watchListModel.addOrRemoveMovieFromWatchlistFromApi(mService,accountId,sessionId,watchListBody);
     }
 }

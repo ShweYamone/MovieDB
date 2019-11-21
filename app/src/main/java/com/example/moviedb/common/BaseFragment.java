@@ -15,7 +15,6 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
 
     protected Unbinder unbinder;
-
     public Context mContext;
 
     @Override
@@ -30,7 +29,8 @@ public abstract class BaseFragment extends Fragment {
 
         View view = inflater.inflate(getLayoutResource(), container, false);
         unbinder = ButterKnife.bind(this, view);
-        mContext = view.getContext();
+
+        mContext=view.getContext();
 
         setUpContents(savedInstanceState);
         return view;

@@ -271,21 +271,19 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                 }
                 else{
 
-
-
                     if(sharePreferenceHelper.isLogin()){
                         movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
 
                             if(movieCount==1){
 
-                                mPresenter.addOrRemoveMovieFromWatchList(sessionId,new WatchListBody("movie",mmovieId,false));
+                                mPresenter.addOrRemoveMovieFromWatchList(accountId,sessionId,new WatchListBody("movie",mmovieId,false));
                                 dbHelper.myListDAO().deleteById(mmovieId,accountId);
                                 changeMyListIcon("plusIcon");
 
 
                             }else if (movieCount==0) {
 
-                                mPresenter.addOrRemoveMovieFromWatchList(sessionId, new WatchListBody("movie", mmovieId, true));
+                                mPresenter.addOrRemoveMovieFromWatchList(accountId,sessionId, new WatchListBody("movie", mmovieId, true));
 
                                 dbHelper.myListDAO().insert(new MyList(mmovieId, accountId));
 
@@ -317,15 +315,15 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                         else{
 
 
-                    ViewGroup viewGroup = findViewById(android.R.id.content);
+                            ViewGroup viewGroup = findViewById(android.R.id.content);
 
-                    //then we will inflate the custom alert dialog xml that we created
-                    View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog1, viewGroup, false);
+                            //then we will inflate the custom alert dialog xml that we created
+                            View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog1, viewGroup, false);
 
-                        //Now we need an AlertDialog.Builder object
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+                            //Now we need an AlertDialog.Builder object
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
 
-                        // Ask the final question
+                            // Ask the final question
                             builder.setMessage("Please Login to continue!!!");
 
                             // Set the alert dialog yes button click listener
@@ -415,37 +413,50 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                                     ratedMovieCount = dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId, accountId);
                                     if (ratedMovieCount == 1) {
                                         dbHelper.myRateListDAO().deleteByMovieId(mmovieId, accountId);
-//                                        dbHelper.myListDAO().deleteById(mmovieId,accountId);
                                         ratingBar.setVisibility(View.GONE);
                                     }
 
                                 } else {
                                     //add rating to the moviedb website
                                     mPresenter.rateMovie(mmovieId, sessionId, new MovieRateBody(rateValue));
+                                    //if the rated movie is in watchlist ,it will be deleted.
 
-                                    //rated movie will be removed from watchlist
+                                     //rated movie will be removed from watchlist
                                     int countOfMovieInWatchList=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
                                     if(countOfMovieInWatchList==1){
+                                        mPresenter.addOrRemoveMovieFromWatchList(accountId,sessionId,new WatchListBody("movie",mmovieId,false));
                                         dbHelper.myListDAO().deleteById(mmovieId,accountId);
                                         changeMyListIcon("plusIcon");
                                     }
 
-                                    //add movie info to db
+                                    //add movie info to local rate list table
                                     ratedMovieCount = dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId, accountId);
                                     if (ratedMovieCount == 1) {
                                         dbHelper.myRateListDAO().updateRateListByMovieId(mmovieId, accountId, rateValue);
                                     }
                                     else if (ratedMovieCount == 0) {
-                                        //add movieId to rateList db
+
                                         dbHelper.myRateListDAO().insert(new MyRateList(mmovieId, rateValue, accountId));
-                                        //add movie to movie db
-                                        countOfMovie = dbHelper.movieDAO().getMoviebyId(mmovieId);
-                                        if (countOfMovie == 0) {
-                                            dbHelper.movieDAO().insert(new Movie(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview));
-                                        } else if (countOfMovie == 1) {
-                                            dbHelper.movieDAO().updateMovieByMovieId(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview);
-                                        }
                                     }
+                                        //add movie to movie db
+                                    strMovieName = movieTitle.getText().toString();
+                                    strReleaseDate = releaseDate.getText().toString();
+                                    strIsAdult = adult.getText().toString();
+                                    strDuration = duration.getText().toString();
+                                    strOverview = movieOverview.getText().toString();
+                                    if (strIsAdult == "") {
+                                        blisAdult = false;
+                                    } else {
+                                        blisAdult = true;
+                                    }
+
+                                    countOfMovie = dbHelper.movieDAO().getMoviebyId(mmovieId);
+                                    if (countOfMovie == 0) {
+                                        dbHelper.movieDAO().insert(new Movie(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview));
+                                    } else if (countOfMovie == 1) {
+                                        dbHelper.movieDAO().updateMovieByMovieId(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview);
+                                    }
+
 
                                     ratingBar.setVisibility(View.VISIBLE);
                                     ratingBar.setRating((float) (rateValue / 2.0));
