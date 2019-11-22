@@ -30,7 +30,8 @@
             android:hint="@string/username"
             android:layout_width="match_parent"
             android:layout_height="@dimen/edittext_height"
-            android:background="@drawable/bg_profile_edittext"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/sourcesanspro"
             android:layout_margin="@dimen/margin_normal"
             android:paddingLeft="@dimen/margin_small"/>
 
@@ -45,7 +46,8 @@
                 android:hint="@string/password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_profile_edittext"
+                android:fontFamily="@font/sourcesanspro"
+                android:background="@drawable/rounded_button"
                 android:inputType="textPassword"
                 android:paddingLeft="@dimen/margin_small"/>
 
@@ -70,9 +72,11 @@
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
             android:layout_height="@dimen/edittext_height"
-            android:background="@drawable/bg_button"
-            android:layout_margin="@dimen/margin_normal"/>
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@drawable/rounded_button"/>
 
     </LinearLayout>
 
