@@ -120,6 +120,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
 
                 }
             });
+
             recyclerRatedView.setHasFixedSize(true);
             recyclerRatedView.setLayoutManager(new GridLayoutManager(this.getActivity(),1));
             recyclerRatedView.addItemDecoration(new ItemOffsetDecoration(3));
@@ -127,9 +128,10 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
             recyclerRatedView.addOnScrollListener(mSmartScrollListener);
 
             swipeRefreshLayout.setOnRefreshListener(this);
-            Log.i("movie", "testnetwork");
+
+
             if(mNetwork.isNetworkAvailable()) {
-                Log.i("movie", "network");
+
                 mPresenter.onAttachView(this);
                 mPresenter.onUIReady();
             }
