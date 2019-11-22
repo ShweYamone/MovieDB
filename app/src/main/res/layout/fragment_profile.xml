@@ -28,8 +28,8 @@
             <Button
                 android:id="@+id/btnSignIn"
                 android:text="Sign In"
-                android:textColor="@color/colorWhite"
-                android:fontFamily="@font/titillium_web"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/sourcesanspro"
                 android:background="@drawable/bg_button"
                 android:layout_marginLeft="@dimen/margin_large"
                 android:layout_marginRight="@dimen/margin_large"
@@ -43,7 +43,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:text="@string/movie_quote"
-            android:textColor="@color/color_palette3"
+            android:textColor="@color/colorWhite"
             android:fontFamily="@font/parisienne"
             android:textSize="@dimen/txt_size_x_large"
             android:layout_height="@dimen/edittext_height"/>
