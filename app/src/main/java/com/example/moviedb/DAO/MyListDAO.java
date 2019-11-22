@@ -16,8 +16,8 @@ public interface MyListDAO {
     @Query("SELECT count(*) FROM MyWatchList Where movieId=:movieId and accountId=:accountId")
     int getMoviebyId(int movieId,int accountId);
 
-    @Query("SELECT * FROM Movie INNER JOIN MyWatchList Where MyWatchList.accountId=:accountId AND MyWatchList.movieId = Movie.movieId")
-    List<Movie> getWatchListMoviesbyAcoountId(int accountId);
+    @Query("SELECT movieId FROM MyWatchList Where MyWatchList.accountId=:accountId")
+    List<Integer> getWatchListMoviesbyAcoountId(int accountId);
 
     @Insert
     void insert(MyList list);

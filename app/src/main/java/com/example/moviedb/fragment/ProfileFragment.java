@@ -155,7 +155,10 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
                 ArrayList<MovieInfoModel> movieInfoModelList =  new ArrayList<MovieInfoModel>();
 
-                List<Movie> watchlistMovies = dbHelper.myListDAO().getWatchListMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
+                List<Integer> watchlistMoviesIds = dbHelper.myListDAO().getWatchListMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
+
+                List<Movie> watchlistMovies = dbHelper.movieDAO().getMoviesByMoviesId(watchlistMoviesIds);
+
 
                 if(watchlistMovies.size() == 0) {
                     showNoMovieInfo();
@@ -236,6 +239,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
 
         String userName = mSharePreferenceHelper.getUserName();
+
         changeCircleViewColor(userName.charAt(0));
 
 
