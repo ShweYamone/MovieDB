@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.crashlytics.android.Crashlytics;
 import com.example.moviedb.R;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.fragment.HomeFragment;
@@ -35,6 +34,12 @@ public class MainActivity extends BaseActivity {
         return intent;
     }
 
+    public static Intent clearActivitiesAndGetMainActivityIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return intent;
+    }
 
     @Override
     protected int getLayoutResource() {

@@ -12,63 +12,79 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_rated_movies"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginLeft="@dimen/margin_small"
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/margin_small">
+            android:layout_height="match_parent">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_rated_movies"
+                android:layout_marginRight="@dimen/margin_small"
+                android:layout_marginLeft="@dimen/margin_small"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/margin_small">
 
+            </androidx.recyclerview.widget.RecyclerView>
 
-        <androidx.cardview.widget.CardView
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
             android:id="@+id/cv_data_error"
             android:visibility="gone"
-            android:layout_margin="@dimen/margin_large"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:background="@color/colorTextColorPrimary"
-            android:alpha="0.4"
-            app:cardElevation="0dp"
+            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <androidx.cardview.widget.CardView
+                android:visibility="visible"
+                android:layout_margin="@dimen/margin_large"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 android:background="@color/colorTextColorPrimary"
+                android:alpha="0.4"
+                app:cardElevation="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:src="@drawable/icon_empty_box"
-                    android:layout_marginBottom="@dimen/margin_small"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <com.example.moviedb.custom_control.MyanTextView
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:gravity="center"
-                    android:textColor="@color/color_white_press"
-                    android:textSize="@dimen/txt_size_large"
-                    android:text="@string/not_rated_yet"
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:background="@color/colorTextColorPrimary"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:src="@drawable/icon_empty_box"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <com.example.moviedb.custom_control.MyanTextView
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:gravity="center"
+                        android:textColor="@color/color_white_press"
+                        android:textSize="@dimen/txt_size_large"
+                        android:text="@string/not_rated_yet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
+
+        </LinearLayout>
 
 
         <LinearLayout
             android:id="@+id/layoutNotLoginShow"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginBottom="?attr/actionBarSize"
             android:gravity="center"
             android:layout_width="match_parent"

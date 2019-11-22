@@ -1,5 +1,6 @@
 package com.example.moviedb.common;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment {
 
     protected Unbinder unbinder;
+    public Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public abstract class BaseFragment extends Fragment {
 
         View view = inflater.inflate(getLayoutResource(), container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        mContext=view.getContext();
 
         setUpContents(savedInstanceState);
         return view;

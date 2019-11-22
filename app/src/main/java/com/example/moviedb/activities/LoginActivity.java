@@ -90,17 +90,15 @@ public class LoginActivity extends BaseActivity implements LoginView {
             public void onClick(View v) {
                 if(etPassword.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())){
                     ivShowPwd.setAlpha(1.0f);
-
-                  //  ivShowPwd.setColorFilter(ContextCompat.getColor(context(), R.color.color_blue), android.graphics.PorterDuff.Mode.MULTIPLY);
                     //Show Password
                     etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    etPassword.setSelection(etPassword.getText().length());
                 }
                 else{
                     ivShowPwd.setAlpha(0.3f);
-                  //  ivShowPwd.setColorFilter(ContextCompat.getColor(context(), R.color.color_edt_grey), android.graphics.PorterDuff.Mode.MULTIPLY);
                     //Hide Password
                     etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
+                    etPassword.setSelection(etPassword.getText().length());
                 }
             }
         });
@@ -140,8 +138,11 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
         mSharePreferenceHelper.setUserName_Id(etUserName.getText().toString(), 1);
 
-        this.startActivity(MainActivity.getMainActivityIntent(this));
-        this.finish();
+        Intent intent = MainActivity.getMainActivityIntent(context());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        this.startActivity(intent);
     }
 
     @Override

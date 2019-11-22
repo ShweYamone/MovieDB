@@ -170,11 +170,11 @@ public class MovieDetailPresenterImpl extends BasePresenter implements MovieDeta
     }
 
     @Override
-    public void addOrRemoveMovieFromWatchList(String sessionId, WatchListBody watchListBody) {
+    public void addOrRemoveMovieFromWatchList(int accountId,String sessionId, WatchListBody watchListBody) {
 
         movieDetailView.showLoading();
 
-        this.watchListInteractor.addOrRemoveMovieFromWatchList(sessionId,watchListBody)
+        this.watchListInteractor.addOrRemoveMovieFromWatchList(accountId,sessionId,watchListBody)
                 .subscribe(new Observer<WatchListModel>() {
             @Override
             public void onSubscribe(Disposable d) {

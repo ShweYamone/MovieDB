@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.moviedb.R;
+import com.example.moviedb.activities.MovieDetailActivity;
 import com.example.moviedb.common.BaseAdapter;
 import com.example.moviedb.model.MovieRateInfoModel;
 
@@ -70,7 +71,8 @@ public class RatedMovieAdapter extends BaseAdapter {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //    context.startActivity(MovieDetailActivity.getMainActivityIntent(context,mMovieModel.getId()));
+                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,mMovieModel.getId()));
+
 
                 }
             });
@@ -87,14 +89,14 @@ public class RatedMovieAdapter extends BaseAdapter {
             tvOverview.setText(model.getOverview());
 
 
-            if(!model.getPoster_path().equals("")) {
+            if(model.getPoster_path().equals("") || model.getPoster_path() == null) {
                 Glide.with(context)
-                        .load(BASE_IMG_URL+model.getPoster_path())
+                        .load(R.drawable.img_placeholder)
                         .into(ivMoviePoster);
             }
             else {
                 Glide.with(context)
-                        .load(R.drawable.img_placeholder)
+                        .load(BASE_IMG_URL+model.getPoster_path())
                         .into(ivMoviePoster);
             }
 

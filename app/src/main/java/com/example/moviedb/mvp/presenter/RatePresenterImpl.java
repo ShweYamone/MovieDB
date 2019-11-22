@@ -28,6 +28,7 @@ public class RatePresenterImpl extends BasePresenter implements RatePresenter{
 
     @Override
     public void onUIReady() {
+        Log.i("movie", "movie");
         getOwnRatedMovies(mSession_Id);
     }
 
@@ -38,7 +39,7 @@ public class RatePresenterImpl extends BasePresenter implements RatePresenter{
 
     @Override
     public void getOwnRatedMovies(String session_id) {
-
+        Log.i("movie", "movie");
         this.mInteractor.getOwnRatedMovies(session_id, 1)
                 .subscribe(new Observer<MovieRateListModel>() {
                     @Override
@@ -50,6 +51,7 @@ public class RatePresenterImpl extends BasePresenter implements RatePresenter{
                     public void onNext(MovieRateListModel movieListModel) {
 
                         if (movieListModel != null) {
+                            Log.i("movie", movieListModel.getResults().size()+"");
 
                             if (movieListModel.getResults().isEmpty()) {
                                 mView.showNoRatedMovieInfo();

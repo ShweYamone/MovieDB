@@ -17,8 +17,8 @@ public interface MyRateListDAO {
     int getRatedMovieCountbyId(int movieId,int accountId);
 
 
-    @Query("SELECT * FROM Movie INNER JOIN MyRateList Where MyRateList.accountId=:accountId AND MyRateList.movieId = Movie.movieId")
-    List<Movie> getRatedMoviesbyAcoountId(int accountId);
+    @Query("SELECT movieId FROM MyRateList Where MyRateList.accountId=:accountId")
+    List<Integer> getRatedMoviesbyAcoountId(int accountId);
 
     @Insert
     void insert(MyRateList rateList);
