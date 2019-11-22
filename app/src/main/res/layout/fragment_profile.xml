@@ -71,8 +71,9 @@
                     android:text="@string/logout"
                     android:textAllCaps="false"
                     android:layout_gravity="right"
-                    android:drawableRight="@drawable/icon_exit"
+                    android:background="@drawable/bg_button2"
                     android:drawablePadding="@dimen/margin_xsmall"
+                    android:textColor="@color/color_white_trans"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
