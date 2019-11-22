@@ -3,6 +3,7 @@ package com.example.moviedb.DAO;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.example.moviedb.Entity.Movie;
@@ -20,7 +21,7 @@ public interface MyRateListDAO {
     @Query("SELECT movieId FROM MyRateList Where MyRateList.accountId=:accountId")
     List<Integer> getRatedMoviesbyAcoountId(int accountId);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(MyRateList rateList);
 
     @Query("Delete from MyRateList where movieId=:movieId and accountId=:accountId")

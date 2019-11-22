@@ -29,13 +29,17 @@ public class Movie implements Pageable, Serializable {
     @ColumnInfo(name = "overview")
     private String overview;
 
-    public Movie(int movieId, String movieName, String releaseDate, Boolean isAdult, String duration, String overview) {
+
+
+
+    public Movie(int movieId, String movieName, String releaseDate, Boolean isAdult, String duration, String overview ) {
         this.movieId = movieId;
         this.movieName = movieName;
         this.releaseDate = releaseDate;
         this.isAdult = isAdult;
         this.duration = duration;
         this.overview = overview;
+
     }
 
     public int getMovieId() {
@@ -85,4 +89,5 @@ public class Movie implements Pageable, Serializable {
     public void setOverview(String overview) {
         this.overview = overview;
     }
+
 }

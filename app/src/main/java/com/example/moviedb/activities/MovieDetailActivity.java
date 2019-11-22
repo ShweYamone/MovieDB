@@ -6,20 +6,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,8 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -55,11 +49,8 @@ import com.example.moviedb.util.Network;
 import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.List;
-
 import butterknife.BindView;
-
 import static com.example.moviedb.util.AppConstant.BASE_IMG_URL;
 
 public class MovieDetailActivity extends BaseActivity implements MovieDetailView {
@@ -130,7 +121,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private static int mmovieId;
     private MovieAdapter2 _SIMILAR;
     private MovieAdapter2 _RECOMMEND;
-    private MovieInfoModel movieInfoModel;
     private ServiceHelper.ApiService mService;
     private String sessionId;
     public InitializeDatabase dbHelper;
@@ -143,6 +133,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private boolean blisAdult;
     private Movie movie;
     private Network mNetwork;
+
 
 
     public static Intent getMovieDetailActivityIntent(Context context, int movieId) {
@@ -235,7 +226,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             duration.setText(movie.getDuration());
             movieOverview.setText(movie.getOverview());
             float rateValue=dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId,accountId);
-            ratingBar.setRating(rateValue);
+            ratingBar.setRating((float) (rateValue/2.0));
 
             Glide.with(MovieDetailActivity.this)
                     .load(R.drawable.img_placeholder)
@@ -317,9 +308,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                                 //else insert new movie info
                                 countOfMovie = dbHelper.movieDAO().getMoviebyId(mmovieId);
                                 if (countOfMovie == 0) {
-                                    dbHelper.movieDAO().insert(new Movie(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview));
+
+                                    dbHelper.movieDAO().insert(new Movie(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview ));
                                 } else if (countOfMovie == 1) {
-                                    dbHelper.movieDAO().updateMovieByMovieId(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview);
+
+                                    dbHelper.movieDAO().updateMovieByMovieId(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview );
                                 }
 
                                 changeMyListIcon("checkIcon");
@@ -409,6 +402,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
                         RatingBar ratingBarInDailog = dialogView.findViewById(R.id.rb_rate);
 
+                        ratingBarInDailog.setRating((float) (dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId,accountId)/2.0));
+
                         // if button is clicked, close the custom dialog
                         Button dialogButton = dialogView.findViewById(R.id.buttonOk);
                         dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -466,9 +461,9 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
                                     countOfMovie = dbHelper.movieDAO().getMoviebyId(mmovieId);
                                     if (countOfMovie == 0) {
-                                        dbHelper.movieDAO().insert(new Movie(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview));
+                                        dbHelper.movieDAO().insert(new Movie(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview ));
                                     } else if (countOfMovie == 1) {
-                                        dbHelper.movieDAO().updateMovieByMovieId(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview);
+                                        dbHelper.movieDAO().updateMovieByMovieId(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview );
                                     }
 
 
