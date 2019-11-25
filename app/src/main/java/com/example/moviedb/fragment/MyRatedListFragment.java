@@ -85,12 +85,6 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
         init();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("curChoice", 2);
-        Log.i("currentchoiceforrate", outState.getInt("curChoice") + "");
-    }
 
     private void init() {
         mSharePreferenceHelper = new SharePreferenceHelper(context());
@@ -154,7 +148,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.onUIReady();
+//        mPresenter.onUIReady();
     }
 
     @Override

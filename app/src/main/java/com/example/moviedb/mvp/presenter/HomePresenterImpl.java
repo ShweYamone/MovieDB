@@ -3,15 +3,19 @@ package com.example.moviedb.mvp.presenter;
 import com.example.moviedb.R;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieListModel;
+import com.example.moviedb.model.MovieRateListModel;
 import com.example.moviedb.mvp.view.HomeView;
+import com.example.moviedb.util.ServiceHelper;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class HomePresenterImpl extends BasePresenter implements HomePresenter {
+public class HomePresenterImpl extends BasePresenter implements HomePresenter{
 
     private HomeView homeView = null;
     private MovieInteractor interactor;
+    private int ratePages;
+    private int watchlistPages;
 
     public HomePresenterImpl(MovieInteractor interactor){ this.interactor = interactor; }
     @Override
@@ -192,6 +196,55 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
                         homeView.hideLoading();
                     }
                 });
+
+    }
+
+
+
+    @Override
+    public void getNoOfPages(int accountId, String session_id) {
+        //not to get data from cache-------
+        ServiceHelper.removeFromCache("account/"+ accountId + "/rated/movies");
+
+        this.interactor.getOwnRatedMovies(accountId, session_id, 1)
+                .subscribe(new Observer<MovieRateListModel>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        addDisposableOberver(d);
+                    }
+
+                    @Override
+                    public void onNext(MovieRateListModel movieRateListModel) {
+                        if (movieRateListModel != null) {
+                            if(!movieRateListModel.getResults().isEmpty()) {
+                                ratePages = movieRateListModel.getTotal_pages();
+
+                               for(int  i = 0; i < ratePages; i++) {
+
+                               }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getNoOfRatedMoviesFromPage(int accountId, String session_id, int page) {
+
+    }
+
+    @Override
+    public void getNoOfWatchListMoviesFromPage(int accountId, String session_id, int page) {
 
     }
 }

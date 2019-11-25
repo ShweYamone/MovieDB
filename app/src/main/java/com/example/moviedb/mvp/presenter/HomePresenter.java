@@ -10,4 +10,12 @@ public interface HomePresenter {
     void getTopRatedMovies();
     void getUpComingMovies();
 
+
+
+    void getNoOfPages(int accountId, String session_id);
+    void getNoOfRatedMoviesFromPage(int accountId, String session_id, int page);
+
+    void getNoOfWatchListMoviesFromPage(int accountId, String session_id, int page);
+
+
 }

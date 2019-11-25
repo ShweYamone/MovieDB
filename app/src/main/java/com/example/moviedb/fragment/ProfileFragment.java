@@ -89,8 +89,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private SharePreferenceHelper mSharePreferenceHelper;
 
-    public InitializeDatabase dbHelper;
-
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_profile;
@@ -169,13 +167,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
                 }
             });
         }
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("curChoice", 3);
 
     }
 

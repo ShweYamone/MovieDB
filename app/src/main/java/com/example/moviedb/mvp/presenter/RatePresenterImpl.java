@@ -40,6 +40,7 @@ public class RatePresenterImpl extends BasePresenter implements RatePresenter{
         this.mView = view;
     }
 
+
     @Override
     public void getOwnRatedMovies(int mAccount_Id, String session_id) {
         //not to get data from cache-------
