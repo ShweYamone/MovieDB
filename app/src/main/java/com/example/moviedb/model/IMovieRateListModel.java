@@ -6,7 +6,10 @@ import io.reactivex.Observable;
 
 public interface IMovieRateListModel {
 
-    Observable<MovieRateListModel> getOwnRatedMoviesFromApi(ServiceHelper.ApiService service, String sessionId, int page);
+    Observable<MovieRateListModel> getOwnRatedMoviesFromApi(int accountId, ServiceHelper.ApiService service, String sessionId, int page);
+  //  Observable<Integer> getNoOfPagesForOwnRatedMovies(int accountId, ServiceHelper.ApiService service, String sessionId, int page);
+
+
     Observable<MovieRateListModel> rateMovieFromApi(ServiceHelper.ApiService service,int movieId, String sessionId,MovieRateBody movieRateBody);
     Observable<MovieRateListModel> deleteRatingFromApi(ServiceHelper.ApiService service,int movieId, String sessionId);
 

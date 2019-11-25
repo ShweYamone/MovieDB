@@ -85,7 +85,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private String mSession_Id;
 
-    private Network mNetwork;
+    private int mAccountId;
 
     private SharePreferenceHelper mSharePreferenceHelper;
 
@@ -106,7 +106,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
         mSession_Id = mSharePreferenceHelper.getSessionId();
 
-        mNetwork = new Network(this.getActivity());
+        mAccountId = mSharePreferenceHelper.getUserId();
 
         mAdapter = new MovieAdapter();
 
@@ -115,7 +115,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
         if(mSharePreferenceHelper.isLogin()) {
 
 
-            mPresenter = new ProfilePresenterImpl(new MovieInteractor(mService), mSession_Id);
+            mPresenter = new ProfilePresenterImpl(new MovieInteractor(mService), mSession_Id, mAccountId);
 
             layoutToLogin.setVisibility(View.GONE);
             layoutAlreadyLogin.setVisibility(View.VISIBLE);
@@ -141,51 +141,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
 
 
-
-            if(mNetwork.isNetworkAvailable()) {
-                mPresenter.onAttachView(this);
-                mPresenter.onUIReady();
-            }
-
-            //connection not available, get data from local
-            else {
-
-                mPresenter.onTerminate();
-                dbHelper = InitializeDatabase.getInstance(mContext);
-
-                ArrayList<MovieInfoModel> movieInfoModelList =  new ArrayList<MovieInfoModel>();
-
-                List<Integer> watchlistMoviesIds = dbHelper.myListDAO().getWatchListMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
-
-                List<Movie> watchlistMovies = dbHelper.movieDAO().getMoviesByMoviesId(watchlistMoviesIds);
-
-
-                if(watchlistMovies.size() == 0) {
-                    showNoMovieInfo();
-                }
-
-                else {
-                    for(Movie movie:watchlistMovies) {
-
-                        movieInfoModelList.add(new MovieInfoModel(
-                                movie.getMovieId(),
-                                movie.getMovieName(),
-                                "",
-                                "",
-                                false,
-                                "",
-                                0)
-                        );
-                    }
-
-                    showMyWatchList(movieInfoModelList);
-                }
-
-            }
-
-
-//            mPresenter.onAttachView(this);
-//            mPresenter.onUIReady();
+            mPresenter.onAttachView(this);
+            mPresenter.onUIReady();
 
 
             btnLogOut.setOnClickListener(new View.OnClickListener(){

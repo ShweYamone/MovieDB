@@ -9,9 +9,12 @@ import io.reactivex.schedulers.Schedulers;
 import static com.example.moviedb.util.AppConstant.DEVELOPER_KEY;
 
 public class MovieRateListModelImpl implements IMovieRateListModel {
+
+
+
     @Override
-    public Observable<MovieRateListModel> getOwnRatedMoviesFromApi(ServiceHelper.ApiService service, String sessionId, int page){
-        return service.getOwnRatedMovies(DEVELOPER_KEY, sessionId, page)
+    public Observable<MovieRateListModel> getOwnRatedMoviesFromApi(int accountId, ServiceHelper.ApiService service, String sessionId, int page){
+        return service.getOwnRatedMovies(accountId, DEVELOPER_KEY, "en_US",sessionId, "created_at.desc", page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

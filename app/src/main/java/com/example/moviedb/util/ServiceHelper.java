@@ -1,9 +1,11 @@
 package com.example.moviedb.util;
 
 import android.content.Context;
+import android.util.Log;
 
 
 import androidx.room.Delete;
+import androidx.room.PrimaryKey;
 
 import com.example.moviedb.model.AccountModel;
 import com.example.moviedb.model.GetVideoResultModel;
@@ -87,6 +89,7 @@ public class ServiceHelper {
                     Response response =  chain.proceed(request);
 
                     if (response.code() == 401){
+
                         // Magic is here ( Handle the error as your way )
                         return response;
                     }
@@ -109,11 +112,16 @@ public class ServiceHelper {
     }
 
     public static void removeFromCache(String url) {
+
         try {
             Iterator<String> it = cache.urls();
+
             while (it.hasNext()) {
                 String next = it.next();
+                Log.i("!!!url", next);
+
                 if (next.contains(BASE_URL + url)) {
+                    Log.i("!!!true" , BASE_URL + url);
                     it.remove();
                 }
             }
@@ -193,8 +201,11 @@ public class ServiceHelper {
                                                     @Query("page") int page);
 
         @GET("account/{account_id}/rated/movies")
-        Observable<MovieRateListModel> getOwnRatedMovies(@Query("api_key") String apiKey,
+        Observable<MovieRateListModel> getOwnRatedMovies(@Path("account_id") int accountId,
+                                                         @Query("api_key") String apiKey,
+                                                         @Query("language") String language,
                                                          @Query("session_id") String sessionId,
+                                                         @Query("sort_by") String sortBy,
                                                          @Query("page") int page);
 
 

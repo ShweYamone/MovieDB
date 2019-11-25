@@ -48,8 +48,8 @@ public class MovieInteractor {
     }
 
     //OwnRatedMovies
-    public Observable<MovieRateListModel> getOwnRatedMovies(String sessionId, int page) {
-        return this.movieRateListModel.getOwnRatedMoviesFromApi(mService, sessionId, page);
+    public Observable<MovieRateListModel> getOwnRatedMovies(int accountId, String sessionId, int page) {
+        return this.movieRateListModel.getOwnRatedMoviesFromApi(accountId, mService, sessionId, page);
     }
 
 

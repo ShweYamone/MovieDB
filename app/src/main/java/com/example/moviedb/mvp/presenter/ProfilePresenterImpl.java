@@ -6,6 +6,7 @@ import com.example.moviedb.R;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieListModel;
 import com.example.moviedb.mvp.view.ProfileView;
+import com.example.moviedb.util.ServiceHelper;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -15,14 +16,13 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
     private ProfileView mView = null;
     private MovieInteractor mInteractor;
     private String mSession_Id;
+    private int mAccount_Id;
 
-    public ProfilePresenterImpl(MovieInteractor mInteractor) {
-        this.mInteractor = mInteractor;
-    }
-
-    public ProfilePresenterImpl(MovieInteractor mInteractor, String mSession_Id) {
+    public ProfilePresenterImpl(MovieInteractor mInteractor, String mSession_Id, int mAccount_Id) {
         this.mInteractor = mInteractor;
         this.mSession_Id = mSession_Id;
+        this.mAccount_Id = mAccount_Id;
+
     }
 
     @Override
@@ -37,6 +37,10 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
 
     @Override
     public void getWatchListMovies(String mSession_Id) {
+
+        //not to get data from cache-------
+        ServiceHelper.removeFromCache("account/"+ mAccount_Id + "/watchlist/movies");
+        ServiceHelper.removeFromCache("account/%7Baccount_id%7D/watchlist/movies");
 
         this.mInteractor.getWatchListMovies(mSession_Id, 1)
                 .subscribe(new Observer<MovieListModel>() {

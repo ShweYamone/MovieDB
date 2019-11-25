@@ -10,6 +10,7 @@ import com.example.moviedb.model.LoginRequestBody;
 import com.example.moviedb.model.ProfileInfoModel;
 import com.example.moviedb.model.RequestTokenBody;
 import com.example.moviedb.mvp.view.LoginView;
+import com.example.moviedb.util.ServiceHelper;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -60,6 +61,7 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
     }
 
     private void getRequestToken(String username, String password) {
+        ServiceHelper.removeFromCache("authentication/token/new");
 
         this.mInteractor.getRequestToken().subscribe(new Observer<ProfileInfoModel>() {
             @Override
@@ -70,7 +72,7 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
 
             @Override
             public void onNext(ProfileInfoModel profileInfoModel) {
-
+                Log.i("Status_code111", profileInfoModel.getRequest_token());
                 if (profileInfoModel != null) {
                     if (profileInfoModel.isFailure() || profileInfoModel.getRequest_token().length() == 0) {
 
@@ -78,7 +80,7 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
                                 mView.context().getResources().getString(R.string.error_retrieving_data));
 
                     }  else {
-
+                        Log.i("Status_code111", "toValidateLogin");
                         validateLogin(username,password,profileInfoModel.getRequest_token());
                     }
                 } else {
@@ -103,6 +105,8 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
 
 
     public void validateLogin(String username, String password, String requestToken) {
+
+        Log.i("Status_code", username + " " + password + " " + requestToken);
 
         this.mInteractor.getLoginValidate(new LoginRequestBody(username,password,requestToken)).subscribe(new Observer<ProfileInfoModel>() {
             @Override
@@ -136,9 +140,13 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
             @Override
             public void onError(Throwable e) {
 
+
+                Log.i("Status_error", "error");
+                Log.i("Status_error", "error");
                 HttpException httpException = (HttpException) e;
 
                 if(httpException.code() == 401) {
+                    Log.i("Status_error", httpException.getMessage());
                     mView.showDialogMsg(mView.context().getResources().getString(R.string.error),
                             mView.context().getResources().getString(R.string.incorrect_user_name_or_password));
                 } else {
