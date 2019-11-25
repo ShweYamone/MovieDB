@@ -89,6 +89,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", 2);
+        Log.i("currentchoiceforrate", outState.getInt("curChoice") + "");
     }
 
     private void init() {
@@ -148,6 +149,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
         }
 
     }
+
 
     @Override
     public void onResume() {

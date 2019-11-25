@@ -172,6 +172,14 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("curChoice", 3);
+
+    }
+
+
     private void changeCircleViewColor(char firstLetter) {
 
 
