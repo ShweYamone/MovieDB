@@ -151,6 +151,12 @@ public class SearchFragment extends BaseFragment implements SearchView {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("curChoice", 1);
+    }
+
+    @Override
     public void addMoreMoviesToTheListByQuery(List<MovieInfoModel> movieInfoModelList) {
 
         Log.i("Page", movieInfoModelList.size()+"");

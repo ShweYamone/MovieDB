@@ -17,6 +17,9 @@ public abstract class BaseFragment extends Fragment {
     protected Unbinder unbinder;
     public Context mContext;
 
+    private int someStateValue;
+    private final String SOME_VALUE_KEY = "someValueToSave";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,11 @@ public abstract class BaseFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         mContext=view.getContext();
+
+        if (savedInstanceState != null) {
+            someStateValue = savedInstanceState.getInt(SOME_VALUE_KEY);
+            // Do something with value if needed
+        }
 
         setUpContents(savedInstanceState);
         return view;

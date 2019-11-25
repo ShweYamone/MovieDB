@@ -1,6 +1,5 @@
 package com.example.moviedb.fragment;
 
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -71,11 +70,9 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
 
     private String mSession_Id;
 
+    private int mAccountId;
+
     private SharePreferenceHelper mSharePreferenceHelper;
-
-    private Network mNetwork;
-
-    public InitializeDatabase dbHelper;
 
 
     @Override
@@ -88,18 +85,22 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
         init();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("curChoice", 2);
+        Log.i("currentchoiceforrate", outState.getInt("curChoice") + "");
+    }
+
     private void init() {
         mSharePreferenceHelper = new SharePreferenceHelper(context());
-
-        mNetwork = new Network(context());
-        Log.i("movie", "testlogin");
-
 
         if(mSharePreferenceHelper.isLogin()) {
 
             layoutNotLogin.setVisibility(View.GONE);
 
             mSession_Id = mSharePreferenceHelper.getSessionId();
+            mAccountId = mSharePreferenceHelper.getUserId();
 
             mAdapter = new RatedMovieAdapter();
 
@@ -107,7 +108,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
 
             mDialog = new MyanProgressDialog(context());
 
-            mPresenter = new RatePresenterImpl(new MovieInteractor(mService), mSession_Id);
+            mPresenter = new RatePresenterImpl(new MovieInteractor(mService), mSession_Id, mAccountId);
 
             mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
                 @Override
@@ -122,54 +123,19 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
             });
 
             recyclerRatedView.setHasFixedSize(true);
-            recyclerRatedView.setLayoutManager(new GridLayoutManager(this.getActivity(),1));
             recyclerRatedView.addItemDecoration(new ItemOffsetDecoration(3));
             recyclerRatedView.setAdapter(mAdapter);
             recyclerRatedView.addOnScrollListener(mSmartScrollListener);
-
             swipeRefreshLayout.setOnRefreshListener(this);
 
 
-            if(mNetwork.isNetworkAvailable()) {
+            mPresenter.onAttachView(this);
+            mPresenter.onUIReady();
 
-                mPresenter.onAttachView(this);
-                mPresenter.onUIReady();
-            }
-
-            //connection not available, get data from local
-            else {
-                mPresenter.onTerminate();
-                dbHelper = InitializeDatabase.getInstance(mContext);
-
-                ArrayList<MovieRateInfoModel> movieInfoModelList =  new ArrayList<MovieRateInfoModel>();
-
-                List<Integer> ratedMoviesIds = dbHelper.myRateListDAO().getRatedMoviesbyAcoountId(mSharePreferenceHelper.getUserId());
-
-                List<Movie> ratedMovies = dbHelper.movieDAO().getMoviesByMoviesId(ratedMoviesIds);
-
-                //NO DATA IN LOCAL RATE LIST
-                if(ratedMovies.size() == 0) {
-                    showNoRatedMovieInfo();
-                }
-                else {
-                    for(Movie movie:ratedMovies) {
-                        movieInfoModelList.add(new MovieRateInfoModel(
-                                movie.getMovieId(),
-                                movie.getMovieName(),
-                                "",
-                                dbHelper.myRateListDAO().getRatedValueByMovieId(movie.getMovieId(), mSharePreferenceHelper.getUserId()),
-                                movie.getOverview()));
-
-                    }
-
-                    showRatedMovieList(movieInfoModelList);
-                }
-
-            }
 
         }
 
-        else {
+       else {
             recyclerRatedView.setVisibility(View.GONE);
             layoutNotLogin.setVisibility(View.VISIBLE);
 
@@ -182,6 +148,13 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
 
         }
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.onUIReady();
     }
 
     @Override
@@ -198,8 +171,8 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
 
         cvDataError.setVisibility(View.GONE);
 
-        Log.i("movie", movieInfoModelList.size()+"");
         page = 1;
+        Log.i("movie", movieInfoModelList.size()+"");
         mAdapter.clear();
         for (MovieRateInfoModel model: movieInfoModelList) {
             mAdapter.add(model);
@@ -256,6 +229,6 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(false);
-        this.mPresenter.getOwnRatedMovies(mSession_Id);
+        this.mPresenter.getOwnRatedMovies(mAccountId, mSession_Id);
     }
 }

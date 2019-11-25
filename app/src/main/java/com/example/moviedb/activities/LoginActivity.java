@@ -80,6 +80,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     private void init() {
         mService = ServiceHelper.getClient(this);
 
+
         mSharePreferenceHelper = new SharePreferenceHelper(this);
 
         mPresenter = new LoginPresenterImpl(new LoginInteractor(this.mService), new AccountInteractor(this.mService));

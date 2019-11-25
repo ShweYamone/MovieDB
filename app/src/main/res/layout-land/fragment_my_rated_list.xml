@@ -23,11 +23,11 @@
                 android:id="@+id/recycler_rated_movies"
                 android:layout_marginRight="@dimen/margin_small"
                 android:layout_marginLeft="@dimen/margin_small"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/margin_small"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="1">
+                android:layout_marginBottom="@dimen/margin_small">
 
             </androidx.recyclerview.widget.RecyclerView>
 

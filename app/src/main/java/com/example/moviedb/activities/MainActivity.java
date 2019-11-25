@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Button;
 
 import com.example.moviedb.R;
 import com.example.moviedb.common.BaseActivity;
+import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.fragment.HomeFragment;
 import com.example.moviedb.fragment.MyRatedListFragment;
 import com.example.moviedb.fragment.ProfileFragment;
@@ -48,15 +50,32 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
-        init();
+        init(savedInstanceState);
 
     }
-    private void init() {
+    private void init(Bundle savedInstanceState) {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-//
-//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-//        layoutParams.setBehavior(new BottomNavigationBehavior());
-        loadFragment(new HomeFragment());
+        if (savedInstanceState != null) { // saved instance state, fragment may exist
+            // look up the instance that already exists by tag
+            int currentChoice = savedInstanceState.getInt("curChoice");
+            Log.i("current", currentChoice + "");
+            if(currentChoice == 1)
+                loadFragment(new SearchFragment());
+            else if(currentChoice == 2)
+                loadFragment(new MyRatedListFragment());
+            else if(currentChoice == 3)
+                loadFragment(new ProfileFragment());
+            else
+                loadFragment(new HomeFragment());
+
+
+        } else {
+            // only create fragment if they haven't been instantiated already
+            loadFragment(new HomeFragment());
+        }
+
+
+
     }
 
 
