@@ -44,7 +44,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     android:layout_marginTop="@dimen/margin_normal"
                     android:progressTint="@color/color_blue"
-                    android:rating="2.5" />
+                    android:rating="0" />
 
                 <Button
                     android:id="@+id/buttonOk"
