@@ -27,9 +27,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.moviedb.DB.InitializeDatabase;
-import com.example.moviedb.Entity.Movie;
-import com.example.moviedb.Entity.MyList;
-import com.example.moviedb.Entity.MyRateList;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.MovieAdapter2;
 import com.example.moviedb.common.BaseActivity;
@@ -131,7 +128,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private int countOfMovie;
     private String strMovieName,strReleaseDate,strIsAdult,strDuration,strOverview;
     private boolean blisAdult;
-    private Movie movie;
     private Network mNetwork;
 
 

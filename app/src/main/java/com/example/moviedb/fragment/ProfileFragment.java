@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.moviedb.DB.InitializeDatabase;
-import com.example.moviedb.Entity.Movie;
 import com.example.moviedb.R;
 import com.example.moviedb.activities.LoginActivity;
 import com.example.moviedb.activities.MainActivity;
