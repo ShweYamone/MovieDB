@@ -154,7 +154,7 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.onUIReady();
+//        mPresenter.onUIReady();
     }
 
     @Override

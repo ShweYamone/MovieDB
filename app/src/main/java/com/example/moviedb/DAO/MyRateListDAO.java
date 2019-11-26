@@ -16,7 +16,7 @@ import java.util.List;
 @Dao
 public interface MyRateListDAO {
 
-    @Query("SELECT count(*) FROM MyRateList Where movieId=:movieId and accountId=:accountId")
+    @Query("SELECT count(*) FROM MovieRateInfoModel Where id=:movieId and accountId=:accountId")
     int getRatedMovieCountbyId(int movieId,int accountId);
 
 
@@ -24,15 +24,15 @@ public interface MyRateListDAO {
     List<Integer> getRatedMoviesbyAcoountId(int accountId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(MyRateList rateList);
+    void insert(MovieRateInfoModel ratedMovie);
 
-    @Query("Delete from MyRateList where movieId=:movieId and accountId=:accountId")
+    @Query("Delete from MovieRateInfoModel where id=:movieId and accountId=:accountId")
     void deleteByMovieId(int movieId,int accountId);
 
-    @Query("Update MyRateList set rateValue=:rateValue where movieId=:movieId and accountId=:accountId")
+    @Query("Update MovieRateInfoModel set rating=:rateValue where id=:movieId and accountId=:accountId")
     void updateRateListByMovieId(int movieId,int accountId,float rateValue);
 
-    @Query("SELECT rateValue FROM MyRateList Where movieId=:movieId and accountId=:accountId")
+    @Query("SELECT rating FROM MovieRateInfoModel Where id=:movieId and accountId=:accountId")
     float getRatedValueByMovieId(int movieId,int accountId);
 
 
@@ -44,6 +44,9 @@ public interface MyRateListDAO {
 
     @Query("SELECT * FROM MovieRateInfoModel Where MovieRateInfoModel.accountId=:accountId")
     List<MovieRateInfoModel> getMyRatedMovies(int accountId);
+
+    @Query("SELECT * FROM MovieRateInfoModel Where id=:movieId and accountId=:accountId")
+    MovieRateInfoModel getMovie(int movieId,int accountId);
 
 
 }

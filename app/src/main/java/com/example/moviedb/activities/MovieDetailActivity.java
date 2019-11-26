@@ -41,6 +41,7 @@ import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.interactor.WatchListInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieRateBody;
+import com.example.moviedb.model.MovieRateInfoModel;
 import com.example.moviedb.model.WatchListBody;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenter;
 import com.example.moviedb.mvp.presenter.MovieDetailPresenterImpl;
@@ -131,8 +132,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     private int countOfMovie;
     private String strMovieName,strReleaseDate,strIsAdult,strDuration,strOverview;
     private boolean blisAdult;
-    private Movie movie;
     private Network mNetwork;
+    private String moviePosterPath;
 
 
 
@@ -163,7 +164,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     }
 
     private void init(){
-
+        //You have to change here
         movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
         if(movieCount==1){
 
@@ -175,7 +176,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             changeMyListIcon("plusIcon");
         }
 
-
+        //You have to change here
         ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
 
         if(ratedMovieCount==1){
@@ -212,36 +213,42 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         mPresenter.onAttachView(this);
 
         //if internet isn't availabel ,load data from db
+
+        //You need to change here must load from 2 databasse
         if (!mNetwork.isNetworkAvailable()) {
-            movie=dbHelper.movieDAO().getMovieInfobyId(mmovieId);
+            int count=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
 
-            movieTitle.setText(movie.getMovieName());
-            releaseDate.setText(movie.getReleaseDate());
-            if(movie.getAdult()==true){
-                adult.setText("18+");
-            }else{
-                adult.setText("");
+            if(count==1) {
+                MovieRateInfoModel movie = dbHelper.myRateListDAO().getMovie(mmovieId, accountId);
+
+                movieTitle.setText(movie.getTitle());
+                releaseDate.setText(movie.getRelease_date());
+
+                if (movie.isAdult()) {
+                    adult.setText("18+");
+                } else {
+                    adult.setText("");
+                }
+
+                duration.setVisibility(View.GONE);
+                movieOverview.setText(movie.getOverview());
+                float rateValue = dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId, accountId);
+                ratingBar.setRating((float) (rateValue / 2.0));
+
+                Glide.with(MovieDetailActivity.this)
+                        .load(R.drawable.img_placeholder)
+                        .into(moviePoster);
+                Bitmap bitmapImage = BlurImage.fastblur(BitmapFactory.decodeResource(getResources(), R.drawable.img_placeholder), (float) 0.08, 5);
+
+                Glide.with(MovieDetailActivity.this)
+                        .load(bitmapImage)
+                        .into(ivBackground);
+
+
+                hideLabelMoreLikeThis();
+                hideLabelRecommendation();
             }
-
-            duration.setText(movie.getDuration());
-            movieOverview.setText(movie.getOverview());
-            float rateValue=dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId,accountId);
-            ratingBar.setRating((float) (rateValue/2.0));
-
-            Glide.with(MovieDetailActivity.this)
-                    .load(R.drawable.img_placeholder)
-                    .into(moviePoster);
-            Bitmap bitmapImage= BlurImage.fastblur(BitmapFactory.decodeResource(getResources(), R.drawable.img_placeholder), (float) 0.08,5);
-
-            Glide.with(MovieDetailActivity.this)
-                    .load(bitmapImage)
-                    .into(ivBackground);
-
-
-            hideLabelMoreLikeThis();;
-            hideLabelRecommendation();
-
-
+            
         }
         else {
 
@@ -438,16 +445,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                                         changeMyListIcon("plusIcon");
                                     }
 
-                                    //add movie info to local rate list table
-                                    ratedMovieCount = dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId, accountId);
-                                    if (ratedMovieCount == 1) {
-                                        dbHelper.myRateListDAO().updateRateListByMovieId(mmovieId, accountId, rateValue);
-                                    }
-                                    else if (ratedMovieCount == 0) {
 
-                                        dbHelper.myRateListDAO().insert(new MyRateList(mmovieId, rateValue, accountId));
-                                    }
-                                        //add movie to movie db
+                                        //add movie to movierateinfomodel
                                     strMovieName = movieTitle.getText().toString();
                                     strReleaseDate = releaseDate.getText().toString();
                                     strIsAdult = adult.getText().toString();
@@ -459,13 +458,15 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                                         blisAdult = true;
                                     }
 
-                                    countOfMovie = dbHelper.movieDAO().getMoviebyId(mmovieId);
-                                    if (countOfMovie == 0) {
-                                        dbHelper.movieDAO().insert(new Movie(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview ));
-                                    } else if (countOfMovie == 1) {
-                                        dbHelper.movieDAO().updateMovieByMovieId(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview );
+                                    //add movie info to local rate list table
+                                    ratedMovieCount = dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId, accountId);
+                                    if (ratedMovieCount == 1) {
+                                        dbHelper.myRateListDAO().updateRateListByMovieId(mmovieId, accountId, rateValue);
                                     }
+                                    else if (ratedMovieCount == 0) {
 
+                                        dbHelper.myRateListDAO().insert(new MovieRateInfoModel(mmovieId,accountId,blisAdult,strReleaseDate,strMovieName,moviePosterPath,rateValue,strOverview));
+                                    }
 
                                     ratingBar.setVisibility(View.VISIBLE);
                                     ratingBar.setRating((float) (rateValue / 2.0));
@@ -563,6 +564,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @Override
     public void showMovieDetail(MovieInfoModel movieInfoModel) {
+
+        moviePosterPath=movieInfoModel.getPoster_path();
 
 //        Glide.with(this)
 //                .load(BASE_IMG_URL+movieInfoModel.getPoster_path())
