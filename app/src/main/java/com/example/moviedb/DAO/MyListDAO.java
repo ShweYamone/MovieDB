@@ -16,7 +16,6 @@ public interface MyListDAO {
 
 
 
-
     //MovieInfoModel Section................................
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

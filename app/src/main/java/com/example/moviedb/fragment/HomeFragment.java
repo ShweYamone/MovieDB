@@ -132,14 +132,17 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
         if (!mNetwork.isNetworkAvailable()) {
             layoutForHavingInternet.setVisibility(View.GONE);
             layoutForNoInternet.setVisibility(View.VISIBLE);
-
-
         }
 
         //have internet connection
         else {
+            if(mSharePreferenceHelper.isLogin()) {
+                mPresenter.locateDataFromApi();
+            }
+
             layoutForHavingInternet.setVisibility(View.VISIBLE);
             layoutForNoInternet.setVisibility(View.GONE);
+
 
             //Recycler Now Playing
             recyclerNowPlaying.setHasFixedSize(true);
@@ -175,9 +178,7 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
             //For rate and watchlist
             mSharePreferenceHelper = new SharePreferenceHelper(context());
 
-            if(mSharePreferenceHelper.isLogin()) {
-                mPresenter.locateDataFromApi();
-            }
+
 
             mPresenter.onUIReady();
             Handler handler = new Handler();

@@ -273,6 +273,12 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     @Override
     public void onResume() {
         super.onResume();
-        showMyWatchList(dbHelper.myListDAO().getMyWatchlistMovies(mAccountId));
+        mSharePreferenceHelper = new SharePreferenceHelper(context());
+
+        if(mSharePreferenceHelper.isLogin()) {
+
+            showMyWatchList(dbHelper.myListDAO().getMyWatchlistMovies(mAccountId));
+        }
+
     }
 }
