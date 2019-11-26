@@ -36,6 +36,9 @@ public interface MyRateListDAO {
     float getRatedValueByMovieId(int movieId,int accountId);
 
 
+    //MovieRateInfoModel section................................
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<MovieRateInfoModel> movieRateInfoModels);
 

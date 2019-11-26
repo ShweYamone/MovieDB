@@ -209,6 +209,15 @@ public class ServiceHelper {
                                                          @Query("page") int page);
 
 
+        @GET("account/{account_id}/watchlist/movies")
+        Observable<MovieListModel> getMyWatchListMovies(@Path("account_id") int accountId,
+                                                        @Query("api_key") String apiKey,
+                                                        @Query("language") String language,
+                                                        @Query("session_id") String sessionId,
+                                                        @Query("sort_by") String sortBy,
+                                                        @Query("page") int page);
+
+
         @GET("movie/{movie_id}")
         Observable<MovieInfoModel> getDetails(@Path("movie_id") int movieId,
                                               @Query("api_key") String apiKey);
@@ -235,10 +244,6 @@ public class ServiceHelper {
                                                                 @Query("session_id") String sessionId,
                                                                 @Body WatchListBody watchListBody);
 
-        @GET("account/{account_id}/watchlist/movies")
-        Observable<MovieListModel> getMyWatchListMovies(@Query("api_key") String apiKey,
-                                                        @Query("session_id") String sessionId,
-                                                        @Query("page") int page);
 
 
         @POST("movie/{movie_id}/rating")

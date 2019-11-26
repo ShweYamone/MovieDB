@@ -56,18 +56,7 @@ public class MainActivity extends BaseActivity {
     private void init(Bundle savedInstanceState) {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if (savedInstanceState != null) { // saved instance state, fragment may exist
-            // look up the instance that already exists by tag
-            int currentChoice = savedInstanceState.getInt("curChoice");
-            Log.i("current", currentChoice + "");
-            if(currentChoice == 1)
-                loadFragment(new SearchFragment());
-            else if(currentChoice == 2)
-                loadFragment(new MyRatedListFragment());
-            else if(currentChoice == 3)
-                loadFragment(new ProfileFragment());
-            else
-                loadFragment(new HomeFragment());
-
+            // just show the current instance
 
         } else {
             // only create fragment if they haven't been instantiated already

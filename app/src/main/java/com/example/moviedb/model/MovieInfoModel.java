@@ -1,21 +1,54 @@
 package com.example.moviedb.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.example.moviedb.common.Pageable;
 
 import java.io.Serializable;
 
+@Entity(tableName = "MovieInfoModel")
 public class MovieInfoModel implements Serializable, Pageable {
+
+    @PrimaryKey
+    @ColumnInfo(name = "id")
     int id;
+
+    @ColumnInfo(name = "accountId")
+    private int accountId;
+
+    @ColumnInfo(name = "adult")
+    private boolean adult;
+
+    @ColumnInfo(name = "release_date")
+    private String release_date;
+
+    @ColumnInfo(name = "title")
     String title;
+
+    @ColumnInfo(name = "poster_path")
     String poster_path;
-    String release_date;
-    boolean adult;
+
+    @ColumnInfo(name = "overview")
     String overview;
+
     int runtime;
 
 
+    public MovieInfoModel(int id, int accountId, boolean adult, String release_date, String title, String poster_path, String overview) {
+        this.id = id;
+        this.accountId = accountId;
+        this.adult = adult;
+        this.release_date = release_date;
+        this.title = title;
+        this.poster_path = poster_path;
+        this.overview = overview;
+    }
 
-    public MovieInfoModel(int id, String title, String poster_path, String release_date, boolean adult, String overview,int runtime) {
+    @Ignore
+    public MovieInfoModel(int id, String title, String poster_path, String release_date, boolean adult, String overview, int runtime) {
         this.id = id;
         this.title = title;
         this.poster_path = poster_path;
@@ -25,12 +58,22 @@ public class MovieInfoModel implements Serializable, Pageable {
         this.runtime=runtime;
     }
 
+
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public String getTitle() {

@@ -71,8 +71,8 @@ public class MovieInteractor {
         return this.movieRateListModel.deleteRatingFromApi(mService,movieId, sessionId);
     }
 
-    public Observable<MovieListModel> getWatchListMovies(String sessionId,int page){
-        return this.movieListModel.getMyWatchListMoviesFromApi(mService,sessionId,page);
+    public Observable<MovieListModel> getWatchListMovies(int accountId,String sessionId,int page){
+        return this.movieListModel.getMyWatchListMoviesFromApi(accountId, mService,sessionId,page);
     }
  
 

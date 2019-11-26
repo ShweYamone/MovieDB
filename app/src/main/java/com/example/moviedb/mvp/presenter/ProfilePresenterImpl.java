@@ -42,7 +42,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
         ServiceHelper.removeFromCache("account/"+ mAccount_Id + "/watchlist/movies");
         ServiceHelper.removeFromCache("account/%7Baccount_id%7D/watchlist/movies");
 
-        this.mInteractor.getWatchListMovies(mSession_Id, 1)
+        this.mInteractor.getWatchListMovies(mAccount_Id, mSession_Id, 1)
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -80,7 +80,7 @@ public class ProfilePresenterImpl extends BasePresenter implements ProfilePresen
 
     @Override
     public void getWatchListByPaging(String mSession_Id, int page) {
-        this.mInteractor.getWatchListMovies(mSession_Id, page)
+        this.mInteractor.getWatchListMovies(mAccount_Id, mSession_Id, page)
                 .subscribe(new Observer<MovieListModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {

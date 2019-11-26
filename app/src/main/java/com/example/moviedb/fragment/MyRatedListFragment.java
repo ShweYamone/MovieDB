@@ -74,6 +74,8 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
 
     private SharePreferenceHelper mSharePreferenceHelper;
 
+    private InitializeDatabase dbHelper;
+
 
     @Override
     protected int getLayoutResource() {
@@ -85,17 +87,13 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
         init();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("curChoice", 2);
-        Log.i("currentchoiceforrate", outState.getInt("curChoice") + "");
-    }
 
     private void init() {
         mSharePreferenceHelper = new SharePreferenceHelper(context());
 
         if(mSharePreferenceHelper.isLogin()) {
+
+            dbHelper = InitializeDatabase.getInstance(context());
 
             layoutNotLogin.setVisibility(View.GONE);
 
@@ -125,12 +123,13 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
             recyclerRatedView.setHasFixedSize(true);
             recyclerRatedView.addItemDecoration(new ItemOffsetDecoration(3));
             recyclerRatedView.setAdapter(mAdapter);
-            recyclerRatedView.addOnScrollListener(mSmartScrollListener);
-            swipeRefreshLayout.setOnRefreshListener(this);
+           // recyclerRatedView.addOnScrollListener(mSmartScrollListener);
+
+            showRatedMovieList(dbHelper.myRateListDAO().getMyRatedMovies(mAccountId));
 
 
-            mPresenter.onAttachView(this);
-            mPresenter.onUIReady();
+         //   mPresenter.onAttachView(this);
+         //   mPresenter.onUIReady();
 
 
         }
@@ -154,7 +153,8 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
     @Override
     public void onResume() {
         super.onResume();
-//        mPresenter.onUIReady();
+        showRatedMovieList(dbHelper.myRateListDAO().getMyRatedMovies(mAccountId));
+
     }
 
     @Override
@@ -172,7 +172,6 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
         cvDataError.setVisibility(View.GONE);
 
         page = 1;
-        Log.i("movie", movieInfoModelList.size()+"");
         mAdapter.clear();
         for (MovieRateInfoModel model: movieInfoModelList) {
             mAdapter.add(model);

@@ -17,6 +17,6 @@ public interface IMovieListModel {
     Observable<MovieListModel> getSimilarVideosFromApi(ServiceHelper.ApiService service,int movieId,int page);
     Observable<MovieListModel> getRecommendedVideosFromApi(ServiceHelper.ApiService service,int movieId,int page);
 
-    Observable<MovieListModel> getMyWatchListMoviesFromApi(ServiceHelper.ApiService service, String sessionId, int page);
+    Observable<MovieListModel> getMyWatchListMoviesFromApi(int accountId, ServiceHelper.ApiService service, String sessionId, int page);
 
 }

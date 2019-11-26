@@ -10,4 +10,15 @@ public interface HomePresenter {
     void getTopRatedMovies();
     void getUpComingMovies();
 
+    void locateDataFromApi();
+
+
+
+    void getNoOfRatePages(int accountId, String session_id);
+    void addRatedMoviesFromPage(int accountId, String session_id, int page);
+
+    void getNoOfWatchlistPages(int accountId, String session_id);
+    void addWatchListMoviesFromPage(int accountId, String session_id, int page);
+
+
 }
