@@ -120,8 +120,11 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
                 if (profileInfoModel != null) {
 
                     if ( profileInfoModel.getStatus_code() == 30) {
+
+
                         mView.showDialogMsg(mView.context().getResources().getString(R.string.error),
-                                mView.context().getResources().getString(R.string.incorrect_user_name_or_password));
+                               mView.context().getResources().getString(R.string.incorrect_user_name_or_password));
+                        mView.showDialogMsg("Error","getStatus_code=30");
                     } else  if (profileInfoModel.isFailure()) {
                         mView.showDialogMsg(mView.context().getResources().getString(R.string.error),
                                 mView.context().getResources().getString(R.string.error_retrieving_data));
@@ -146,6 +149,10 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
                 HttpException httpException = (HttpException) e;
 
                 if(httpException.code() == 401) {
+
+                    mView.showDialogMsg(mView.context().getResources().getString(R.string.error),
+                            mView.context().getResources().getString(R.string.incorrect_user_name_or_password));
+
                     Log.i("Status_error", httpException.getMessage());
                     mView.showDialogMsg(mView.context().getResources().getString(R.string.error),
                             mView.context().getResources().getString(R.string.incorrect_user_name_or_password));
