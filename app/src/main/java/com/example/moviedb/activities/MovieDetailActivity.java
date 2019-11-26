@@ -27,9 +27,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.moviedb.DB.InitializeDatabase;
-import com.example.moviedb.Entity.Movie;
-import com.example.moviedb.Entity.MyList;
-import com.example.moviedb.Entity.MyRateList;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.MovieAdapter2;
 import com.example.moviedb.common.BaseActivity;
@@ -164,7 +161,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
     }
 
     private void init(){
-        //You have to change here
+        //check condition to change list icon
         movieCount=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
         if(movieCount==1){
 
@@ -176,7 +173,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             changeMyListIcon("plusIcon");
         }
 
-        //You have to change here
+         //check condition to show rating
         ratedMovieCount=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
 
         if(ratedMovieCount==1){
@@ -214,11 +211,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
         //if internet isn't availabel ,load data from db
 
-        //You need to change here must load from 2 databasse
         if (!mNetwork.isNetworkAvailable()) {
-            int count=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
+            int countInRateInfoModel=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
+            int countInListInfoModel=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
 
-            if(count==1) {
+            if(countInRateInfoModel==1) {
                 MovieRateInfoModel movie = dbHelper.myRateListDAO().getMovie(mmovieId, accountId);
 
                 movieTitle.setText(movie.getTitle());
@@ -228,6 +225,37 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                     adult.setText("18+");
                 } else {
                     adult.setText("");
+                    adult.setVisibility(View.GONE);
+                }
+
+                duration.setVisibility(View.GONE);
+                movieOverview.setText(movie.getOverview());
+                float rateValue = dbHelper.myRateListDAO().getRatedValueByMovieId(mmovieId, accountId);
+                ratingBar.setRating((float) (rateValue / 2.0));
+
+                Glide.with(MovieDetailActivity.this)
+                        .load(R.drawable.img_placeholder)
+                        .into(moviePoster);
+                Bitmap bitmapImage = BlurImage.fastblur(BitmapFactory.decodeResource(getResources(), R.drawable.img_placeholder), (float) 0.08, 5);
+
+                Glide.with(MovieDetailActivity.this)
+                        .load(bitmapImage)
+                        .into(ivBackground);
+
+
+                hideLabelMoreLikeThis();
+                hideLabelRecommendation();
+            }else if(countInListInfoModel==1){
+                MovieInfoModel movie = dbHelper.myListDAO().getMovie(mmovieId,accountId);
+
+                movieTitle.setText(movie.getTitle());
+                releaseDate.setText(movie.getRelease_date());
+
+                if (movie.isAdult()) {
+                    adult.setText("18+");
+                } else {
+                    adult.setText("");
+                    adult.setVisibility(View.GONE);
                 }
 
                 duration.setVisibility(View.GONE);
@@ -297,9 +325,6 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
                                 mPresenter.addOrRemoveMovieFromWatchList(accountId,sessionId, new WatchListBody("movie", mmovieId, true));
 
-                                dbHelper.myListDAO().insert(new MyList(mmovieId, accountId));
-
-
                                 strMovieName = movieTitle.getText().toString();
                                 strReleaseDate = releaseDate.getText().toString();
                                 strIsAdult = adult.getText().toString();
@@ -311,16 +336,9 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
                                     blisAdult = true;
                                 }
 
-                                //if movie exist in movie db update the info
-                                //else insert new movie info
-                                countOfMovie = dbHelper.movieDAO().getMoviebyId(mmovieId);
-                                if (countOfMovie == 0) {
+                                //add movie to movieInfoModel
 
-                                    dbHelper.movieDAO().insert(new Movie(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview ));
-                                } else if (countOfMovie == 1) {
-
-                                    dbHelper.movieDAO().updateMovieByMovieId(mmovieId, strMovieName, strReleaseDate, blisAdult, strDuration, strOverview );
-                                }
+                                dbHelper.myListDAO().insert(new MovieInfoModel(mmovieId,accountId,blisAdult,strReleaseDate,strMovieName,moviePosterPath,strOverview));
 
                                 changeMyListIcon("checkIcon");
                             }
@@ -603,18 +621,18 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
         movieTitle.setText(movieInfoModel.getTitle());
         releaseDate.setText(movieInfoModel.getRelease_date());
-        String strIsAdult="";
-        if(movieInfoModel.isAdult()== true){
+        if(movieInfoModel.isAdult()){
             strIsAdult="18+";
             adult.setText(strIsAdult);
         }
         else{
             adult.setText("");
+            adult.setVisibility(View.GONE);
         }
         int runtimeMins=movieInfoModel.getRuntime();
         int hr=runtimeMins/60;
         int mins=runtimeMins-(hr*60);
-        String strmins="";
+        String strmins;
         if(mins<10){
            strmins= "0"+mins+" min";
         }else{
@@ -656,10 +674,10 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
 
     @Override
     public void changeMyListIcon(String status) {
-        if(status=="checkIcon"){
+        if(status.equals("checkIcon")){
             plusbtn.setImageResource(R.drawable.icons8_checked_24);
         }
-        else if(status=="plusIcon"){
+        else if(status.equals("plusIcon")){
             plusbtn.setImageResource(R.drawable.icons8_plus_24);
         }
 
