@@ -35,7 +35,8 @@ public class SharePreferenceHelper {
 		editor.putInt(USER_ID_KEY, id);
 		editor.commit();
 
-		Log.i("Username", sharedPreference.getString(USER_NAME_KEY,""));
+		Log.i("account", sharedPreference.getString(USER_NAME_KEY,""));
+		Log.i("account", sharedPreference.getInt(USER_ID_KEY,-100) + "");
 	}
 	public String getSessionId() {
 		return sharedPreference.getString(SESSION_ID_KEY, "");

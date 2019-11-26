@@ -11,6 +11,7 @@ import com.example.moviedb.model.MovieRateInfoModel;
 import com.example.moviedb.model.MovieRateListModel;
 import com.example.moviedb.mvp.view.HomeView;
 import com.example.moviedb.util.ServiceHelper;
+import com.example.moviedb.util.SharePreferenceHelper;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
     private int mAccount_Id;
     public InitializeDatabase dbHelper;
 
+    private SharePreferenceHelper mSharePreferenceHelper;
+
     public HomePresenterImpl(MovieInteractor interactor, String mSession_Id, int mAccount_Id)
     {
         this.interactor = interactor;
@@ -37,7 +40,10 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
     @Override
     public void locateDataFromApi() {
         dbHelper = InitializeDatabase.getInstance(this.homeView.context());
-
+        mSharePreferenceHelper = new SharePreferenceHelper(this.homeView.context());
+        mAccount_Id = mSharePreferenceHelper.getUserId();
+        mSession_Id = mSharePreferenceHelper.getSessionId();
+        Log.i("accountInLocateData", mAccount_Id + "");
         //For Rate and Watchlist
         getNoOfRatePages(mAccount_Id, mSession_Id);
         getNoOfWatchlistPages(mAccount_Id, mSession_Id);
@@ -235,6 +241,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
         //not to get data from cache-------
         ServiceHelper.removeFromCache("account/"+ accountId + "/rated/movies");
 
+
         this.interactor.getOwnRatedMovies(accountId, session_id, 1)
                 .subscribe(new Observer<MovieRateListModel>() {
                     @Override
@@ -247,7 +254,8 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
                         if (movieRateListModel != null) {
                             if(!movieRateListModel.getResults().isEmpty()) {
                                 ratePages = movieRateListModel.getTotal_pages();
-                                for (int i = 0; i < ratePages; i++) {
+                                Log.i("AccountIdInRatePages", accountId + "  " + ratePages);
+                                for (int i = 1; i < ratePages + 1; i++) {
                                     addRatedMoviesFromPage(accountId, session_id, i);
                                 }
                             }
@@ -271,6 +279,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
         //not to get data from cache-------
         ServiceHelper.removeFromCache("account/"+ accountId + "/rated/movies");
 
+        Log.i("page", accountId + "");
         this.interactor.getOwnRatedMovies(accountId, session_id, page)
                 .subscribe(new Observer<MovieRateListModel>() {
                     @Override
@@ -281,16 +290,19 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
                     @Override
                     public void onNext(MovieRateListModel movieListModel) {
 
+                        Log.i("page", "page1");
                         if (movieListModel != null) {
-
+                            Log.i("page", "page2");
                             if (!movieListModel.getResults().isEmpty()) {
                                 List<MovieRateInfoModel> movieRateList = movieListModel.getResults();
+                                Log.i("pageAccount1", movieRateList.size() + "  " );
 
                                 for(MovieRateInfoModel movie: movieRateList) {
                                     movie.setAccountId(accountId);
                                 }
 
                                 dbHelper.myRateListDAO().insertAll(movieRateList);
+                                Log.i("pageAccount", dbHelper.myRateListDAO().getMyRatedMovies(mAccount_Id).size()+"");
                             }
 
                         } else {
@@ -326,7 +338,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
                         if (movieListModel != null) {
                             if(!movieListModel.getResults().isEmpty()) {
                                 watchlistPages = movieListModel.getTotal_pages();
-                                for (int i = 0; i < watchlistPages; i++) {
+                                for (int i = 1; i < watchlistPages + 1; i++) {
                                     addWatchListMoviesFromPage(accountId, session_id, i);
                                 }
                             }
@@ -363,6 +375,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
 
                             if (!movieListModel.getResults().isEmpty()) {
                                 List<MovieInfoModel> movieWatchList = movieListModel.getResults();
+
 
                                 for(MovieInfoModel movie: movieWatchList) {
                                     movie.setAccountId(accountId);

@@ -118,6 +118,7 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
         mSharePreferenceHelper = new SharePreferenceHelper(context());
         mSessionId = mSharePreferenceHelper.getSessionId();
         mAccountId = mSharePreferenceHelper.getUserId();
+        Log.i("accountInHomeFrag", mAccountId + "");
 
 
         mPresenter = new HomePresenterImpl(new MovieInteractor(mService), mSessionId, mAccountId);

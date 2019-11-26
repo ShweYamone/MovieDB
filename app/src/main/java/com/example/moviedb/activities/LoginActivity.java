@@ -80,7 +80,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
     private void init() {
         mService = ServiceHelper.getClient(this);
 
-
         mSharePreferenceHelper = new SharePreferenceHelper(this);
 
         mPresenter = new LoginPresenterImpl(new LoginInteractor(this.mService), new AccountInteractor(this.mService));
@@ -137,7 +136,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Override
     public void onLoginComplete() {
 
-        mSharePreferenceHelper.setUserName_Id(etUserName.getText().toString(), 1);
+      //  mSharePreferenceHelper.setUserName_Id(etUserName.getText().toString(), );
 
         Intent intent = MainActivity.getMainActivityIntent(context());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

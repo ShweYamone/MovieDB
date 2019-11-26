@@ -223,6 +223,7 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
 
                     @Override
                     public void onNext(AccountModel accountModel) {
+                        Log.i("accountId", accountModel.getId() + "");
                         mView.setUserName_ID(accountModel.getName(), accountModel.getId());
                     }
 
