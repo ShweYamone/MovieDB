@@ -230,7 +230,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginHorizontal="@dimen/margin_normal"
             android:layout_gravity="center_horizontal">
 
 
@@ -244,7 +243,7 @@
                 android:textColor="@color/color_grey_stroke"
                 android:textSize="@dimen/txt_size_ex_large"
                 android:fontFamily="@font/sourcesanspro"
-                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginHorizontal="@dimen/margin_normal"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -252,7 +251,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/margin_normal"
-                android:layout_marginHorizontal="@dimen/margin_normal"
                 android:layout_marginBottom="@dimen/margin_small"
                 android:layout_gravity="center_horizontal">
 
