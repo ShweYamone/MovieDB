@@ -75,6 +75,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
                         android:orientation="horizontal">
 
                         <TextView
@@ -96,8 +97,7 @@
                             android:fontFamily="@font/sourcesanspro"
                             android:textAllCaps="false"
                             android:textColor="@color/colorWhite"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:background="@drawable/rounded_button"
+                            android:background="@drawable/bg_button4"
                             android:layout_margin="@dimen/margin_small"/>
 
                     </LinearLayout>
@@ -110,6 +110,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_small"
                         android:orientation="horizontal">
 
                         <TextView
@@ -131,8 +132,7 @@
                             android:fontFamily="@font/sourcesanspro"
                             android:textColor="@color/colorWhite"
                             android:textAllCaps="false"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:background="@drawable/rounded_button"
+                            android:background="@drawable/bg_button4"
                             android:layout_margin="@dimen/margin_small"/>
 
                     </LinearLayout>
@@ -145,7 +145,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/txt_size_ex_small"
+                        android:layout_marginTop="@dimen/margin_small"
                         android:orientation="horizontal">
 
                         <TextView
@@ -167,8 +167,7 @@
                             android:fontFamily="@font/sourcesanspro"
                             android:textColor="@color/colorWhite"
                             android:textAllCaps="false"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:background="@drawable/rounded_button"
+                            android:background="@drawable/bg_button4"
                             android:layout_margin="@dimen/margin_small"/>
 
                     </LinearLayout>
@@ -181,7 +180,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/txt_size_ex_small"
+                        android:layout_marginTop="@dimen/margin_small"
                         android:orientation="horizontal">
 
                         <TextView
@@ -203,8 +202,7 @@
                             android:fontFamily="@font/sourcesanspro"
                             android:textColor="@color/colorWhite"
                             android:textAllCaps="false"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:background="@drawable/rounded_button"
+                            android:background="@drawable/bg_button4"
                             android:layout_margin="@dimen/margin_small"/>
 
                     </LinearLayout>
