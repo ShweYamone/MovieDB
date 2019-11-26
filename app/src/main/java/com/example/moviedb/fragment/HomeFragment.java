@@ -3,6 +3,7 @@ package com.example.moviedb.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -136,8 +137,11 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
 
         //have internet connection
         else {
+            mPresenter.onAttachView(this);
             if(mSharePreferenceHelper.isLogin()) {
                 mPresenter.locateDataFromApi();
+
+                Log.i("page", "Done");
             }
 
             layoutForHavingInternet.setVisibility(View.VISIBLE);
@@ -172,9 +176,6 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
             shimmerFrameLayout.startShimmerAnimation();
 
 
-
-
-            mPresenter.onAttachView(this);
             //For rate and watchlist
             mSharePreferenceHelper = new SharePreferenceHelper(context());
 
