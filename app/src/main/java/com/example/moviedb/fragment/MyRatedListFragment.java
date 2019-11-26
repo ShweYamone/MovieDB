@@ -153,7 +153,13 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
     @Override
     public void onResume() {
         super.onResume();
-        showRatedMovieList(dbHelper.myRateListDAO().getMyRatedMovies(mAccountId));
+        mSharePreferenceHelper = new SharePreferenceHelper(context());
+
+        if(mSharePreferenceHelper.isLogin()) {
+            dbHelper = InitializeDatabase.getInstance(context());
+            showRatedMovieList(dbHelper.myRateListDAO().getMyRatedMovies(mAccountId));
+        }
+
 
     }
 
