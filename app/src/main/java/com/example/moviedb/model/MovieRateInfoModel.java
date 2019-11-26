@@ -36,11 +36,11 @@ public class MovieRateInfoModel implements Serializable, Pageable {
     @ColumnInfo(name = "overview")
     private String overview;
 
-    public MovieRateInfoModel(int id, int accountId, boolean adult, String releaseDate, String title, String poster_path, float rating, String overview) {
+    public MovieRateInfoModel(int id, int accountId, boolean adult, String release_date, String title, String poster_path, float rating, String overview) {
         this.id = id;
         this.accountId = accountId;
         this.adult = adult;
-        this.release_date = releaseDate;
+        this.release_date = release_date;
         this.title = title;
         this.poster_path = poster_path;
         this.rating = rating;

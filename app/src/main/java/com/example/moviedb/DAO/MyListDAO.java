@@ -8,6 +8,8 @@ import androidx.room.Query;
 
 import com.example.moviedb.Entity.Movie;
 import com.example.moviedb.Entity.MyList;
+import com.example.moviedb.model.MovieInfoModel;
+import com.example.moviedb.model.MovieRateInfoModel;
 
 import java.util.List;
 
@@ -30,6 +32,16 @@ public interface MyListDAO {
     void deleteById(int movieId,int accountId);
 
 
+    //MovieInfoModel Section................................
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<MovieInfoModel> movieWatchListModel);
+
+    @Query("SELECT * FROM MovieInfoModel Where MovieInfoModel.accountId=:accountId")
+    List<MovieInfoModel> getMyWatchlistMovies(int accountId);
+
+    @Query("DELETE FROM MovieInfoModel")
+    void deleteAllFromMovieRateInfoModel();
 
 
 }

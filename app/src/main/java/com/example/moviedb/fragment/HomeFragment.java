@@ -26,6 +26,7 @@ import com.example.moviedb.mvp.presenter.HomePresenterImpl;
 import com.example.moviedb.mvp.view.HomeView;
 import com.example.moviedb.util.Network;
 import com.example.moviedb.util.ServiceHelper;
+import com.example.moviedb.util.SharePreferenceHelper;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
@@ -89,6 +90,10 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
 
     private MyanProgressDialog mDialog;
 
+    private SharePreferenceHelper mSharePreferenceHelper;
+    private String mSessionId;
+    private int mAccountId;
+
     private Network mNetwork;
 
     private int page = 1;
@@ -109,7 +114,12 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
 
         mService = ServiceHelper.getClient(this.getActivity());
 
-        mPresenter = new HomePresenterImpl(new MovieInteractor(mService));
+        mSharePreferenceHelper = new SharePreferenceHelper(context());
+        mSessionId = mSharePreferenceHelper.getSessionId();
+        mAccountId = mSharePreferenceHelper.getUserId();
+
+
+        mPresenter = new HomePresenterImpl(new MovieInteractor(mService), mSessionId, mAccountId);
         init();
 
     }
@@ -122,6 +132,8 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
         if (!mNetwork.isNetworkAvailable()) {
             layoutForHavingInternet.setVisibility(View.GONE);
             layoutForNoInternet.setVisibility(View.VISIBLE);
+
+
         }
 
         //have internet connection
@@ -155,7 +167,18 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
 
             swipeRefreshLayout.setOnRefreshListener(this);
             shimmerFrameLayout.startShimmerAnimation();
+
+
+
+
             mPresenter.onAttachView(this);
+            //For rate and watchlist
+            mSharePreferenceHelper = new SharePreferenceHelper(context());
+
+            if(mSharePreferenceHelper.isLogin()) {
+                mPresenter.locateDataFromApi();
+            }
+
             mPresenter.onUIReady();
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {

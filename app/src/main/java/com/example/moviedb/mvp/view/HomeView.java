@@ -11,4 +11,5 @@ public interface HomeView extends BaseView {
     void showPopularMovieList(List<MovieInfoModel> movieInfoModelList);
     void resetPageNumberToDefault();
     void showNoMovieInfo();
+
 }

@@ -89,6 +89,8 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private SharePreferenceHelper mSharePreferenceHelper;
 
+    private InitializeDatabase dbHelper;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_profile;
@@ -112,6 +114,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
         if(mSharePreferenceHelper.isLogin()) {
 
+            dbHelper = InitializeDatabase.getInstance(context());
 
             mPresenter = new ProfilePresenterImpl(new MovieInteractor(mService), mSession_Id, mAccountId);
 
@@ -136,11 +139,12 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             recyclerViewWatchList.setLayoutManager(new GridLayoutManager(this.getActivity(),3));
             recyclerViewWatchList.addItemDecoration(new ItemOffsetDecoration(2));
             recyclerViewWatchList.setAdapter(mAdapter);
-            recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
+          //  recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
 
+            showMyWatchList(dbHelper.myListDAO().getMyWatchlistMovies(mAccountId));
 
-            mPresenter.onAttachView(this);
-            mPresenter.onUIReady();
+            //mPresenter.onAttachView(this);
+            //mPresenter.onUIReady();
 
 
             btnLogOut.setOnClickListener(new View.OnClickListener(){
@@ -267,4 +271,9 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        showMyWatchList(dbHelper.myListDAO().getMyWatchlistMovies(mAccountId));
+    }
 }

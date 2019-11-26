@@ -24,6 +24,7 @@
 
             <ImageView
                 android:id="@+id/iv_movie_poster"
+                android:src="@drawable/img_placeholder"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
