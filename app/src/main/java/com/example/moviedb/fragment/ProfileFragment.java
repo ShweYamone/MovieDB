@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.moviedb.DB.InitializeDatabase;
@@ -23,7 +24,9 @@ import com.example.moviedb.R;
 import com.example.moviedb.activities.LoginActivity;
 import com.example.moviedb.activities.MainActivity;
 import com.example.moviedb.adapters.MovieAdapter;
+import com.example.moviedb.adapters.MovieWatchlistAdapter;
 import com.example.moviedb.common.BaseFragment;
+import com.example.moviedb.common.GridItemDecoration;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
 import com.example.moviedb.interactor.MovieInteractor;
@@ -72,7 +75,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     LinearLayout layoutAlreadyLogin;
 
 
-    private MovieAdapter mAdapter;
+    private MovieWatchlistAdapter mAdapter;
 
     private ServiceHelper.ApiService mService;
 
@@ -107,7 +110,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
         mAccountId = mSharePreferenceHelper.getUserId();
 
-        mAdapter = new MovieAdapter();
+        mAdapter = new MovieWatchlistAdapter();
 
         mService = ServiceHelper.getClient(this.getActivity());
 
@@ -134,9 +137,9 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
                 }
             });
 
-            recyclerViewWatchList.setHasFixedSize(true);
-            recyclerViewWatchList.setLayoutManager(new GridLayoutManager(this.getActivity(),3));
-            recyclerViewWatchList.addItemDecoration(new ItemOffsetDecoration(2));
+          //  recyclerViewWatchList.setHasFixedSize(true);
+            recyclerViewWatchList.setLayoutManager(new StaggeredGridLayoutManager(3,GridLayoutManager.VERTICAL));
+            recyclerViewWatchList.addItemDecoration(new GridItemDecoration(0, 3));
             recyclerViewWatchList.setAdapter(mAdapter);
           //  recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
 

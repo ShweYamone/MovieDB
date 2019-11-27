@@ -5,13 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.moviedb.R;
@@ -26,17 +23,17 @@ import butterknife.ButterKnife;
 
 import static com.example.moviedb.util.AppConstant.BASE_IMG_URL;
 
-public class MovieAdapter extends BaseAdapter {
+public class MovieWatchlistAdapter extends BaseAdapter {
     @Override
     protected RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.watchlist_item_movie,parent,false);
 
-        return new MovieAdapter.ViewHolder(view);
+        return new MovieWatchlistAdapter.ViewHolder(view);
     }
 
     @Override
     protected void onBindCustomViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((MovieAdapter.ViewHolder)holder).bindView((MovieInfoModel)getItemsList().get(position),position);
+        ((MovieWatchlistAdapter.ViewHolder)holder).bindView((MovieInfoModel)getItemsList().get(position),position);
     }
 
     @Override
@@ -76,6 +73,16 @@ public class MovieAdapter extends BaseAdapter {
 
         public void bindView(MovieInfoModel model, int position) {
 
+            Random random = new Random();
+
+            int height = random.nextInt(500 - 400 + 1) + 400;
+            Log.i("height", height + "");
+
+            this.mMovieModel = model;
+
+            ivMoviePoster.setMinimumHeight(height);
+            //    ivMoviePoster.setLayoutParams(params);
+
             if(model.getPoster_path() == null || model.getPoster_path().equals("")) {
                 Glide.with(context)
                         .load(R.drawable.img_placeholder)
@@ -90,3 +97,4 @@ public class MovieAdapter extends BaseAdapter {
         }
     }
 }
+
