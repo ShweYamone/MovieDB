@@ -212,6 +212,33 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         //if internet isn't availabel ,load data from db
 
         if (!mNetwork.isNetworkAvailable()) {
+
+            ViewGroup viewGroup = findViewById(android.R.id.content);
+
+            //then we will inflate the custom alert dialog xml that we created
+            View dialogView = LayoutInflater.from(MovieDetailActivity.this).inflate(R.layout.custom_dialog_no_internet, viewGroup, false);
+
+            //Now we need an AlertDialog.Builder object
+            AlertDialog.Builder builder = new AlertDialog.Builder(MovieDetailActivity.this);
+
+            //setting the view of the builder to our custom view that we already inflated
+            builder.setView(dialogView);
+
+            //finally creating the alert dialog and displaying it
+            AlertDialog alertDialog = builder.create();
+
+
+            // if button is clicked, close the custom dialog
+            TextView ok = dialogView.findViewById(R.id.tv_ok);
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+
+            alertDialog.show();
+
             int countInRateInfoModel=dbHelper.myRateListDAO().getRatedMovieCountbyId(mmovieId,accountId);
             int countInListInfoModel=dbHelper.myListDAO().getMoviebyId(mmovieId,accountId);
 

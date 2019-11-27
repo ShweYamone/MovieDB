@@ -55,7 +55,6 @@ public class MovieAdapter2 extends BaseAdapter {
         @BindView(R.id.ll_cardview)
         LinearLayout cv_item;
 
-        private MovieInfoModel mMovieModel;
 
         private Context context;
 
@@ -64,19 +63,13 @@ public class MovieAdapter2 extends BaseAdapter {
             super(itemView);
             context = itemView.getContext();
             ButterKnife.bind(this,itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,mMovieModel.getId()));
 
-                }
-            });
         }
 
 
         public void bindView(MovieInfoModel model, int position) {
 
-            this.mMovieModel = model;
+
             //resize item view of editor car list
             Display display = ((Activity) cv_item.getContext()).getWindowManager().getDefaultDisplay();
             Point size = new Point();
@@ -106,8 +99,13 @@ public class MovieAdapter2 extends BaseAdapter {
                         .into(ivMoviePoster);
             }
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,model.getId()));
 
-
+                }
+            });
 
         }
     }

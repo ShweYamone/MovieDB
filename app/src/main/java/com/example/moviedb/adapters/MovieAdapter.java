@@ -54,28 +54,17 @@ public class MovieAdapter extends BaseAdapter {
         @BindView(R.id.iv_movie_poster)
         ImageView ivMoviePoster;
 
-
-        private MovieInfoModel mMovieModel;
-
         private Context context;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             context = itemView.getContext();
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
+            
 
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,mMovieModel.getId()));
-                }
-            });
         }
 
         public void bindView(MovieInfoModel model, int position) {
-
             if(model.getPoster_path() == null || model.getPoster_path().equals("")) {
                 Glide.with(context)
                         .load(R.drawable.img_placeholder)
@@ -87,6 +76,13 @@ public class MovieAdapter extends BaseAdapter {
                         .into(ivMoviePoster);
             }
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,model.getId()));
+                }
+            });
         }
     }
 }
