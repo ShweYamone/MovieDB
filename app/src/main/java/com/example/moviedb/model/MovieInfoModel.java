@@ -36,7 +36,8 @@ public class MovieInfoModel implements Serializable, Pageable {
 
     int runtime;
 
-    @ColumnInfo(name = "isRemarked")
+
+    @ColumnInfo(name = "isRemarked",defaultValue = "false")
     boolean isRemarked;
 
 
