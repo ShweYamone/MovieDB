@@ -38,6 +38,11 @@ public interface MyListDAO {
     @Query("Delete from MovieInfoModel where id=:movieId and accountId=:accountId")
     void deleteById(int movieId,int accountId);
 
+    @Query("Update MovieInfoModel set isRemarked=:boolValue where id=:movieId")
+    void changeRemarkValue(boolean boolValue,int movieId);
+
+    @Query("Select isRemarked from MovieInfoModel where id=:movieId")
+    boolean getRemarkValue(int movieId);
 
 
 }
