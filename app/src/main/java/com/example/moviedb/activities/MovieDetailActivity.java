@@ -33,6 +33,7 @@ import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.custom_control.BlurImage;
 import com.example.moviedb.custom_control.MyanProgressDialog;
+import com.example.moviedb.delegate.MovieDelegate;
 import com.example.moviedb.interactor.MovieDetailInteractor;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.interactor.WatchListInteractor;
@@ -51,7 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import static com.example.moviedb.util.AppConstant.BASE_IMG_URL;
 
-public class MovieDetailActivity extends BaseActivity implements MovieDetailView {
+public class MovieDetailActivity extends BaseActivity implements MovieDelegate, MovieDetailView {
 
 
 
@@ -194,8 +195,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
         mPresenter = new MovieDetailPresenterImpl(new MovieDetailInteractor(this.mService),new MovieInteractor(this.mService),new WatchListInteractor(this.mService));
 
 
-        _SIMILAR = new MovieAdapter2();
-        _RECOMMEND=new MovieAdapter2();
+        _SIMILAR = new MovieAdapter2(this);
+        _RECOMMEND=new MovieAdapter2(this);
         similarMovieRecyclerView.setHasFixedSize(true);
         similarMovieRecyclerView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
         similarMovieRecyclerView.addItemDecoration(new ItemOffsetDecoration(2));
@@ -708,6 +709,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieDetailView
             plusbtn.setImageResource(R.drawable.icons8_plus_24);
         }
 
+
+    }
+
+    @Override
+    public void onGiveRemark(int movieId) {
 
     }
 }

@@ -21,6 +21,7 @@ import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
 import com.example.moviedb.custom_control.MyanProgressDialog;
+import com.example.moviedb.delegate.MovieDelegate;
 import com.example.moviedb.interactor.MovieInteractor;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.mvp.presenter.HomePresenterImpl;
@@ -35,7 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 import retrofit2.http.GET;
 
-public class HomeFragment extends BaseFragment implements HomeView , SwipeRefreshLayout.OnRefreshListener{
+public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeView , SwipeRefreshLayout.OnRefreshListener{
 
 
 
@@ -106,10 +107,10 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
 
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
-        _NowShowing = new MovieAdapter2();
-        _Popular = new MovieAdapter2();
-        _TopRated = new MovieAdapter2();
-        _Upcoming = new MovieAdapter2();
+        _NowShowing = new MovieAdapter2(this);
+        _Popular = new MovieAdapter2(this);
+        _TopRated = new MovieAdapter2(this);
+        _Upcoming = new MovieAdapter2(this);
 
         mDialog = new MyanProgressDialog(this.getActivity());
 
@@ -305,5 +306,10 @@ public class HomeFragment extends BaseFragment implements HomeView , SwipeRefres
         this.mPresenter.getUpComingMovies();
         this.mPresenter.getTopRatedMovies();
         this.mPresenter.getPopularMovies();
+    }
+
+    @Override
+    public void onGiveRemark(int movieId) {
+
     }
 }
