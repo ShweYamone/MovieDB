@@ -1,6 +1,8 @@
 package com.example.moviedb.model;
 
-public class AccountModel {
+import com.example.moviedb.common.Pageable;
+
+public class AccountModel implements Pageable {
     int id;
     String username;
 

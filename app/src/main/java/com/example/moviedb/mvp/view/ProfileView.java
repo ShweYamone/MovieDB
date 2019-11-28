@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface ProfileView extends BaseView {
 
-    void showUserInfo();
-
     void showMyWatchList(List<MovieInfoModel> movieInfoModelList);
     void showMoreWatchList(List<MovieInfoModel> movieInfoModelList);
     void resetPageNumberToDefault();

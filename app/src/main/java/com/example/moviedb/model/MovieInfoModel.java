@@ -36,6 +36,8 @@ public class MovieInfoModel implements Serializable, Pageable {
 
     int runtime;
 
+    int height;
+
 
     public MovieInfoModel(int id, int accountId, boolean adult, String release_date, String title, String poster_path, String overview) {
         this.id = id;
@@ -123,5 +125,11 @@ public class MovieInfoModel implements Serializable, Pageable {
         this.runtime = runtime;
     }
 
+    public int getHeight() {
+        return height;
+    }
 
+    public void setHeight(int height) {
+        this.height = height;
+    }
 }

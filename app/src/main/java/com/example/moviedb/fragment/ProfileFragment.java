@@ -30,6 +30,7 @@ import com.example.moviedb.common.GridItemDecoration;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
 import com.example.moviedb.interactor.MovieInteractor;
+import com.example.moviedb.model.AccountModel;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieRateInfoModel;
 import com.example.moviedb.mvp.presenter.ProfilePresenterImpl;
@@ -42,6 +43,7 @@ import com.example.moviedb.util.SharePreferenceHelper;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 
@@ -52,18 +54,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     @BindView(R.id.btnSignIn)
     Button btnSignIn;
-
-    @BindView(R.id.btnLogOut)
-    Button btnLogOut;
-
-    @BindView(R.id.tvLetters)
-    TextView tvLetters;
-
-    @BindView(R.id.tvUserName)
-    TextView tvUserName;
-
-    @BindView(R.id.viewCircle)
-    View circleView;
 
     @BindView(R.id.recycler_watch_list_movie)
     RecyclerView recyclerViewWatchList;
@@ -81,8 +71,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
     private ProfilePresenterImpl mPresenter;
 
-    private SmartScrollListener mSmartScrollListener;
-
     private int page = 1;
 
     private String mSession_Id;
@@ -92,6 +80,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     private SharePreferenceHelper mSharePreferenceHelper;
 
     private InitializeDatabase dbHelper;
+    private static final String TAG = "ProfileFragment";
 
     @Override
     protected int getLayoutResource() {
@@ -123,44 +112,16 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
             layoutToLogin.setVisibility(View.GONE);
             layoutAlreadyLogin.setVisibility(View.VISIBLE);
 
-            showUserInfo();
-
-            mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
-                @Override
-                public void onListEndReach() {
-
-
-                    page++;
-                    Log.i("Page:", page+"");
-                    mPresenter.getWatchListByPaging(mSession_Id, page);
-
-                }
-            });
-
-          //  recyclerViewWatchList.setHasFixedSize(true);
             recyclerViewWatchList.setLayoutManager(new StaggeredGridLayoutManager(3,GridLayoutManager.VERTICAL));
             recyclerViewWatchList.addItemDecoration(new GridItemDecoration(0, 3));
+
+
+
             recyclerViewWatchList.setAdapter(mAdapter);
-          //  recyclerViewWatchList.addOnScrollListener(mSmartScrollListener);
 
             showMyWatchList(dbHelper.myListDAO().getMyWatchlistMovies(mAccountId));
+            Log.e(TAG, "init: " + mAdapter.getItemCount() + "");
 
-            //mPresenter.onAttachView(this);
-            //mPresenter.onUIReady();
-
-
-            btnLogOut.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    mSharePreferenceHelper.logoutSharePreference();
-                    Intent intent = MainActivity.getMainActivityIntent(v.getContext());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                    v.getContext().startActivity(intent);
-
-                }
-            });
         }
         else {
             layoutAlreadyLogin.setVisibility(View.GONE);
@@ -177,52 +138,18 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     }
 
 
-    private void changeCircleViewColor(char firstLetter) {
-
-
-        Drawable background = circleView.getBackground();
-
-        int letterInt = firstLetter % 5 + 1;
-
-        switch (letterInt) {
-
-            case 1: background.setTint(getResources().getColor(R.color.color_dark_palette1));break;
-            case 2: background.setTint(getResources().getColor(R.color.color_dark_palette2));break;
-            case 3: background.setTint(getResources().getColor(R.color.color_dark_palette3));break;
-            case 4: background.setTint(getResources().getColor(R.color.color_dark_palette4));break;
-            case 5: background.setTint(getResources().getColor(R.color.color_dark_palette5));break;
-
-           }
-    }
-
-
-    @Override
-    public void showUserInfo() {
-
-
-        String userName = mSharePreferenceHelper.getUserName();
-
-        changeCircleViewColor(userName.charAt(0));
-
-
-        String letters = userName.charAt(0) + "";
-
-        int spaceIndex = userName.indexOf(" ");
-        if(spaceIndex > 0) {
-            letters += userName.charAt(spaceIndex + 1);
-        }
-
-        tvUserName.setText(userName);
-
-        tvLetters.setText(letters.toUpperCase());
-    }
-
     public void showMyWatchList(List<MovieInfoModel> movieInfoModelList) {
         cvDataError.setVisibility(View.GONE);
 
         page = 1;
         mAdapter.clear();
+        Random random = new Random();
+
+        mAdapter.addHeader(new AccountModel(mAccountId, mSharePreferenceHelper.getUserName()));
+
         for (MovieInfoModel model: movieInfoModelList) {
+            int height = random.nextInt(500 - 400 + 1) + 400;
+            model.setHeight(height);
             mAdapter.add(model);
         }
     }
@@ -231,7 +158,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
     public void showMoreWatchList(List<MovieInfoModel> movieInfoModelList) {
         Log.i("Page", movieInfoModelList.size()+"");
         for (MovieInfoModel model: movieInfoModelList) {
-
             mAdapter.add(model);
             mAdapter.notifyDataSetChanged();
         }
