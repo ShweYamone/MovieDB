@@ -38,6 +38,9 @@ public class MovieInfoModel implements Serializable, Pageable {
 
     int height;
 
+    @ColumnInfo(name = "isRemarked")
+    boolean isRemarked;
+
 
     public MovieInfoModel(int id, int accountId, boolean adult, String release_date, String title, String poster_path, String overview) {
         this.id = id;
@@ -125,11 +128,20 @@ public class MovieInfoModel implements Serializable, Pageable {
         this.runtime = runtime;
     }
 
+<<<<<<< HEAD
     public int getHeight() {
         return height;
     }
 
     public void setHeight(int height) {
         this.height = height;
+=======
+    public boolean isRemarked() {
+        return isRemarked;
+    }
+
+    public void setRemarked(boolean remarked) {
+        isRemarked = remarked;
+>>>>>>> a66397d39c8cc33550bd7b3159affa978ccfc2a9
     }
 }

@@ -62,7 +62,7 @@ public class MovieAdapter extends BaseAdapter {
         @BindView(R.id.iv_movie_poster)
         ImageView ivMoviePoster;
 
-        @BindView()
+       // @BindView()
         ImageView ivRemark;
 
         private Context context;
@@ -90,7 +90,7 @@ public class MovieAdapter extends BaseAdapter {
             ivRemark.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
+
                 }
             });
 
