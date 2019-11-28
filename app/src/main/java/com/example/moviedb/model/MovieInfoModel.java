@@ -36,6 +36,10 @@ public class MovieInfoModel implements Serializable, Pageable {
 
     int runtime;
 
+    @ColumnInfo(name = "isRemarked")
+    boolean isRemarked;
+
+
 
     public MovieInfoModel(int id, int accountId, boolean adult, String release_date, String title, String poster_path, String overview) {
         this.id = id;
@@ -123,5 +127,11 @@ public class MovieInfoModel implements Serializable, Pageable {
         this.runtime = runtime;
     }
 
+    public boolean isRemarked() {
+        return isRemarked;
+    }
 
+    public void setRemarked(boolean remarked) {
+        isRemarked = remarked;
+    }
 }
