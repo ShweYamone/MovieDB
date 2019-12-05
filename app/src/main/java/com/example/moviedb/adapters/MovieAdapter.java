@@ -29,11 +29,6 @@ import static com.example.moviedb.util.AppConstant.BASE_IMG_URL;
 
 public class MovieAdapter extends BaseAdapter {
 
-    MovieDelegate delegate;
-
-    public MovieAdapter(MovieDelegate delegate) {
-        this.delegate = delegate;
-    }
 
     @Override
     protected RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType) {
@@ -62,9 +57,6 @@ public class MovieAdapter extends BaseAdapter {
         @BindView(R.id.iv_movie_poster)
         ImageView ivMoviePoster;
 
-       // @BindView()
-        ImageView ivRemark;
-
         private Context context;
 
         public ViewHolder(@NonNull View itemView) {
@@ -87,12 +79,6 @@ public class MovieAdapter extends BaseAdapter {
                         .into(ivMoviePoster);
             }
 
-            ivRemark.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

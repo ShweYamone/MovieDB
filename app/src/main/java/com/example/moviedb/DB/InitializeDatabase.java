@@ -8,15 +8,18 @@ import androidx.room.RoomDatabase;
 
 import com.example.moviedb.DAO.MyListDAO;
 import com.example.moviedb.DAO.MyRateListDAO;
+import com.example.moviedb.DAO.RemarkDAO;
 import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.model.MovieRateInfoModel;
+import com.example.moviedb.model.RemarkModel;
 
-@Database(entities = { MovieRateInfoModel.class, MovieInfoModel.class}, version = 1,exportSchema = false)
+@Database(entities = { MovieRateInfoModel.class, MovieInfoModel.class, RemarkModel.class}, version = 1,exportSchema = false)
 public abstract class InitializeDatabase extends RoomDatabase {
     private static InitializeDatabase INSTANCE;
 
     public abstract MyListDAO myListDAO();
     public abstract MyRateListDAO myRateListDAO();
+    public abstract RemarkDAO remarkDAO();
 
 
 
