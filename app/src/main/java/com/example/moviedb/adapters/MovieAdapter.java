@@ -1,6 +1,8 @@
 package com.example.moviedb.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +54,8 @@ public class MovieAdapter extends BaseAdapter {
 
     }
 
+ 
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_movie_poster)
@@ -78,6 +82,29 @@ public class MovieAdapter extends BaseAdapter {
                         .load(BASE_IMG_URL+model.getPoster_path())
                         .into(ivMoviePoster);
             }
+
+//            if(position%5==0 | position%5==1 ){
+//                Log.e("SPAN","postion in adapter is");
+//                itemView.setLayoutParams(new ViewGroup.LayoutParams(
+//                        ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT));
+//            }
+
+//            if(position%3==0){
+//                DisplayMetrics displaymetrics = new DisplayMetrics();
+//                ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//                //if you need three fix imageview in width
+//                int devicewidth = displaymetrics.widthPixels;
+//
+//                //if you need 4-5-6 anything fix imageview in height
+//                int deviceheight = displaymetrics.heightPixels;
+//
+//                itemView.getLayoutParams().width = devicewidth;
+//
+//                //if you need same height as width you can set devicewidth in holder.image_view.getLayoutParams().height
+//                 itemView.getLayoutParams().height = deviceheight;
+//            }
+
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

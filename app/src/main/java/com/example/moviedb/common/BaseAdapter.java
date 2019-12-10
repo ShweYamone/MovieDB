@@ -106,6 +106,7 @@ public abstract class BaseAdapter extends RecyclerView.Adapter {
                 @Override
                 public int getSpanSize(int position) {
                     int type = getItemViewType(position);
+
                     return type == BaseAdapter.VIEW_ITEM ? 1 : gridManager.getSpanCount();
                 }
             });

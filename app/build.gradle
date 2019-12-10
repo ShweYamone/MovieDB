@@ -100,5 +100,8 @@ dependencies {
 
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
+    //SpannedGridLayoutManager
+    implementation 'com.arasthel:spannedgridlayoutmanager:3.0.2'
+
 }
 apply plugin: 'com.google.gms.google-services'
