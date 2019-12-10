@@ -58,7 +58,7 @@ public class CustomAdapter extends BaseAdapter {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            context = itemView.getContext();
+            context = itemView.getContext().getApplicationContext();
             ButterKnife.bind(this, itemView);
         }
 

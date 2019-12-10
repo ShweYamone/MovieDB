@@ -38,7 +38,7 @@ public class SplashActivity extends BaseActivity {
                 startActivity(intent);
                 finish();
             }
-        },2700);
+        },2500);
 
     }
 }

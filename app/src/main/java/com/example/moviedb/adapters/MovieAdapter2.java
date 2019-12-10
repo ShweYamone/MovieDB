@@ -73,9 +73,7 @@ public class MovieAdapter2 extends BaseAdapter {
         @BindView(R.id.ll_cardview)
         LinearLayout cv_item;
 
-
         private Context context;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

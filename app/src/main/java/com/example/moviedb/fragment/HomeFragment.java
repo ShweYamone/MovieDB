@@ -195,7 +195,6 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
             swipeRefreshLayout.setOnRefreshListener(this);
             shimmerFrameLayout.startShimmerAnimation();
 
-
             //For rate and watchlist
             mSharePreferenceHelper = new SharePreferenceHelper(context());
             mPresenter.onUIReady();
@@ -237,9 +236,6 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
                 }
             });
         }
-
-
-
     }
 
     private void autoScroll() {
@@ -250,12 +246,14 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
                 position = linearLayoutManager.findFirstVisibleItemPosition();
 
                 if(forward) {
+                    if (position > _custom.getItemCount() - 1) position = _custom.getItemCount();
                     recyclerCustom.smoothScrollToPosition(++position);
                     if (position >= _custom.getItemCount() - 1) {
                         forward = !forward;
                     }
                 }
                 else {
+                    if(position < 0) position = 1;
                     recyclerCustom.smoothScrollToPosition(--position);
                     if (position <= 0) {
                         forward = !forward;

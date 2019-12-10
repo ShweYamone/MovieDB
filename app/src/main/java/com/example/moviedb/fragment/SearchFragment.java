@@ -63,7 +63,7 @@ public class SearchFragment extends BaseFragment implements SearchView {
 
     private int page = 1;
 
-    private String mQuery;
+    private String mQuery = "";
     private static final String TAG = "SearchFragment";
 
     @Override
@@ -88,8 +88,10 @@ public class SearchFragment extends BaseFragment implements SearchView {
 
                 page++;
                 Log.i("Page:", page+"");
-                if(!mQuery.equals(""))
-                    mPresenter.getMoviesByTitleWithPaging(mQuery, page);
+                    if(!mQuery.equals(""))
+                        mPresenter.getMoviesByTitleWithPaging(mQuery, page);
+
+
 
             }
         });
