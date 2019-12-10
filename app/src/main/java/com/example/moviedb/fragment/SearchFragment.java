@@ -64,8 +64,7 @@ public class SearchFragment extends BaseFragment implements SearchView {
     private int page = 1;
 
     private String mQuery;
-
-
+    private static final String TAG = "SearchFragment";
 
     @Override
     protected int getLayoutResource() {
@@ -89,8 +88,8 @@ public class SearchFragment extends BaseFragment implements SearchView {
 
                 page++;
                 Log.i("Page:", page+"");
-               // Toast.makeText(getContext(), page, Toast.LENGTH_SHORT).show();
-                mPresenter.getMoviesByTitleWithPaging(mQuery, page);
+                if(!mQuery.equals(""))
+                    mPresenter.getMoviesByTitleWithPaging(mQuery, page);
 
             }
         });
@@ -105,6 +104,7 @@ public class SearchFragment extends BaseFragment implements SearchView {
         recyclerSearchMovie.addOnScrollListener(mSmartScrollListener);
 
         etSearch.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -117,8 +117,10 @@ public class SearchFragment extends BaseFragment implements SearchView {
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                if(s.length() != 0) {
+                if(s.equals("")) {
+                    mAdapter.clear();
+                }
+                else if(s.length() != 0) {
 
                     ivSearchCancel.setColorFilter(ContextCompat.getColor(context(), R.color.color_cancel), android.graphics.PorterDuff.Mode.MULTIPLY);
 

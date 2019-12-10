@@ -88,8 +88,6 @@ public class MovieAdapter2 extends BaseAdapter {
 
 
         public void bindView(MovieInfoModel model, int position) {
-
-
             //resize item view of editor car list
             Display display = ((Activity) cv_item.getContext()).getWindowManager().getDefaultDisplay();
             Point size = new Point();

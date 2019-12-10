@@ -114,7 +114,9 @@ public class SeeAllActivity extends BaseActivity implements SeeAllView, SwipeRef
         });
 
         recyclerMovie.setHasFixedSize(true);
-        recyclerMovie.setLayoutManager(new GridLayoutManager(this,3));
+        GridLayoutManager manager = new GridLayoutManager(this, 3);
+
+        recyclerMovie.setLayoutManager(manager);
         recyclerMovie.addItemDecoration(new ItemOffsetDecoration(3));
         recyclerMovie.setAdapter(mAdapter);
         recyclerMovie.addOnScrollListener(mSmartScrollListener);
