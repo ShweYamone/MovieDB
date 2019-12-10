@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.MovieAdapter;
 import com.example.moviedb.common.BaseActivity;
+import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
 import com.example.moviedb.custom_control.MyanBoldTextView;
 import com.example.moviedb.custom_control.MyanProgressDialog;
@@ -115,27 +116,12 @@ public class SeeAllActivity extends BaseActivity implements SeeAllView, SwipeRef
             }
         });
 
-//        recyclerMovie.setHasFixedSize(true);
-//        recyclerMovie.setLayoutManager(new GridLayoutManager(this,2));
-//        recyclerMovie.addItemDecoration(new ItemOffsetDecoration(2));
 
+        recyclerMovie.setHasFixedSize(true);
+        GridLayoutManager manager = new GridLayoutManager(this, 3);
 
-        GridLayoutManager glm=new GridLayoutManager(this,2);
-//        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-//            @Override
-//            public int getSpanSize(int position) {
-//                Log.e("SPAN","postion is");
-//                switch(mAdapter.getItemViewType(position)) {
-//                    case 1:
-//                        return 2;
-//                    default:
-//                        return 1;
-//                }
-//
-//
-//            }
-//        });
-        recyclerMovie.setLayoutManager(glm);
+        recyclerMovie.setLayoutManager(manager);
+        recyclerMovie.addItemDecoration(new ItemOffsetDecoration(3));
 
         recyclerMovie.setAdapter(mAdapter);
         recyclerMovie.addOnScrollListener(mSmartScrollListener);

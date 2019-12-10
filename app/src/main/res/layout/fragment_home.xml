@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +22,6 @@
             />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/layoutHasInternetShow"
@@ -59,17 +58,27 @@
             android:layout_marginTop="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ScrollView
+
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/sv_home"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:orientation="vertical">
+
+                    <com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        app:msrv_gravity="start"
+                        app:msrv_ms_per_inch="100"
+                        android:id="@+id/rv_custom"/>
 
 
                     <LinearLayout
@@ -105,6 +114,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         android:id="@+id/rv_now_playing"/>
 
                     <LinearLayout
@@ -140,6 +150,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         android:id="@+id/rv_popular"/>
 
                     <LinearLayout
@@ -175,6 +186,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         android:id="@+id/rv_top_rated"/>
 
                     <LinearLayout
@@ -210,13 +222,14 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         android:id="@+id/rv_upcoming"
                         android:layout_marginBottom="@dimen/margin_small"/>
 
 
 
                 </LinearLayout>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 
@@ -269,6 +282,4 @@
 
     </LinearLayout>
 
-
-
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

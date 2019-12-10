@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 
 import com.example.moviedb.R;
@@ -22,6 +24,7 @@ import com.example.moviedb.fragment.MyRatedListFragment;
 import com.example.moviedb.fragment.ProfileFragment;
 import com.example.moviedb.fragment.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 
@@ -30,6 +33,11 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
+
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+
+    private Animation fab_show, fab_hide, bounce;
 
     public static Intent getMainActivityIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -54,17 +62,28 @@ public class MainActivity extends BaseActivity {
 
     }
     private void init(Bundle savedInstanceState) {
+
+        fab_show = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_show);
+        fab_hide = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_hide);
+
+        bounce = AnimationUtils.loadAnimation(this, R.anim.bounce);
+
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if (savedInstanceState != null) { // saved instance state, fragment may exist
             // just show the current instance
 
         } else {
+            fab.hide();
             // only create fragment if they haven't been instantiated already
             loadFragment(new HomeFragment());
         }
-
-
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+          //      fab.startAnimation(bounce);
+            }
+        });
     }
 
 
@@ -78,22 +97,23 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_home:
                     fragment = new HomeFragment();
                     loadFragment(fragment);
+                    hideFAB();
                     return true;
                 case R.id.navigation_search:
                     fragment = new SearchFragment();
                     loadFragment(fragment);
+                    showFAB();
                     return true;
-
                 case R.id.navigation_my_list:
                     fragment = new MyRatedListFragment();
                     loadFragment(fragment);
+                    hideFAB();
                     return true;
-
                 case R.id.navigation_profile:
                     fragment = new ProfileFragment();
                     loadFragment(fragment);
+                    hideFAB();
                     return true;
-
             }
             return false;
 
@@ -114,9 +134,16 @@ public class MainActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    private void showFAB() {
+        fab.show();
+        fab.startAnimation(fab_show);
+        fab.setClickable(true);
+    }
 
-
-
-
+    private void hideFAB() {
+        fab.hide();
+        fab.startAnimation(fab_hide);
+        fab.setClickable(false);
+    }
 
 }

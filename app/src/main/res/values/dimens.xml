@@ -24,6 +24,8 @@
     <dimen name="margin_xxxlarge">86dp</dimen>
     <dimen name="margin_xxxxlarge">110dp</dimen>
 
+    <dimen name="fab_size_normal">70dp</dimen>
+
     <dimen name="edittext_height">46dp</dimen>
 
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.moviedb.R;
 import com.example.moviedb.activities.MovieDetailActivity;
 import com.example.moviedb.common.BaseAdapter;
+import com.example.moviedb.common.Pageable;
 import com.example.moviedb.delegate.MovieDelegate;
 import com.example.moviedb.model.MovieInfoModel;
 
@@ -31,11 +33,19 @@ import static com.example.moviedb.util.AppConstant.BASE_IMG_URL;
 
 public class MovieAdapter extends BaseAdapter {
 
+    private int SINGLE_VIEW = 12345;
+    private int MULTI_VIEW = 23456;
 
     @Override
     protected RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie,parent,false);
 
+        View view;
+        if (viewType == SINGLE_VIEW) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_banner,parent,false);
+        }
+        else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie,parent,false);
+        }
         return new MovieAdapter.ViewHolder(view);
     }
 
@@ -54,7 +64,36 @@ public class MovieAdapter extends BaseAdapter {
 
     }
 
- 
+    @Override
+    public int getItemViewType(int position) {
+
+        Pageable item = getItemsList().get(position);
+
+        if (position%4 == 0) {
+            return SINGLE_VIEW;
+        } else if (item instanceof MovieInfoModel){
+            return MULTI_VIEW;
+        } else {
+            return getItemViewType(position);
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int type = getItemViewType(position);
+                    return type == MULTI_VIEW ? 1 : gridManager.getSpanCount();
+                }
+            });
+        }
+    }
+
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -78,35 +117,18 @@ public class MovieAdapter extends BaseAdapter {
                         .into(ivMoviePoster);
             }
             else {
-                Glide.with(context)
-                        .load(BASE_IMG_URL+model.getPoster_path())
-                        .into(ivMoviePoster);
+
+                if (position % 4 == 0) {
+                    Glide.with(context)
+                            .load(BASE_IMG_URL + model.getBackdrop_path())
+                            .into(ivMoviePoster);
+                }else {
+                    Glide.with(context)
+                            .load(BASE_IMG_URL+model.getPoster_path())
+                            .into(ivMoviePoster);
+                }
+
             }
-
-//            if(position%5==0 | position%5==1 ){
-//                Log.e("SPAN","postion in adapter is");
-//                itemView.setLayoutParams(new ViewGroup.LayoutParams(
-//                        ViewGroup.LayoutParams.MATCH_PARENT,
-//                        ViewGroup.LayoutParams.WRAP_CONTENT));
-//            }
-
-//            if(position%3==0){
-//                DisplayMetrics displaymetrics = new DisplayMetrics();
-//                ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//                //if you need three fix imageview in width
-//                int devicewidth = displaymetrics.widthPixels;
-//
-//                //if you need 4-5-6 anything fix imageview in height
-//                int deviceheight = displaymetrics.heightPixels;
-//
-//                itemView.getLayoutParams().width = devicewidth;
-//
-//                //if you need same height as width you can set devicewidth in holder.image_view.getLayoutParams().height
-//                 itemView.getLayoutParams().height = deviceheight;
-//            }
-
-
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

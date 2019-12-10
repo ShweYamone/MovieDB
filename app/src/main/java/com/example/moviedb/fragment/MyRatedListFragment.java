@@ -31,7 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MyRatedListFragment extends BaseFragment implements RateView, SwipeRefreshLayout.OnRefreshListener {
+public class MyRatedListFragment extends BaseFragment implements RateView {
 
     @BindView(R.id.cv_data_error)
     LinearLayout cvDataError;
@@ -45,16 +45,11 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
     @BindView(R.id.btnLogin)
     Button btnLogin;
 
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
-
     private RatedMovieAdapter mAdapter;
 
     private ServiceHelper.ApiService mService;
 
     private RatePresenterImpl mPresenter;
-
-    private SmartScrollListener mSmartScrollListener;
 
     private MyanProgressDialog mDialog;
 
@@ -100,22 +95,9 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
 
             mPresenter = new RatePresenterImpl(new MovieInteractor(mService), mSession_Id, mAccountId);
 
-            mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
-                @Override
-                public void onListEndReach() {
-
-
-                    page++;
-                    Log.i("Page:", page+"");
-                    mPresenter.getOwnRatedMoviesWithPaging(mSession_Id, page);
-
-                }
-            });
-
             recyclerRatedView.setHasFixedSize(true);
             recyclerRatedView.addItemDecoration(new ItemOffsetDecoration(3));
             recyclerRatedView.setAdapter(mAdapter);
-           // recyclerRatedView.addOnScrollListener(mSmartScrollListener);
 
             showRatedMovieList(dbHelper.myRateListDAO().getMyRatedMovies(mAccountId));
 
@@ -151,8 +133,6 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
             dbHelper = InitializeDatabase.getInstance(context());
             showRatedMovieList(dbHelper.myRateListDAO().getMyRatedMovies(mAccountId));
         }
-
-
     }
 
     @Override
@@ -223,9 +203,4 @@ public class MyRatedListFragment extends BaseFragment implements RateView, Swipe
                 .setPositiveButton(getString(R.string.ok), null).show();
     }
 
-    @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
-        this.mPresenter.getOwnRatedMovies(mAccountId, mSession_Id);
-    }
 }

@@ -38,9 +38,10 @@ public class MovieInfoModel implements Serializable, Pageable {
 
     int height;
 
+    String backdrop_path;
+
     @ColumnInfo(name = "isRemarked", defaultValue = "false")
     boolean isRemarked;
-
 
     public MovieInfoModel(int id, int accountId, boolean adult, String release_date, String title, String poster_path, String overview) {
         this.id = id;
@@ -53,7 +54,7 @@ public class MovieInfoModel implements Serializable, Pageable {
     }
 
     @Ignore
-    public MovieInfoModel(int id, String title, String poster_path, String release_date, boolean adult, String overview, int runtime) {
+    public MovieInfoModel(int id, String title, String poster_path, String release_date, boolean adult, String overview, int runtime, String backdrop_path) {
         this.id = id;
         this.title = title;
         this.poster_path = poster_path;
@@ -61,8 +62,14 @@ public class MovieInfoModel implements Serializable, Pageable {
         this.adult = adult;
         this.overview = overview;
         this.runtime = runtime;
+        this.backdrop_path = backdrop_path;
     }
 
+    @Ignore
+    public MovieInfoModel(String title, String poster_path) {
+        this.title = title;
+        this.poster_path = poster_path;
+    }
 
     public int getId() {
         return id;
@@ -140,5 +147,13 @@ public class MovieInfoModel implements Serializable, Pageable {
     }
     public void setRemarked ( boolean remarked){
         isRemarked = remarked;
+    }
+
+    public String getBackdrop_path() {
+        return backdrop_path;
+    }
+
+    public void setBackdrop_path(String backdrop_path) {
+        this.backdrop_path = backdrop_path;
     }
 }

@@ -9,15 +9,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.moviedb.R;
 import com.example.moviedb.activities.SeeAllActivity;
+import com.example.moviedb.adapters.CustomAdapter;
 import com.example.moviedb.adapters.MovieAdapter2;
 import com.example.moviedb.common.BaseFragment;
+import com.example.moviedb.common.CirclePagerIndicatorDecoration;
 import com.example.moviedb.common.ItemOffsetDecoration;
 import com.example.moviedb.common.SmartScrollListener;
 import com.example.moviedb.custom_control.MyanProgressDialog;
@@ -31,16 +35,14 @@ import com.example.moviedb.util.ServiceHelper;
 import com.example.moviedb.util.SharePreferenceHelper;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import retrofit2.http.GET;
 
 public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeView , SwipeRefreshLayout.OnRefreshListener{
-
-
-
-    SmartScrollListener smartScrollListener;
 
     @BindView(R.id.layoutNotInternetShow)
     LinearLayout layoutForNoInternet;
@@ -53,6 +55,9 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
 
     @BindView(R.id.rv_top_rated)
     RecyclerView recyclerTopRated;
+
+    @BindView(R.id.rv_custom)
+    com.takusemba.multisnaprecyclerview.MultiSnapRecyclerView recyclerCustom;
 
     @BindView(R.id.rv_popular)
     RecyclerView recyclerPopular;
@@ -76,21 +81,22 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
     ShimmerFrameLayout shimmerFrameLayout;
 
     @BindView(R.id.sv_home)
-    ScrollView scrollView;
+    NestedScrollView scrollView;
 
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
     private MovieAdapter2 _NowShowing, _Popular, _TopRated, _Upcoming;
+    private CustomAdapter _custom;
 
     private ServiceHelper.ApiService mService;
 
     private HomePresenterImpl mPresenter;
 
-    private SmartScrollListener mSmartScrollListener;
-
     private MyanProgressDialog mDialog;
+
+    private LinearLayoutManager linearLayoutManager;
 
     private SharePreferenceHelper mSharePreferenceHelper;
     private String mSessionId;
@@ -99,7 +105,10 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
     private Network mNetwork;
 
     private int page = 1;
+    private int position = 0;
+    private boolean forward = true;
 
+    private static final String TAG = "HomeFragment";
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_home;
@@ -111,6 +120,7 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
         _Popular = new MovieAdapter2(this);
         _TopRated = new MovieAdapter2(this);
         _Upcoming = new MovieAdapter2(this);
+        _custom = new CustomAdapter();
 
         mDialog = new MyanProgressDialog(this.getActivity());
 
@@ -120,8 +130,6 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
         mSessionId = mSharePreferenceHelper.getSessionId();
         mAccountId = mSharePreferenceHelper.getUserId();
         Log.i("accountInHomeFrag", mAccountId + "");
-
-
         mPresenter = new HomePresenterImpl(new MovieInteractor(mService), mSessionId, mAccountId);
         init();
 
@@ -142,12 +150,22 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
             mPresenter.onAttachView(this);
             if(mSharePreferenceHelper.isLogin()) {
                 mPresenter.locateDataFromApi();
-
-                Log.i("page", "Done");
             }
 
             layoutForHavingInternet.setVisibility(View.VISIBLE);
             layoutForNoInternet.setVisibility(View.GONE);
+
+            //Recycler custom
+            linearLayoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL,false);
+            recyclerCustom.setHasFixedSize(true);
+            recyclerCustom.setLayoutManager(linearLayoutManager);
+            // add pager behavior
+            PagerSnapHelper snapHelper = new PagerSnapHelper();
+            snapHelper.attachToRecyclerView(recyclerCustom);
+            recyclerCustom.addItemDecoration(new CirclePagerIndicatorDecoration());
+            recyclerCustom.setAdapter(_custom);
+            addCustomPhotos();
+            autoScroll();
 
 
             //Recycler Now Playing
@@ -180,9 +198,6 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
 
             //For rate and watchlist
             mSharePreferenceHelper = new SharePreferenceHelper(context());
-
-
-
             mPresenter.onUIReady();
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -221,11 +236,49 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
                     getContext().startActivity(SeeAllActivity.getMovieDetailActivityIntent(getContext(),"Upcoming"));
                 }
             });
-            //shimmerFrameLayout.setVisibility(View.GONE);
         }
 
 
 
+    }
+
+    private void autoScroll() {
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                position = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if(forward) {
+                    recyclerCustom.smoothScrollToPosition(++position);
+                    if (position >= _custom.getItemCount() - 1) {
+                        forward = !forward;
+                    }
+                }
+                else {
+                    recyclerCustom.smoothScrollToPosition(--position);
+                    if (position <= 0) {
+                        forward = !forward;
+                    }
+                }
+
+                handler.postDelayed(this, 1500);
+            }
+        };
+        handler.postDelayed(runnable, 1500);
+    }
+
+    private void addCustomPhotos() {
+        _custom.clear();
+        List<MovieInfoModel> movieInfoModelList = new ArrayList();
+        movieInfoModelList.add(new MovieInfoModel("Harry Potter", "/hziiv14OpD73u9gAak4XDDfBKa2.jpg"));
+        movieInfoModelList.add(new MovieInfoModel("Stranger Things", "/56v2KjBlU4XaOv9rVYEQypROD7P.jpg"));
+        movieInfoModelList.add(new MovieInfoModel("Me Before You", "/o4lxNwKJz8oq3R0kLOIsDlHbDhZ.jpg"));
+        movieInfoModelList.add(new MovieInfoModel("The How of Us","/z4g41XYVkvgpbR8Q6fa3LmodQfL.jpg"));
+        movieInfoModelList.add(new MovieInfoModel("The Croods", "/vg2hf8eAZhULxtQRS87CbrH2WMQ.jpg"));
+        for(MovieInfoModel model: movieInfoModelList){
+            _custom.add(model);
+        }
     }
 
     @Override
@@ -301,11 +354,28 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
     }
     @Override
     public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
+        scrollView.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmerAnimation();
+       // addCustomPhotos();
+        forward = true;
+        recyclerCustom.smoothScrollToPosition(0);
+
         this.mPresenter.getNowPlayingMovies();
         this.mPresenter.getUpComingMovies();
         this.mPresenter.getTopRatedMovies();
         this.mPresenter.getPopularMovies();
+
+        swipeRefreshLayout.setRefreshing(false);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                shimmerFrameLayout.stopShimmerAnimation();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                scrollView.setVisibility(View.VISIBLE);
+            }
+        }, 500);
     }
 
     @Override
