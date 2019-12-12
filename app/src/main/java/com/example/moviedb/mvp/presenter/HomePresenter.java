@@ -12,8 +12,6 @@ public interface HomePresenter {
 
     void locateDataFromApi();
 
-
-
     void getNoOfRatePages(int accountId, String session_id);
     void addRatedMoviesFromPage(int accountId, String session_id, int page);
 
