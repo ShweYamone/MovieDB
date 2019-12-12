@@ -130,6 +130,7 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
         mSessionId = mSharePreferenceHelper.getSessionId();
         mAccountId = mSharePreferenceHelper.getUserId();
         Log.i("accountInHomeFrag", mAccountId + "");
+
         mPresenter = new HomePresenterImpl(new MovieInteractor(mService), mSessionId, mAccountId);
         init();
 
