@@ -13,11 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.moviedb.R;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.custom_control.MyanBoldTextView;
@@ -43,6 +46,9 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @BindView(R.id.etPassword)
     EditText etPassword;
+
+    @BindView(R.id.layoutPassword)
+    RelativeLayout layoutPasssword;
 
     @BindView(R.id.ivShowPwd)
     ImageView ivShowPwd;
@@ -131,6 +137,22 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     public void setUserName_ID(String username, int id) {
         mSharePreferenceHelper.setUserName_Id(username, id);
+    }
+
+    @Override
+    public void noUserNameEntered() {
+        YoYo.with(Techniques.Shake)
+                .duration(100)
+                .repeat(1)
+                .playOn(etUserName);
+    }
+
+    @Override
+    public void noPasswordEntered() {
+        YoYo.with(Techniques.Shake)
+                .duration(100)
+                .repeat(1)
+                .playOn(layoutPasssword);
     }
 
     @Override

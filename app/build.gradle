@@ -95,9 +95,15 @@ dependencies {
     implementation 'androidx.browser:browser:1.0.0'
 
 
+    //animations
+    implementation 'com.daimajia.easing:library:2.0@aar'
+    implementation 'com.daimajia.androidanimations:library:2.3@aar'
+
+
     //room dependency
     implementation "androidx.room:room-runtime:2.2.1"
     annotationProcessor "androidx.room:room-compiler:2.2.1"
+
     // Loading indicator
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
@@ -105,6 +111,10 @@ dependencies {
 
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
+    //Firebase realtime database
+
+    implementation 'com.google.firebase:firebase-database:18.0.1'
+    implementation 'com.firebaseui:firebase-ui-database:4.2.0'
     //SpannedGridLayoutManager
     implementation 'com.arasthel:spannedgridlayoutmanager:3.0.2'
 

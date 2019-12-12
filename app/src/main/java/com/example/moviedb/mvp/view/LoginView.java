@@ -8,6 +8,8 @@ public interface LoginView extends BaseView {
     void saveLoginData(String sessionId);
     void onLoginComplete();
     void checkLogin();
-
     void setUserName_ID(String username, int id);
+
+    void noUserNameEntered();
+    void noPasswordEntered();
 }
