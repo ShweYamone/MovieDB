@@ -9,8 +9,7 @@ public class ChatPresenterImpl extends BasePresenter implements ChatPresenter {
     private ChatView chatView = null;
     ChatMessageInteractor messageInteractor;
 
-    public ChatPresenterImpl(ChatView chatView, ChatMessageInteractor messageInteractor) {
-        this.chatView = chatView;
+    public ChatPresenterImpl(ChatMessageInteractor messageInteractor) {
         this.messageInteractor = messageInteractor;
     }
 

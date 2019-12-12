@@ -59,7 +59,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
         init(savedInstanceState);
-
     }
     private void init(Bundle savedInstanceState) {
 
