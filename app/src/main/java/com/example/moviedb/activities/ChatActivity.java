@@ -1,20 +1,32 @@
 package com.example.moviedb.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.moviedb.DB.FirebaseDB;
 import com.example.moviedb.R;
+import com.example.moviedb.adapters.ChatAdapter;
 import com.example.moviedb.common.BaseActivity;
+import com.example.moviedb.interactor.ChatMessageInteractor;
+import com.example.moviedb.model.ChatMessage;
 import com.example.moviedb.mvp.presenter.ChatPresenterImpl;
+import com.example.moviedb.mvp.view.ChatView;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.Query;
 
 import butterknife.BindView;
 
-public class ChatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity implements ChatView {
     @BindView(R.id.txt_input)
     EditText txt_input;
 
@@ -26,6 +38,7 @@ public class ChatActivity extends BaseActivity {
 
 
     private ChatPresenterImpl mPresenter;
+    private ChatAdapter mAdapter;
 
     @Override
     protected int getLayoutResource() {
@@ -34,7 +47,8 @@ public class ChatActivity extends BaseActivity {
 
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
-      //  mPresenter=new ChatPresenterImpl();
+        mPresenter=new ChatPresenterImpl(new ChatMessageInteractor());
+
         init();
     }
 
@@ -42,8 +56,29 @@ public class ChatActivity extends BaseActivity {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                addMsg(new ChatMessage(txt_input.getText().toString(),"Nann Su Mon Kyaw",0));
             }
         });
+    }
+
+
+    @Override
+    public void showAllMsgs(FirebaseRecyclerOptions<ChatMessage> msgs) {
+        mAdapter=new ChatAdapter(msgs);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rv_chatmsg.setLayoutManager(mLayoutManager);
+        rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
+        rv_chatmsg.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void showNoMsgsInfo() {
+
+    }
+
+    @Override
+    public void addMsg(ChatMessage msg) {
+        mPresenter.addMsg(msg);
+        mAdapter.notifyDataSetChanged();
     }
 }
