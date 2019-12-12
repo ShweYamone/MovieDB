@@ -22,6 +22,7 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
 
     private HomeView homeView = null;
     private MovieInteractor interactor;
+
     private int ratePages;
     private int watchlistPages;
     private String mSession_Id;
@@ -47,8 +48,6 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
         //For Rate and Watchlist
         getNoOfRatePages(mAccount_Id, mSession_Id);
         getNoOfWatchlistPages(mAccount_Id, mSession_Id);
-
-
     }
 
     @Override
@@ -57,8 +56,6 @@ public class HomePresenterImpl extends BasePresenter implements HomePresenter {
         getPopularMovies();
         getTopRatedMovies();
         getUpComingMovies();
-
-
     }
 
     @Override
