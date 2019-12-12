@@ -61,6 +61,9 @@ public class SeeAllActivity extends BaseActivity implements SeeAllView, SwipeRef
 
     private static String movieTypes;
 
+
+
+
     private int page = 1;
 
     public static final String IE_SOMETHING = "KEY";
@@ -113,11 +116,13 @@ public class SeeAllActivity extends BaseActivity implements SeeAllView, SwipeRef
             }
         });
 
+
         recyclerMovie.setHasFixedSize(true);
         GridLayoutManager manager = new GridLayoutManager(this, 3);
 
         recyclerMovie.setLayoutManager(manager);
         recyclerMovie.addItemDecoration(new ItemOffsetDecoration(3));
+
         recyclerMovie.setAdapter(mAdapter);
         recyclerMovie.addOnScrollListener(mSmartScrollListener);
 

@@ -1,6 +1,8 @@
 package com.example.moviedb.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +94,7 @@ public class MovieAdapter extends BaseAdapter {
         }
     }
 
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_movie_poster)
@@ -114,6 +117,7 @@ public class MovieAdapter extends BaseAdapter {
                         .into(ivMoviePoster);
             }
             else {
+
                 if (position % 4 == 0) {
                     Glide.with(context)
                             .load(BASE_IMG_URL + model.getBackdrop_path())
