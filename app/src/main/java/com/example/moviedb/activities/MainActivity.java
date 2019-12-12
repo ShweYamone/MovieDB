@@ -80,7 +80,8 @@ public class MainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          //      fab.startAnimation(bounce);
+        Intent intent=new Intent(v.getContext(),ChatActivity.class);
+        startActivity(intent);
             }
         });
     }
