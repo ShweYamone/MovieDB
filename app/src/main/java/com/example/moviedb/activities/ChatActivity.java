@@ -39,6 +39,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     private ChatPresenterImpl mPresenter;
     private ChatAdapter mAdapter;
+    private FirebaseRecyclerOptions<ChatMessage> options;
 
     @Override
     protected int getLayoutResource() {
@@ -47,28 +48,35 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
-        mPresenter=new ChatPresenterImpl(new ChatMessageInteractor());
 
+        mPresenter=new ChatPresenterImpl(new ChatMessageInteractor());
+        mAdapter = new ChatAdapter(options);
         init();
     }
 
     public void init(){
+
+        mPresenter.onAttachView(this);
+
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addMsg(new ChatMessage(txt_input.getText().toString(),"Nann Su Mon Kyaw",0));
             }
         });
+
+        mPresenter.onUIReady();
     }
 
 
     @Override
     public void showAllMsgs(FirebaseRecyclerOptions<ChatMessage> msgs) {
-        mAdapter=new ChatAdapter(msgs);
+        options = msgs;
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rv_chatmsg.setLayoutManager(mLayoutManager);
         rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
         rv_chatmsg.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
