@@ -50,12 +50,17 @@ public class LoginPresenterImpl extends BasePresenter implements LoginPresenter 
     public void onClickLogin(String username, String password) {
         this.mView.showLoading();
 
-        if (username.length() == 0) {
-            this.mView.showDialogMsg(mView.context().getResources().getString(R.string.error), mView.context().getResources().getString(R.string.please_fill_in_username));
+        if (username.length() == 0 && password.length() == 0) {
+            this.mView.noUserNameEntered();
+            this.mView.noPasswordEntered();
+        }
+        else if (username.length() == 0) {
+            this.mView.noUserNameEntered();
+           // this.mView.showDialogMsg(mView.context().getResources().getString(R.string.error), mView.context().getResources().getString(R.string.please_fill_in_username));
         } else if (password.length() == 0) {
-            this.mView.showDialogMsg(mView.context().getResources().getString(R.string.error), mView.context().getResources().getString(R.string.please_fill_in_password));
+            this.mView.noPasswordEntered();
+           // this.mView.showDialogMsg(mView.context().getResources().getString(R.string.error), mView.context().getResources().getString(R.string.please_fill_in_password));
         } else {
-
             getRequestToken(username, password);
         }
     }
