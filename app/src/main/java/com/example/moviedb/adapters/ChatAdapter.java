@@ -1,29 +1,61 @@
 package com.example.moviedb.adapters;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviedb.R;
 import com.example.moviedb.common.BaseAdapter;
+import com.example.moviedb.model.ChatMessage;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-public class ChatAdapter extends BaseAdapter {
-    @Override
-    protected RecyclerView.ViewHolder onCreateCustomViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    @Override
-    protected void onBindCustomViewHolder(RecyclerView.ViewHolder holder, int position) {
+public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatAdapter.ChatViewHolder> {
 
-    }
 
-    @Override
-    protected RecyclerView.ViewHolder onCreateCustomHeaderViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    protected void onBindCustomHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public ChatAdapter(FirebaseRecyclerOptions<ChatMessage> options) {
+        super(options);
 
     }
+    @Override
+    protected void onBindViewHolder(@NonNull ChatViewHolder chatViewHolder, int i, @NonNull ChatMessage chatMessage) {
+        chatViewHolder.bindView(chatMessage);
+    }
+
+    @NonNull
+    @Override
+    public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_message, parent, false);
+        return new ChatAdapter.ChatViewHolder(view);
+    }
+
+    public class ChatViewHolder extends RecyclerView.ViewHolder {
+
+        ChatMessage chatMessage;
+        public ChatViewHolder(View view) {
+            super(view);
+
+            ButterKnife.bind(this, view);
+
+        }
+
+        public void bindView(ChatMessage chatMessage){
+
+            this.chatMessage= chatMessage;
+        }
+
+
+    }
+
+
+
 }
