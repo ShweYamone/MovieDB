@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_search:
                     fragment = new SearchFragment();
                     loadFragment(fragment);
-                    showFAB();
+                    hideFAB();
                     return true;
                 case R.id.navigation_my_list:
                     fragment = new MyRatedListFragment();
@@ -111,7 +111,7 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_profile:
                     fragment = new ProfileFragment();
                     loadFragment(fragment);
-                    hideFAB();
+                    showFAB();
                     return true;
             }
             return false;
