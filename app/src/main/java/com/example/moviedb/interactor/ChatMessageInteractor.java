@@ -15,4 +15,8 @@ public class ChatMessageInteractor {
     public FirebaseRecyclerOptions<ChatMessage> getAllMsgs() {
         return this.chatMessageModel.getAllMsgsFromFirebase();
     }
+
+    public Boolean addMsg(ChatMessage msg) {
+        return this.chatMessageModel.addMsg(msg);
+    }
 }

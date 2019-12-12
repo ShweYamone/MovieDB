@@ -6,6 +6,7 @@ import com.example.moviedb.DB.FirebaseDB;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.Query;
 
 public class ChatMessageModelImpl implements IChatMessageModel {
@@ -33,4 +34,21 @@ public class ChatMessageModelImpl implements IChatMessageModel {
 
         return options;
     }
+
+    @Override
+    public boolean addMsg(ChatMessage msg) {
+        if (msg == null) {
+            return false;
+        }
+        else {
+            try {
+                FirebaseDB.getFirebaseDB().child("ChatMessage").push().setValue(msg);
+                return true;
+            } catch (DatabaseException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
 }
