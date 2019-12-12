@@ -21,6 +21,15 @@ import butterknife.ButterKnife;
 public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatAdapter.ChatViewHolder> {
 
 
+    @BindView(R.id.txt_user)
+    TextView txt_user;
+
+    @BindView(R.id.txt_date)
+    TextView txt_date;
+
+    @BindView(R.id.txt_message)
+    TextView txt_message;
+
     public ChatAdapter(FirebaseRecyclerOptions<ChatMessage> options) {
         super(options);
 
@@ -46,11 +55,15 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatAdapte
 
             ButterKnife.bind(this, view);
 
+
         }
 
         public void bindView(ChatMessage chatMessage){
 
             this.chatMessage= chatMessage;
+            txt_message.setText(chatMessage.getMessageText());
+            txt_user.setText(chatMessage.getMessageUser());
+            txt_date.setText((int) chatMessage.getMessageTime());
         }
 
 
