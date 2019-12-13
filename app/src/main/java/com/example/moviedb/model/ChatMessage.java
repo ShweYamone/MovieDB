@@ -8,14 +8,24 @@ public class ChatMessage implements Serializable, Pageable {
     private String messageText;
     private String messageUser;
     private String messageTime;
+    private Long accountId;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(String messageText, String messageUser, String messageTime) {
+    public ChatMessage(String messageText, String messageUser, String messageTime, Long accountId) {
         this.messageText = messageText;
         this.messageUser = messageUser;
         this.messageTime = messageTime;
+        this.accountId = accountId;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
 
     public String getMessageText() {

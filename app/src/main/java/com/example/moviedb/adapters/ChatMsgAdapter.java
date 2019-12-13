@@ -1,14 +1,19 @@
 package com.example.moviedb.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.R;
 import com.example.moviedb.model.ChatMessage;
+import com.example.moviedb.util.SharePreferenceHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
@@ -16,14 +21,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsgAdapter.ViewHolder> {
+    private SharePreferenceHelper mSharePreferenceHelper;
+
+
     public ChatMsgAdapter(FirebaseRecyclerOptions<ChatMessage> options) {
         super(options);
+
     }
 
     @Override
     public ChatMsgAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext())
+                View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_message, parent, false);
         return new ChatMsgAdapter.ViewHolder(view);
     }
@@ -36,24 +44,43 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.txt_user)
-        TextView txt_user;
+        @BindView(R.id.layoutCircle)
+        RelativeLayout layoutCircle;
 
-        @BindView(R.id.txt_date)
-        TextView txt_date;
+        @BindView(R.id.layoutMessage)
+        LinearLayout layoutMessage;
 
-        @BindView(R.id.txt_message)
-        TextView txt_message;
+        @BindView(R.id.tvLetters)
+        TextView tvLetters;
+
+        @BindView(R.id.tv_message)
+        TextView tvMessage;
+
+        @BindView(R.id.tvTime)
+        TextView tvTime;
+
+        private Context context;
 
         public ViewHolder(View view) {
             super(view);
+            context = itemView.getContext();
+            mSharePreferenceHelper =new SharePreferenceHelper(context);
             ButterKnife.bind(this, view);
         }
 
         public void bindView(ChatMessage message){
-            txt_user.setText(message.getMessageUser());
-            txt_date.setText(message.getMessageTime());
-            txt_message.setText(message.getMessageText());
+            //show User Info
+            String userName = message.getMessageUser();
+            String letters = userName.charAt(0) + "";
+            int spaceIndex = userName.indexOf(" ");
+            if(spaceIndex > 0) {
+                letters += userName.charAt(spaceIndex + 1);
+            }
+            tvLetters.setText(letters.toUpperCase());
+            tvMessage.setText(message.getMessageText());
+            tvTime.setText(message.getMessageTime());
+
+
         }
     }
 }

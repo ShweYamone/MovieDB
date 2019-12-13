@@ -128,8 +128,8 @@ public class MovieAdapter2 extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     if(isRemark){
+                        delegate.onGiveRemark(model.getId());
                         int c = dbHelper.remarkDAO().changeRemarkValue(false,model.getId(),model.getAccountId());
-                        Toast.makeText(context,""+c,Toast.LENGTH_SHORT).show();
                         isRemark = false;
                         Glide.with(context)
                                 .load(R.drawable.ic_bookmark_border_black_24dp)
@@ -140,14 +140,10 @@ public class MovieAdapter2 extends BaseAdapter {
                         if(c==0){
                             dbHelper.remarkDAO().insertRemark(new RemarkModel(model.getId(),model.getAccountId(),true));
                         }
-                        Toast.makeText(context,""+c,Toast.LENGTH_SHORT).show();
                         Glide.with(context)
                                 .load(R.drawable.ic_bookmark_black_24dp)
                                 .into(bookmark);
                     }
-
-
-
                 }
             });
 
