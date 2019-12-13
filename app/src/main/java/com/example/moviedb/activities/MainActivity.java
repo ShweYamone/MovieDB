@@ -8,29 +8,24 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
 import com.example.moviedb.R;
 import com.example.moviedb.common.BaseActivity;
-import com.example.moviedb.common.BaseFragment;
 import com.example.moviedb.fragment.HomeFragment;
 import com.example.moviedb.fragment.MyRatedListFragment;
 import com.example.moviedb.fragment.ProfileFragment;
 import com.example.moviedb.fragment.SearchFragment;
+import com.example.moviedb.util.SharePreferenceHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
-
-
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
@@ -38,6 +33,7 @@ public class MainActivity extends BaseActivity {
     FloatingActionButton fab;
 
     private Animation fab_show, fab_hide, bounce;
+    private SharePreferenceHelper mSharePreferenceHelper;
 
     public static Intent getMainActivityIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -62,6 +58,7 @@ public class MainActivity extends BaseActivity {
     }
     private void init(Bundle savedInstanceState) {
 
+        mSharePreferenceHelper = new SharePreferenceHelper(this);
         fab_show = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_show);
         fab_hide = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_hide);
 
@@ -71,7 +68,6 @@ public class MainActivity extends BaseActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         if (savedInstanceState != null) { // saved instance state, fragment may exist
             // just show the current instance
-
         } else {
             fab.hide();
             // only create fragment if they haven't been instantiated already
@@ -112,11 +108,11 @@ public class MainActivity extends BaseActivity {
                 case R.id.navigation_profile:
                     fragment = new ProfileFragment();
                     loadFragment(fragment);
-                    showFAB();
+                    if (mSharePreferenceHelper.isLogin())
+                        showFAB();
                     return true;
             }
             return false;
-
         }
     };
 

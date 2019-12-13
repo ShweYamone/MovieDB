@@ -1,18 +1,28 @@
 package com.example.moviedb.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.moviedb.DB.FirebaseDB;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class ChatMessageModelImpl implements IChatMessageModel {
-    @Override
-    public FirebaseRecyclerOptions<ChatMessage> getAllMsgsFromFirebase() {
+    private static final String TAG = "ChatMessageModelImpl";
+    private FirebaseRecyclerOptions<ChatMessage> options;
 
+    @Override
+    public FirebaseRecyclerOptions<ChatMessage> getMsgsFromFirebase() {
         Query query = FirebaseDB.getFirebaseDB().child("ChatMessage");
         FirebaseRecyclerOptions<ChatMessage> options =
                 new FirebaseRecyclerOptions.Builder<ChatMessage>()
@@ -20,29 +30,25 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                             @NonNull
                             @Override
                             public ChatMessage parseSnapshot(@NonNull DataSnapshot snapshot) {
-
-                                ChatMessage chatMsg = new ChatMessage(
+                                ChatMessage message = new ChatMessage(
                                         snapshot.child("messageText").getValue().toString(),
                                         snapshot.child("messageUser").getValue().toString(),
-                                        (Long)snapshot.child("messageTime").getValue());
-
-                                return chatMsg;
+                                        snapshot.child("messageTime").getValue().toString()
+                                );
+                                return message;
                             }
-                        })
-                        .build();
-
-
+                        }).build();
         return options;
     }
 
     @Override
-    public boolean addMsg(ChatMessage msg) {
+    public boolean addMsg(DatabaseReference reference, ChatMessage msg) {
         if (msg == null) {
             return false;
         }
         else {
             try {
-                FirebaseDB.getFirebaseDB().child("ChatMessage").push().setValue(msg);
+                reference.child("ChatMessage").push().setValue(msg);
                 return true;
             } catch (DatabaseException e) {
                 e.printStackTrace();

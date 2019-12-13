@@ -7,22 +7,38 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.example.moviedb.DB.FirebaseDB;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.ChatAdapter;
+import com.example.moviedb.adapters.ChatMsgAdapter;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.interactor.ChatMessageInteractor;
 import com.example.moviedb.model.ChatMessage;
+import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.mvp.presenter.ChatPresenterImpl;
 import com.example.moviedb.mvp.view.ChatView;
+import com.example.moviedb.util.SharePreferenceHelper;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Observable;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 
@@ -36,10 +52,10 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @BindView(R.id.rv_chatmsg)
     RecyclerView rv_chatmsg;
 
-
     private ChatPresenterImpl mPresenter;
-    private ChatAdapter mAdapter;
-    private FirebaseRecyclerOptions<ChatMessage> options;
+    private ChatMsgAdapter chatMsgAdapter;
+    private DatabaseReference mReference;
+    private SharePreferenceHelper mSharePreferenceHelper;
 
     @Override
     protected int getLayoutResource() {
@@ -48,45 +64,52 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
-
+        mSharePreferenceHelper = new SharePreferenceHelper(this);
+        mReference = FirebaseDB.getFirebaseDB();
         mPresenter=new ChatPresenterImpl(new ChatMessageInteractor());
-        mAdapter = new ChatAdapter(options);
         init();
     }
 
     public void init(){
-
-        mPresenter.onAttachView(this);
+        chatMsgAdapter = new ChatMsgAdapter(mPresenter.getAllMsgs());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rv_chatmsg.setLayoutManager(mLayoutManager);
+        rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
+        rv_chatmsg.setAdapter(chatMsgAdapter);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addMsg(new ChatMessage(txt_input.getText().toString(),"Nann Su Mon Kyaw",0));
+                DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
+                String time = df.format(Calendar.getInstance().getTime());
+
+                addMsg(mReference, new ChatMessage(
+                        txt_input.getText().toString(),
+                        mSharePreferenceHelper.getUserName(),
+                        time));
+
+                txt_input.setText("");
             }
         });
 
+        mPresenter.onAttachView(this);
         mPresenter.onUIReady();
     }
 
-
     @Override
-    public void showAllMsgs(FirebaseRecyclerOptions<ChatMessage> msgs) {
-        options = msgs;
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        rv_chatmsg.setLayoutManager(mLayoutManager);
-        rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
-        rv_chatmsg.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+    protected void onStart() {
+        super.onStart();
+        chatMsgAdapter.startListening();
     }
 
     @Override
-    public void showNoMsgsInfo() {
-
+    protected void onStop() {
+        super.onStop();
+        chatMsgAdapter.stopListening();
     }
 
     @Override
-    public void addMsg(ChatMessage msg) {
-        mPresenter.addMsg(msg);
-        mAdapter.notifyDataSetChanged();
+    public void addMsg(DatabaseReference mReference, ChatMessage msg) {
+        mPresenter.addMsg(mReference,msg);
     }
 }
