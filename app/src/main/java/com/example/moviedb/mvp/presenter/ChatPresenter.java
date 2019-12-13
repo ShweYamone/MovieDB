@@ -2,10 +2,12 @@ package com.example.moviedb.mvp.presenter;
 
 import com.example.moviedb.model.ChatMessage;
 import com.example.moviedb.mvp.view.ChatView;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
 
 public interface ChatPresenter {
     void onUIReady();
     void onAttachView(ChatView chatView);
-    void getAllMsgs();
-    Boolean addMsg(ChatMessage msg);
+    FirebaseRecyclerOptions<ChatMessage> getAllMsgs();
+    Boolean addMsg(DatabaseReference reference, ChatMessage msg);
 }

@@ -8,10 +8,10 @@ public class FirebaseDB {
 
     public static DatabaseReference getFirebaseDB(){
         if(INSTANCE == null){
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-            INSTANCE = FirebaseDatabase.getInstance().getReference();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database.setPersistenceEnabled(true);
+            INSTANCE = database.getReference();
         }
         return INSTANCE;
-
     }
 }

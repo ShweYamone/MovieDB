@@ -1,10 +1,7 @@
 package com.example.moviedb.mvp.view;
 import com.example.moviedb.model.ChatMessage;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
 
 public interface ChatView {
-    void showAllMsgs(FirebaseRecyclerOptions<ChatMessage> msgs);
-    void showNoMsgsInfo();
-    void addMsg(ChatMessage msg);
-
+    void addMsg(DatabaseReference reference, ChatMessage msg);
 }

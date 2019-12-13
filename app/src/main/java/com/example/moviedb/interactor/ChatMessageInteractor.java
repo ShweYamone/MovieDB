@@ -4,6 +4,7 @@ import com.example.moviedb.model.ChatMessage;
 import com.example.moviedb.model.ChatMessageModelImpl;
 import com.example.moviedb.model.IChatMessageModel;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
 
 public class ChatMessageInteractor {
     private IChatMessageModel chatMessageModel;
@@ -13,10 +14,10 @@ public class ChatMessageInteractor {
     }
 
     public FirebaseRecyclerOptions<ChatMessage> getAllMsgs() {
-        return this.chatMessageModel.getAllMsgsFromFirebase();
+        return this.chatMessageModel.getMsgsFromFirebase();
     }
 
-    public Boolean addMsg(ChatMessage msg) {
-        return this.chatMessageModel.addMsg(msg);
+    public Boolean addMsg(DatabaseReference reference, ChatMessage msg) {
+        return this.chatMessageModel.addMsg(reference, msg);
     }
 }

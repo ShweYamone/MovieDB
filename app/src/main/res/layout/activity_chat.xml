@@ -10,12 +10,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chatmsg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"/>
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:layout_toLeftOf="@id/fab"
         android:layout_alignTop="@+id/fab"
         android:layout_marginLeft="@dimen/margin_small"
@@ -35,7 +36,7 @@
         android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabCustomSize="@dimen/fab_size_normal"
+        app:fabCustomSize="@dimen/edittext_height"
         android:src="@drawable/send_icon"
         android:clickable="true"
         android:layout_marginRight="@dimen/margin_small"
