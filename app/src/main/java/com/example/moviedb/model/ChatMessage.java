@@ -1,9 +1,16 @@
 package com.example.moviedb.model;
 
-public class ChatMessage {
+import com.example.moviedb.common.Pageable;
+
+import java.io.Serializable;
+
+public class ChatMessage implements Serializable, Pageable {
     private String messageText;
     private String messageUser;
     private long messageTime;
+
+    public ChatMessage() {
+    }
 
     public ChatMessage(String messageText, String messageUser, long messageTime) {
         this.messageText = messageText;

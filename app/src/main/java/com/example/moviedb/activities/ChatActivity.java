@@ -79,6 +79,6 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @Override
     public void addMsg(ChatMessage msg) {
         mPresenter.addMsg(msg);
-        mAdapter.notifyDataSetChanged();
+       // mAdapter.notifyDataSetChanged();
     }
 }

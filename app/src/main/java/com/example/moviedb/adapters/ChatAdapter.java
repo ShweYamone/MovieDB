@@ -63,7 +63,7 @@ public class ChatAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatAdapte
             this.chatMessage= chatMessage;
             txt_message.setText(chatMessage.getMessageText());
             txt_user.setText(chatMessage.getMessageUser());
-            txt_date.setText((int) chatMessage.getMessageTime());
+            txt_date.setText(chatMessage.getMessageTime()+"");
         }
 
 
