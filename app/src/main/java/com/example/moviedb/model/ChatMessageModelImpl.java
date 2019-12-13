@@ -4,20 +4,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.util.LogTime;
 import com.example.moviedb.DB.FirebaseDB;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-
 public class ChatMessageModelImpl implements IChatMessageModel {
     private static final String TAG = "ChatMessageModelImpl";
 
@@ -34,11 +27,18 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                             @Override
                             public ChatMessage parseSnapshot(@NonNull DataSnapshot snapshot) {
 
+                                Long accountId = -100l;
+                                if(!(snapshot.child("accountId").getValue() == null)) {
+                                    accountId = (Long) (snapshot.child("accountId").getValue());
+                                }
+                                Log.i("Chat", snapshot.child("accountId").getValue() + "");
+
                                 ChatMessage message = new ChatMessage(
 
                                         snapshot.child("messageText").getValue().toString(),
                                         snapshot.child("messageUser").getValue().toString(),
-                                        snapshot.child("messageTime").getValue().toString()
+                                        snapshot.child("messageTime").getValue().toString(),
+                                        accountId
                                 );
                                 return message;
                             }

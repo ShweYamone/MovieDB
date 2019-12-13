@@ -114,9 +114,6 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
 
             recyclerViewWatchList.setLayoutManager(new StaggeredGridLayoutManager(3,GridLayoutManager.VERTICAL));
             recyclerViewWatchList.addItemDecoration(new GridItemDecoration(0, 3));
-
-
-
             recyclerViewWatchList.setAdapter(mAdapter);
 
             showMyWatchList(dbHelper.myListDAO().getMyWatchlistMovies(mAccountId));

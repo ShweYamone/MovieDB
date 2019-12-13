@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -379,6 +380,6 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
 
     @Override
     public void onGiveRemark(int movieId) {
-
+        Toast.makeText(this.getContext(), "MOVieId" + movieId, Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,43 +1,28 @@
 package com.example.moviedb.activities;
 
-
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import com.example.moviedb.DB.FirebaseDB;
 import com.example.moviedb.R;
-import com.example.moviedb.adapters.ChatAdapter;
 import com.example.moviedb.adapters.ChatMsgAdapter;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.interactor.ChatMessageInteractor;
 import com.example.moviedb.model.ChatMessage;
-import com.example.moviedb.model.MovieInfoModel;
 import com.example.moviedb.mvp.presenter.ChatPresenterImpl;
 import com.example.moviedb.mvp.view.ChatView;
 import com.example.moviedb.util.SharePreferenceHelper;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.SnapshotParser;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Observable;
-import java.util.TimeZone;
 
 import butterknife.BindView;
 
@@ -107,7 +92,8 @@ public class ChatActivity extends BaseActivity implements ChatView {
                 addMsg(mReference, new ChatMessage(
                         txt_input.getText().toString(),
                         mSharePreferenceHelper.getUserName(),
-                        time));
+                        time,
+                        Long.valueOf(mSharePreferenceHelper.getUserId()+"")));
 
                 txt_input.setText("");
             }

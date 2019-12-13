@@ -106,8 +106,6 @@ public class MovieAdapter extends BaseAdapter {
             super(itemView);
             context = itemView.getContext();
             ButterKnife.bind(this, itemView);
-
-
         }
 
         public void bindView(MovieInfoModel model, int position) {
