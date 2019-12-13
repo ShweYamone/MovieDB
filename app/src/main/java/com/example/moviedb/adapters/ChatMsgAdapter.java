@@ -12,12 +12,16 @@ import com.example.moviedb.model.ChatMessage;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsgAdapter.ViewHolder> {
+    private FirebaseRecyclerOptions<ChatMessage> msglist;
     public ChatMsgAdapter(FirebaseRecyclerOptions<ChatMessage> options) {
-        super(options);
+         super(options);
+         msglist=options;
     }
 
     @Override
@@ -56,4 +60,6 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
             txt_message.setText(message.getMessageText());
         }
     }
+
+
 }

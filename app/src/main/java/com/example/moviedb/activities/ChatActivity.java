@@ -1,7 +1,6 @@
 package com.example.moviedb.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +42,7 @@ import java.util.TimeZone;
 import butterknife.BindView;
 
 public class ChatActivity extends BaseActivity implements ChatView {
+    private static final String TAG = "ChatActivity";
     @BindView(R.id.txt_input)
     EditText txt_input;
 
@@ -73,10 +73,31 @@ public class ChatActivity extends BaseActivity implements ChatView {
     public void init(){
         chatMsgAdapter = new ChatMsgAdapter(mPresenter.getAllMsgs());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+
         rv_chatmsg.setLayoutManager(mLayoutManager);
         rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
         rv_chatmsg.setAdapter(chatMsgAdapter);
 
+        // Scroll to bottom on new messages
+        chatMsgAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                rv_chatmsg.smoothScrollToPosition(chatMsgAdapter.getItemCount());
+            }
+        });
+
+//        txt_input.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Scroll to bottom on new messages
+//                chatMsgAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+//                    @Override
+//                    public void onItemRangeInserted(int positionStart, int itemCount) {
+//                        rv_chatmsg.smoothScrollToPosition(chatMsgAdapter.getItemCount());
+//                    }
+//                });
+//            }
+//        });
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
