@@ -1,6 +1,7 @@
 package com.example.moviedb.adapters;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,9 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.layoutItemMessage)
+        LinearLayout layoutItemMessage;
+
         @BindView(R.id.layoutCircle)
         RelativeLayout layoutCircle;
 
@@ -64,7 +68,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
         public ViewHolder(View view) {
             super(view);
             context = itemView.getContext();
-            mSharePreferenceHelper =new SharePreferenceHelper(context);
+            mSharePreferenceHelper = new SharePreferenceHelper(context);
             ButterKnife.bind(this, view);
         }
 
@@ -80,6 +84,11 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
             tvMessage.setText(message.getMessageText());
             tvTime.setText(message.getMessageTime());
 
+            if(mSharePreferenceHelper.getUserId() == message.getAccountId()) {
+                layoutCircle.setVisibility(View.GONE);
+                layoutItemMessage.setGravity(Gravity.END);
+
+            }
 
         }
     }
