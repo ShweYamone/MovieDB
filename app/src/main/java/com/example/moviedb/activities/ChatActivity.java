@@ -64,7 +64,6 @@ public class ChatActivity extends BaseActivity implements ChatView {
     public void init(){
         chatMsgAdapter = new ChatMsgAdapter(mPresenter.getAllMsgs());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-
         rv_chatmsg.setLayoutManager(mLayoutManager);
         rv_chatmsg.setHasFixedSize(true);
         rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
