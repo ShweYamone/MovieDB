@@ -48,7 +48,7 @@
             android:id="@+id/tvTime"
             android:text="11:00 10/DEC/2012"
             android:layout_margin="@dimen/margin_xsmall"
-            android:textSize="@dimen/txt_size_ex_small"
+            android:textSize="@dimen/txt_size_xx_small"
             android:layout_gravity="bottom|right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

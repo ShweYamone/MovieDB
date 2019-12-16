@@ -1,5 +1,6 @@
 package com.example.moviedb.activities;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.example.moviedb.DB.FirebaseDB;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.ChatMsgAdapter;
 import com.example.moviedb.common.BaseActivity;
+import com.example.moviedb.custom_control.MyanBoldTextView;
 import com.example.moviedb.interactor.ChatMessageInteractor;
 import com.example.moviedb.model.ChatMessage;
 import com.example.moviedb.mvp.presenter.ChatPresenterImpl;
@@ -30,6 +32,13 @@ import butterknife.BindView;
 
 public class ChatActivity extends BaseActivity implements ChatView {
     private static final String TAG = "ChatActivity";
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.toolbar_text)
+    MyanBoldTextView toolbar_text;
+
     @BindView(R.id.txt_input)
     EditText txt_input;
 
@@ -55,6 +64,12 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @Override
     protected void setUpContents(Bundle savedInstanceState) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar_text.setMyanmarText("MovieDB Chat Room");
+
+
         mSharePreferenceHelper = new SharePreferenceHelper(this);
         mReference = FirebaseDB.getFirebaseDB();
         mPresenter=new ChatPresenterImpl(new ChatMessageInteractor());
@@ -63,18 +78,49 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     public void init(){
         chatMsgAdapter = new ChatMsgAdapter(mPresenter.getAllMsgs());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        rv_chatmsg.setLayoutManager(mLayoutManager);
+
+      //  RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(getApplicationContext());
+        rv_chatmsg.setLayoutManager(linearLayoutManager);
+ 
         rv_chatmsg.setHasFixedSize(true);
         rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
         rv_chatmsg.setAdapter(chatMsgAdapter);
+
+        rv_chatmsg.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v,
+                                       int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (bottom < oldBottom) {
+                    rv_chatmsg.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rv_chatmsg.smoothScrollToPosition(
+                                    rv_chatmsg.getAdapter().getItemCount() - 1);
+                        }
+                    }, 100);
+                }
+            }
+        });
 
         // Scroll to bottom on new messages
         chatMsgAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                Log.i(TAG, "onItemRangeInserted: "+chatMsgAdapter.getItemCount());
-                rv_chatmsg.smoothScrollToPosition(rv_chatmsg.getAdapter().getItemCount());
+                super.onItemRangeInserted(positionStart, itemCount);
+                int friendlyMessageCount = chatMsgAdapter.getItemCount();
+                int lastVisiblePosition =
+                        linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                // If the recycler view is initially being loaded or the
+                // user is at the bottom of the list, scroll to the bottom
+                // of the list to show the newly added message.
+                if (lastVisiblePosition == -1 ||
+                        (positionStart >= (friendlyMessageCount - 1) &&
+                                lastVisiblePosition == (positionStart - 1))) {
+                    rv_chatmsg.scrollToPosition(positionStart);
+                }
             }
         });
 
