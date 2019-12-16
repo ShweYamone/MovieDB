@@ -90,7 +90,10 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
             if(mSharePreferenceHelper.getUserId() == message.getAccountId()) {
                 layoutCircle.setVisibility(View.GONE);
                 layoutItemMessage.setGravity(Gravity.END);
-
+            }
+            else {
+                layoutCircle.setVisibility(View.VISIBLE);
+                layoutItemMessage.setGravity(Gravity.START);
             }
 
         }
