@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ScrollView;
 
 import com.example.moviedb.DB.FirebaseDB;
 import com.example.moviedb.R;
@@ -37,11 +39,15 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @BindView(R.id.rv_chatmsg)
     RecyclerView rv_chatmsg;
 
+//    @BindView(R.id.chat_scrollview)
+//    ScrollView scrollView;
+
     private ChatPresenterImpl mPresenter;
     private ChatMsgAdapter chatMsgAdapter;
     private DatabaseReference mReference;
     private SharePreferenceHelper mSharePreferenceHelper;
 
+    private int itemPos = 0;
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_chat;
@@ -60,6 +66,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 
         rv_chatmsg.setLayoutManager(mLayoutManager);
+        rv_chatmsg.setHasFixedSize(true);
         rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
         rv_chatmsg.setAdapter(chatMsgAdapter);
 
@@ -67,22 +74,11 @@ public class ChatActivity extends BaseActivity implements ChatView {
         chatMsgAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                rv_chatmsg.smoothScrollToPosition(chatMsgAdapter.getItemCount());
+                Log.i(TAG, "onItemRangeInserted: "+chatMsgAdapter.getItemCount());
+                rv_chatmsg.smoothScrollToPosition(rv_chatmsg.getAdapter().getItemCount());
             }
         });
 
-//        txt_input.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Scroll to bottom on new messages
-//                chatMsgAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-//                    @Override
-//                    public void onItemRangeInserted(int positionStart, int itemCount) {
-//                        rv_chatmsg.smoothScrollToPosition(chatMsgAdapter.getItemCount());
-//                    }
-//                });
-//            }
-//        });
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +94,14 @@ public class ChatActivity extends BaseActivity implements ChatView {
                 txt_input.setText("");
             }
         });
+
+//        txt_input.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //make the view scroll down to the bottom
+//                scrollView.scrollTo(0, scrollView.getBottom());
+//            }
+//        });
 
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
