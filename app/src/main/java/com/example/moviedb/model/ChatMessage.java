@@ -5,6 +5,7 @@ import com.example.moviedb.common.Pageable;
 import java.io.Serializable;
 
 public class ChatMessage implements Serializable, Pageable {
+    private String messageId;
     private String messageText;
     private String messageUser;
     private String messageTime;
@@ -54,4 +55,11 @@ public class ChatMessage implements Serializable, Pageable {
         this.messageTime = messageTime;
     }
 
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
 }

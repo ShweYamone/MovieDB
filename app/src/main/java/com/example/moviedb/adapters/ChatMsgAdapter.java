@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.R;
+import com.example.moviedb.delegate.ChatDelegate;
 import com.example.moviedb.model.ChatMessage;
 import com.example.moviedb.util.SharePreferenceHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -27,14 +28,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsgAdapter.ViewHolder> {
-    private static onClickListner onclicklistner;
+//    private static onClickListner onclicklistner;
     private SharePreferenceHelper mSharePreferenceHelper;
 
-
-    public ChatMsgAdapter(FirebaseRecyclerOptions<ChatMessage> options) {
+    ChatDelegate chatDelegate;
+    public ChatMsgAdapter(FirebaseRecyclerOptions<ChatMessage> options, ChatDelegate delegate) {
         super(options);
-
+        this.chatDelegate=delegate;
     }
+
+
 
     @Override
     public ChatMsgAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,7 +52,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener, View.OnLongClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.layoutItemMessage)
         LinearLayout layoutItemMessage;
@@ -82,8 +85,8 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
             mSharePreferenceHelper = new SharePreferenceHelper(context);
             ButterKnife.bind(this, view);
 
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
+//            itemView.setOnClickListener(this);
+//            itemView.setOnLongClickListener(this);
         }
 
         public void bindView(ChatMessage message, int position){
@@ -125,6 +128,15 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.gravity = Gravity.START;
                 tvTime.setLayoutParams(params);
+
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        chatDelegate.deleteChatMessage(message.getMessageId(),getAdapterPosition());
+                        return true;
+                    }
+                });
+
             }
             else {
                 layoutCircle.setVisibility(View.VISIBLE);
@@ -142,32 +154,39 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.gravity = Gravity.END;
                 tvTime.setLayoutParams(params);
+
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        return true;
+                    }
+                });
             }
 
         }
 
-        @Override
-        public void onClick(View v) {
-            onclicklistner.onItemClick(getAdapterPosition(), v);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            onclicklistner.onItemLongClick(getAdapterPosition(), v);
-            return true;
-        }
+//        @Override
+//        public void onClick(View v) {
+//            onclicklistner.onItemClick(getAdapterPosition(), v);
+//        }
+//
+//        @Override
+//        public boolean onLongClick(View v) {
+//            onclicklistner.onItemLongClick(getAdapterPosition(), v);
+//            return true;
+//        }
     }
 
 
-
-    public interface onClickListner {
-        void onItemClick(int position, View v);
-        void onItemLongClick(int position, View v);
-    }
-
-    public void setOnItemClickListener(onClickListner onclicklistner) {
-        ChatMsgAdapter.onclicklistner = onclicklistner;
-    }
+//
+//    public interface onClickListner {
+//        void onItemClick(int position, View v);
+//        void onItemLongClick(int position, View v);
+//    }
+//
+//    public void setOnItemClickListener(onClickListner onclicklistner) {
+//        ChatMsgAdapter.onclicklistner = onclicklistner;
+//    }
 
 
 
