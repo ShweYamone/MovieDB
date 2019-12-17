@@ -7,22 +7,39 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.moviedb.DB.FirebaseDB;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.ChatMsgAdapter;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.custom_control.MyanBoldTextView;
+import com.example.moviedb.fragment.ChatMessageDeleteFragmentSheet;
 import com.example.moviedb.interactor.ChatMessageInteractor;
 import com.example.moviedb.model.ChatMessage;
 import com.example.moviedb.mvp.presenter.ChatPresenterImpl;
 import com.example.moviedb.mvp.view.ChatView;
 import com.example.moviedb.util.SharePreferenceHelper;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,7 +47,7 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 
-public class ChatActivity extends BaseActivity implements ChatView {
+public class ChatActivity extends BaseActivity implements ChatView, ChatMessageDeleteFragmentSheet.ItemClickListener  {
     private static final String TAG = "ChatActivity";
 
     @BindView(R.id.toolbar)
@@ -48,15 +65,18 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @BindView(R.id.rv_chatmsg)
     RecyclerView rv_chatmsg;
 
-//    @BindView(R.id.chat_scrollview)
-//    ScrollView scrollView;
+    public int itemPos=0;
+    FirebaseRecyclerOptions<ChatMessage> dataset;
 
+
+    //    @BindView(R.id.chat_scrollview)
+//    ScrollView scrollView;
+    private ActionMode mActionMode;
     private ChatPresenterImpl mPresenter;
     private ChatMsgAdapter chatMsgAdapter;
     private DatabaseReference mReference;
     private SharePreferenceHelper mSharePreferenceHelper;
 
-    private int itemPos = 0;
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_chat;
@@ -78,12 +98,12 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     public void init(){
         chatMsgAdapter = new ChatMsgAdapter(mPresenter.getAllMsgs());
-
+        dataset=mPresenter.getAllMsgs();
       //  RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getApplicationContext());
         rv_chatmsg.setLayoutManager(linearLayoutManager);
- 
+
         rv_chatmsg.setHasFixedSize(true);
         rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
         rv_chatmsg.setAdapter(chatMsgAdapter);
@@ -150,6 +170,31 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
+
+        chatMsgAdapter.setOnItemClickListener(new ChatMsgAdapter.onClickListner() {
+            @Override
+            public void onItemClick(int position, View v) {
+//                position = position+1;//As we are adding header
+//               // Log.e(TAG + "ON ITEM CLICK", position + "");
+//                Snackbar.make(v, "On item click "+position, Snackbar.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onItemLongClick(int position, View v) {
+//                position = position+1;//As we are adding header
+////                //Log.e(TAG + "ON ITEM LONG CLICK", position + "");
+////                Snackbar.make(v, "On item longclick  "+position, Snackbar.LENGTH_LONG).show();
+                ChatMessageDeleteFragmentSheet addPhotoBottomDialogFragment =
+                        ChatMessageDeleteFragmentSheet.newInstance();
+                addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
+                        ChatMessageDeleteFragmentSheet.TAG);
+                itemPos=position;
+            }
+        });
+
+
+
+
     }
 
     @Override
@@ -169,5 +214,38 @@ public class ChatActivity extends BaseActivity implements ChatView {
     public void addMsg(DatabaseReference mReference, ChatMessage msg) {
         mPresenter.addMsg(mReference,msg);
 
+    }
+
+    @Override
+    public void onItemClick(String item) {
+//        Toast.makeText(this,item+"is selected",Toast.LENGTH_SHORT).show();
+
+        switch (item){
+            case "delete":
+
+//                Log.i(TAG, "onItemClick: "+dataset.getSnapshots().size());
+//                chatMsgAdapter.notifyItemRangeChanged(itemPos,dataset.getSnapshots().size());
+                String title = ((TextView) rv_chatmsg.findViewHolderForAdapterPosition(itemPos).itemView.findViewById(R.id.tv_message)).getText().toString();
+                deleteData(title);
+                chatMsgAdapter.notifyItemRemoved(itemPos);
+        }
+    }
+
+    private void deleteData(String strTitle){
+        Query deleteQuery = FirebaseDB.getFirebaseDB().child("ChatMessage").orderByChild("messageText").equalTo(strTitle);
+        deleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot delData: dataSnapshot.getChildren()){
+                    delData.getRef().removeValue();
+                }
+                Toast.makeText(ChatActivity.this,"Data Deleted",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(ChatActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
