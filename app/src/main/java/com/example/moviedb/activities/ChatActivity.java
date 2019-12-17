@@ -197,22 +197,22 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
 
-        chatMsgAdapter.setOnItemClickListener(new ChatMsgAdapter.onClickListner() {
-            @Override
-            public void onItemClick(int position, View v) {
-//                position = position+1;//As we are adding header
-//               // Log.e(TAG + "ON ITEM CLICK", position + "");
-//                Snackbar.make(v, "On item click "+position, Snackbar.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onItemLongClick(int position, View v) {
-//                position = position+1;//As we are adding header
-////                //Log.e(TAG + "ON ITEM LONG CLICK", position + "");
-////                Snackbar.make(v, "On item longclick  "+position, Snackbar.LENGTH_LONG).show();
-
-            }
-        });
+//        chatMsgAdapter.setOnItemClickListener(new ChatMsgAdapter.onClickListner() {
+//            @Override
+//            public void onItemClick(int position, View v) {
+////                position = position+1;//As we are adding header
+////               // Log.e(TAG + "ON ITEM CLICK", position + "");
+////                Snackbar.make(v, "On item click "+position, Snackbar.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void onItemLongClick(int position, View v) {
+////                position = position+1;//As we are adding header
+//////                //Log.e(TAG + "ON ITEM LONG CLICK", position + "");
+//////                Snackbar.make(v, "On item longclick  "+position, Snackbar.LENGTH_LONG).show();
+//
+//            }
+//        });
 
 
 
@@ -240,13 +240,13 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 
 
     @Override
-    public void deleteChatMessage(String messageId) {
+    public void deleteChatMessage(String messageId,int position) {
 
         ChatMessageDeleteFragmentSheet addPhotoBottomDialogFragment =
                 ChatMessageDeleteFragmentSheet.newInstance();
         addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
                 ChatMessageDeleteFragmentSheet.TAG);
-
+        itemPos=position;
         this.messageId=messageId;
 
     }
@@ -263,7 +263,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 
 
                 deleteData(messageId);
-                // chatMsgAdapter.notifyItemRemoved(itemPos);
+
         }
     }
 
@@ -275,6 +275,8 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot delData: dataSnapshot.getChildren()){
                     delData.getRef().removeValue();
+                    chatMsgAdapter.notifyItemRemoved(itemPos);
+                    chatMsgAdapter.notifyDataSetChanged();
                 }
                 Toast.makeText(ChatActivity.this,"Data Deleted",Toast.LENGTH_LONG).show();
             }
