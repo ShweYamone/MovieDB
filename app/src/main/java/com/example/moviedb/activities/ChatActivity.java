@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
  
 import android.widget.ImageButton;
@@ -67,15 +68,15 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     @BindView(R.id.fab)
     ImageView btnSend;
 
+    @BindView(R.id.btnMsgSend)
+    Button btnMsgSend;
+
     @BindView(R.id.rv_chatmsg)
     RecyclerView rv_chatmsg;
 
 
     public int itemPos=0;
 
-    //    @BindView(R.id.chat_scrollview)
-//    ScrollView scrollView;
-    private ActionMode mActionMode;
     private ChatPresenterImpl mPresenter;
     private ChatMsgAdapter chatMsgAdapter;
     private DatabaseReference mReference;
@@ -162,12 +163,12 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() != 0) {
-                    btnSend.setClickable(true);
+                    btnMsgSend.setClickable(true);
                     Glide.with(getApplicationContext())
                             .load(R.drawable.sent)
                             .into(btnSend);
                 } else {
-                    btnSend.setClickable(false);
+                    btnMsgSend.setClickable(false);
                     Glide.with(getApplicationContext())
                             .load(R.drawable.send)
                             .into(btnSend);
@@ -175,7 +176,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             }
         });
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
+        btnMsgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (txt_input.getText().toString() != null && !txt_input.getText().toString().equals("")) {
