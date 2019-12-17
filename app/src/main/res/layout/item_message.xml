@@ -3,8 +3,8 @@
     android:id="@+id/layoutItemMessage"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_small">
+    android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/layoutCircle"
         android:layout_width="43dp"
@@ -34,20 +34,30 @@
         android:paddingTop="@dimen/margin_xsmall"
         android:paddingLeft="@dimen/margin_small"
         android:paddingRight="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_xsmall"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tvUserName"
+            android:alpha="0.7"
+            android:text="Shwe Yamone Oo"
+            android:textSize="@dimen/txt_size_ex_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
             android:id="@+id/tv_message"
             android:text="This is message for you......."
-            android:textSize="@dimen/txt_size_large"
+            android:textSize="@dimen/txt_size_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tvTime"
+            android:alpha="0.5"
             android:text="11:00 10/DEC/2012"
-            android:layout_margin="@dimen/margin_xsmall"
+            android:layout_margin="@dimen/margin_small"
             android:textSize="@dimen/txt_size_xx_small"
             android:layout_gravity="bottom|right"
             android:layout_width="wrap_content"
