@@ -58,6 +58,7 @@
                 <ImageView
                     android:id="@+id/fab"
                     android:src="@drawable/send"
+                    android:clickable="false"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
