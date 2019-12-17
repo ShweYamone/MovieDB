@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsgAdapter.ViewHolder> {
-
+    private static onClickListner onclicklistner;
     private SharePreferenceHelper mSharePreferenceHelper;
 
 
@@ -40,7 +40,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
     public ChatMsgAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_message, parent, false);
-        return new ChatMsgAdapter.ViewHolder(view);
+        return new ChatMsgAdapter.ViewHolder(view,this);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener, View.OnLongClickListener{
 
         @BindView(R.id.layoutItemMessage)
         LinearLayout layoutItemMessage;
@@ -73,12 +73,17 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
         TextView tvTime;
 
         private Context context;
+        public ChatMsgAdapter chatMsgAdapter;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view,ChatMsgAdapter chatMsgAdapter) {
             super(view);
             context = itemView.getContext();
+            this.chatMsgAdapter=chatMsgAdapter;
             mSharePreferenceHelper = new SharePreferenceHelper(context);
             ButterKnife.bind(this, view);
+
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         public void bindView(ChatMessage message, int position){
@@ -140,7 +145,30 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
             }
 
         }
+
+        @Override
+        public void onClick(View v) {
+            onclicklistner.onItemClick(getAdapterPosition(), v);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            onclicklistner.onItemLongClick(getAdapterPosition(), v);
+            return true;
+        }
     }
+
+
+
+    public interface onClickListner {
+        void onItemClick(int position, View v);
+        void onItemLongClick(int position, View v);
+    }
+
+    public void setOnItemClickListener(onClickListner onclicklistner) {
+        ChatMsgAdapter.onclicklistner = onclicklistner;
+    }
+
 
 
 }
