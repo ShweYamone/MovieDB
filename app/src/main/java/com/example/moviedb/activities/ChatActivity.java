@@ -155,16 +155,18 @@ public class ChatActivity extends BaseActivity implements ChatView {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
-                String time = df.format(Calendar.getInstance().getTime());
+                if (txt_input.getText().toString() != null && !txt_input.getText().toString().equals("")) {
+                    DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
+                    String time = df.format(Calendar.getInstance().getTime());
 
-                addMsg(mReference, new ChatMessage(
-                        txt_input.getText().toString(),
-                        mSharePreferenceHelper.getUserName(),
-                        time,
-                        Long.valueOf(mSharePreferenceHelper.getUserId()+"")));
+                    addMsg(mReference, new ChatMessage(
+                            txt_input.getText().toString(),
+                            mSharePreferenceHelper.getUserName(),
+                            time,
+                            Long.valueOf(mSharePreferenceHelper.getUserId()+"")));
 
-                txt_input.setText("");
+                    txt_input.setText("");
+                }
             }
         });
 

@@ -1,11 +1,14 @@
 package com.example.moviedb.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -143,10 +146,25 @@ public class ProfileFragment extends BaseFragment implements ProfileView {
         Random random = new Random();
 
         mAdapter.addHeader(new AccountModel(mAccountId, mSharePreferenceHelper.getUserName()));
+        Display display = ((Activity) this.getContext()).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        try {
+            display.getRealSize(size);
+        } catch (NoSuchMethodError err) {
+            display.getSize(size);
+        }
+        //int width = size.x;
+        int height = size.y;
+        int maxHeight = 1 * (height / 4);
+        int minHeight = 1 * (height / 5);
+
+
+
+
 
         for (MovieInfoModel model: movieInfoModelList) {
-            int height = random.nextInt(500 - 400 + 1) + 400;
-            model.setHeight(height);
+            int h = random.nextInt(maxHeight - minHeight + 1) + minHeight;
+            model.setHeight(h);
             mAdapter.add(model);
         }
     }

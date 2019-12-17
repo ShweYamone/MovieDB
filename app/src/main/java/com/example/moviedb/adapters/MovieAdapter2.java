@@ -128,6 +128,8 @@ public class MovieAdapter2 extends BaseAdapter {
                 public void onClick(View v) {
                     if(isRemark){
                         delegate.onGiveRemark(model.getId());
+
+
                         int c = dbHelper.remarkDAO().changeRemarkValue(false,model.getId(),model.getAccountId());
                         isRemark = false;
                         Glide.with(context)
