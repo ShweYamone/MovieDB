@@ -81,7 +81,6 @@ public class MovieAdapter2 extends BaseAdapter {
             dbHelper = InitializeDatabase.getInstance(context);
             sharePreferenceHelper=new SharePreferenceHelper(context);
             ButterKnife.bind(this,itemView);
-
         }
 
 

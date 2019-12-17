@@ -6,11 +6,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 
+import com.bumptech.glide.Glide;
 import com.example.moviedb.DB.FirebaseDB;
 import com.example.moviedb.R;
 import com.example.moviedb.adapters.ChatMsgAdapter;
@@ -43,13 +48,11 @@ public class ChatActivity extends BaseActivity implements ChatView {
     EditText txt_input;
 
     @BindView(R.id.fab)
-    FloatingActionButton btnSend;
+    ImageView btnSend;
 
     @BindView(R.id.rv_chatmsg)
     RecyclerView rv_chatmsg;
 
-//    @BindView(R.id.chat_scrollview)
-//    ScrollView scrollView;
 
     private ChatPresenterImpl mPresenter;
     private ChatMsgAdapter chatMsgAdapter;
@@ -122,6 +125,33 @@ public class ChatActivity extends BaseActivity implements ChatView {
             }
         });
 
+        txt_input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() != 0) {
+                    btnSend.setClickable(true);
+                    Glide.with(getApplicationContext())
+                            .load(R.drawable.sent)
+                            .into(btnSend);
+                } else {
+                    btnSend.setClickable(false);
+                    Glide.with(getApplicationContext())
+                            .load(R.drawable.send)
+                            .into(btnSend);
+                }
+            }
+        });
+
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,14 +167,6 @@ public class ChatActivity extends BaseActivity implements ChatView {
                 txt_input.setText("");
             }
         });
-
-//        txt_input.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //make the view scroll down to the bottom
-//                scrollView.scrollTo(0, scrollView.getBottom());
-//            }
-//        });
 
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
@@ -166,6 +188,5 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     public void addMsg(DatabaseReference mReference, ChatMessage msg) {
         mPresenter.addMsg(mReference,msg);
-
     }
 }

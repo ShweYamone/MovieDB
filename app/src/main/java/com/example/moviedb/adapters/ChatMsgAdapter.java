@@ -1,6 +1,9 @@
 package com.example.moviedb.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +45,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
 
     @Override
     protected void onBindViewHolder(ChatMsgAdapter.ViewHolder holder, int position, ChatMessage model) {
-        holder.bindView(model);
+        holder.bindView(model, position);
     }
 
 
@@ -56,6 +59,9 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
 
         @BindView(R.id.layoutMessage)
         LinearLayout layoutMessage;
+
+        @BindView(R.id.tvUserName)
+        TextView tvUserName;
 
         @BindView(R.id.tvLetters)
         TextView tvLetters;
@@ -75,7 +81,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
             ButterKnife.bind(this, view);
         }
 
-        public void bindView(ChatMessage message){
+        public void bindView(ChatMessage message, int position){
             //show User Info
             String userName = message.getMessageUser();
             String letters = userName.charAt(0) + "";
@@ -83,17 +89,54 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
             if(spaceIndex > 0) {
                 letters += userName.charAt(spaceIndex + 1);
             }
+            tvUserName.setText(message.getMessageUser());
             tvLetters.setText(letters.toUpperCase());
             tvMessage.setText(message.getMessageText());
             tvTime.setText(message.getMessageTime());
 
+            Display display = ((Activity) layoutItemMessage.getContext()).getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            try {
+                display.getRealSize(size);
+            } catch (NoSuchMethodError err) {
+                display.getSize(size);
+            }
+            int width = size.x;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
             if(mSharePreferenceHelper.getUserId() == message.getAccountId()) {
                 layoutCircle.setVisibility(View.GONE);
+
+                if (position == 0) {
+                    lp.setMargins((int) (width * (1 / 3.0)), 50, 0, 0);
+                } else {
+                    lp.setMargins((int) (width * (1 / 3.0)), 27 , 0, 0);
+
+                }
+                layoutItemMessage.setLayoutParams(lp);
                 layoutItemMessage.setGravity(Gravity.END);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.gravity = Gravity.START;
+                tvTime.setLayoutParams(params);
             }
             else {
                 layoutCircle.setVisibility(View.VISIBLE);
+
+                if (position == 0) {
+                    lp.setMargins(0, 50, (int)(width * (1 / 3.0)), 0);
+
+                } else {
+                    lp.setMargins(0, 27, (int)(width * (1 / 3.0)), 0);
+
+                }
+                layoutItemMessage.setLayoutParams(lp);
                 layoutItemMessage.setGravity(Gravity.START);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.gravity = Gravity.END;
+                tvTime.setLayoutParams(params);
             }
 
         }
