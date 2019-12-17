@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.R;
+import com.example.moviedb.delegate.ChatDelegate;
 import com.example.moviedb.model.ChatMessage;
 import com.example.moviedb.util.SharePreferenceHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -30,11 +31,13 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
     private static onClickListner onclicklistner;
     private SharePreferenceHelper mSharePreferenceHelper;
 
-
-    public ChatMsgAdapter(FirebaseRecyclerOptions<ChatMessage> options) {
+    ChatDelegate chatDelegate;
+    public ChatMsgAdapter(FirebaseRecyclerOptions<ChatMessage> options, ChatDelegate delegate) {
         super(options);
-
+        this.chatDelegate=delegate;
     }
+
+
 
     @Override
     public ChatMsgAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -125,6 +128,15 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.gravity = Gravity.START;
                 tvTime.setLayoutParams(params);
+
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        chatDelegate.deleteChatMessage(message.getMessageId());
+                        return true;
+                    }
+                });
+
             }
             else {
                 layoutCircle.setVisibility(View.VISIBLE);
@@ -142,6 +154,13 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.gravity = Gravity.END;
                 tvTime.setLayoutParams(params);
+
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        return true;
+                    }
+                });
             }
 
         }

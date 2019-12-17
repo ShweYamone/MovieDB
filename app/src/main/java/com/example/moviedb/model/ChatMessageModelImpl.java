@@ -40,6 +40,7 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                                         snapshot.child("messageTime").getValue().toString(),
                                         accountId
                                 );
+                                message.setMessageId(snapshot.getKey().toString());
                                 return message;
                             }
                         }).build();

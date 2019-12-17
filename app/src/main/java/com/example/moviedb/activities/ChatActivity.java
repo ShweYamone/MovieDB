@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
- 
+
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -30,6 +30,7 @@ import com.example.moviedb.R;
 import com.example.moviedb.adapters.ChatMsgAdapter;
 import com.example.moviedb.common.BaseActivity;
 import com.example.moviedb.custom_control.MyanBoldTextView;
+import com.example.moviedb.delegate.ChatDelegate;
 import com.example.moviedb.fragment.ChatMessageDeleteFragmentSheet;
 import com.example.moviedb.interactor.ChatMessageInteractor;
 import com.example.moviedb.model.ChatMessage;
@@ -52,7 +53,7 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 
-public class ChatActivity extends BaseActivity implements ChatView, ChatMessageDeleteFragmentSheet.ItemClickListener  {
+public class ChatActivity extends BaseActivity implements ChatView, ChatMessageDeleteFragmentSheet.ItemClickListener, ChatDelegate {
     private static final String TAG = "ChatActivity";
 
     @BindView(R.id.toolbar)
@@ -70,7 +71,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     @BindView(R.id.rv_chatmsg)
     RecyclerView rv_chatmsg;
 
-
+    private String messageId;
     public int itemPos=0;
 
     //    @BindView(R.id.chat_scrollview)
@@ -101,7 +102,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     }
 
     public void init(){
-        chatMsgAdapter = new ChatMsgAdapter(mPresenter.getAllMsgs());
+        chatMsgAdapter = new ChatMsgAdapter(mPresenter.getAllMsgs(),this);
 
       //  RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         LinearLayoutManager linearLayoutManager =
@@ -207,11 +208,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 //                position = position+1;//As we are adding header
 ////                //Log.e(TAG + "ON ITEM LONG CLICK", position + "");
 ////                Snackbar.make(v, "On item longclick  "+position, Snackbar.LENGTH_LONG).show();
-                ChatMessageDeleteFragmentSheet addPhotoBottomDialogFragment =
-                        ChatMessageDeleteFragmentSheet.newInstance();
-                addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
-                        ChatMessageDeleteFragmentSheet.TAG);
-                itemPos=position;
+
             }
         });
 
@@ -238,6 +235,19 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         mPresenter.addMsg(mReference,msg);
     }
 
+
+
+    @Override
+    public void deleteChatMessage(String messageId) {
+
+        ChatMessageDeleteFragmentSheet addPhotoBottomDialogFragment =
+                ChatMessageDeleteFragmentSheet.newInstance();
+        addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
+                ChatMessageDeleteFragmentSheet.TAG);
+
+        this.messageId=messageId;
+
+    }
     @Override
     public void onItemClick(String item) {
 //        Toast.makeText(this,item+"is selected",Toast.LENGTH_SHORT).show();
@@ -247,14 +257,17 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 
 //                Log.i(TAG, "onItemClick: "+dataset.getSnapshots().size());
 //                chatMsgAdapter.notifyItemRangeChanged(itemPos,dataset.getSnapshots().size());
-                String title = ((TextView) rv_chatmsg.findViewHolderForAdapterPosition(itemPos).itemView.findViewById(R.id.tv_message)).getText().toString();
-                deleteData(title);
-                chatMsgAdapter.notifyItemRemoved(itemPos);
+//                String title = ((TextView) rv_chatmsg.findViewHolderForAdapterPosition(itemPos).itemView.findViewById(R.id.tv_message)).getText().toString();
+
+
+                deleteData(messageId);
+                // chatMsgAdapter.notifyItemRemoved(itemPos);
         }
     }
 
-    private void deleteData(String strTitle){
-        Query deleteQuery = FirebaseDB.getFirebaseDB().child("ChatMessage").orderByChild("messageText").equalTo(strTitle);
+    private void deleteData(String messageId){
+        Log.i(TAG, "deleteData: "+messageId);
+        Query deleteQuery = FirebaseDB.getFirebaseDB().child("ChatMessage").child(messageId);
         deleteQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
