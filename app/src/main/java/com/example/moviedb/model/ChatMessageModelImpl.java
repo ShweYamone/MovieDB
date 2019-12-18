@@ -26,28 +26,21 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                             @NonNull
                             @Override
                             public ChatMessage parseSnapshot(@NonNull DataSnapshot snapshot) {
-                                try {
 
-                                        Long accountId = -100l;
-                                        if (!(snapshot.child("accountId").getValue() == null)) {
-                                            accountId = (Long) (snapshot.child("accountId").getValue());
-                                        }
-                                        Log.i("Chat", snapshot.child("accountId").getValue() + "");
 
+                                    Long accountId = -100l;
+                                    if (!(snapshot.child("accountId").getValue() == null)) {
+                                        accountId = (Long) (snapshot.child("accountId").getValue());
+                                    }
                                         ChatMessage message = new ChatMessage(
-
                                                 snapshot.child("messageText").getValue().toString(),
                                                 snapshot.child("messageUser").getValue().toString(),
                                                 snapshot.child("messageTime").getValue().toString(),
+                                                snapshot.child("isDeleted").getValue().toString(),
                                                 accountId
                                         );
                                         message.setMessageId(snapshot.getKey().toString());
                                         return message;
-
-                                }catch (NullPointerException e){
-
-                                }
-                                return null;
 
                             }
                         }).build();

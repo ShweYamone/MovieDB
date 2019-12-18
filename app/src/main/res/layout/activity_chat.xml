@@ -26,13 +26,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
-       android:orientation="vertical">
+        android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_chatmsg"
+                android:gravity="bottom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="?attr/actionBarSize"
+                android:layout_marginBottom="@dimen/margin_small"
                 android:layout_marginLeft="@dimen/margin_small"
                 android:layout_marginRight="@dimen/margin_small"
                 />
@@ -40,7 +42,6 @@
             <LinearLayout
                 android:gravity="bottom"
                 android:background="@drawable/bg_chat_msg_edit_text"
-                android:layout_marginTop="@dimen/margin_small"
                 android:paddingLeft="@dimen/margin_small"
                 android:paddingBottom="@dimen/margin_xxsmall"
                 android:layout_width="match_parent"
@@ -53,19 +54,30 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/edittext_height"
                     android:layout_marginBottom="@dimen/margin_xsmall"
-                    android:layout_weight="15"/>
+                    android:layout_weight="7"/>
 
-                <ImageView
-                    android:id="@+id/fab"
-                    android:src="@drawable/send"
-                    android:clickable="false"
+                <RelativeLayout
+                    android:layout_marginBottom="@dimen/margin_xsmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="@dimen/margin_small"
-                    android:layout_marginLeft="@dimen/margin_small"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1">
 
+                    <Button
+                        android:id="@+id/btnMsgSend"
+                        android:layout_margin="@dimen/margin_xsmall"
+                        android:background="@color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                    <ImageView
+                        android:id="@+id/fab"
+                        android:src="@drawable/send"
+                        android:clickable="false"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
