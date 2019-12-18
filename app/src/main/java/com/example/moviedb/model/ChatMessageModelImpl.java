@@ -26,27 +26,29 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                             @NonNull
                             @Override
                             public ChatMessage parseSnapshot(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.exists() && snapshot.hasChild("messageText")
-                                        ) {
-                                    Long accountId = -100l;
-                                    if (!(snapshot.child("accountId").getValue() == null)) {
-                                        accountId = (Long) (snapshot.child("accountId").getValue());
-                                    }
-                                    Log.i("Chat", snapshot.child("accountId").getValue() + "");
+                                try {
 
-                                    ChatMessage message = new ChatMessage(
+                                        Long accountId = -100l;
+                                        if (!(snapshot.child("accountId").getValue() == null)) {
+                                            accountId = (Long) (snapshot.child("accountId").getValue());
+                                        }
+                                        Log.i("Chat", snapshot.child("accountId").getValue() + "");
 
-                                            snapshot.child("messageText").getValue().toString(),
-                                            snapshot.child("messageUser").getValue().toString(),
-                                            snapshot.child("messageTime").getValue().toString(),
-                                            accountId
-                                    );
-                                    message.setMessageId(snapshot.getKey().toString());
-                                    return message;
-                                } else {
+                                        ChatMessage message = new ChatMessage(
 
-                                    return null;
+                                                snapshot.child("messageText").getValue().toString(),
+                                                snapshot.child("messageUser").getValue().toString(),
+                                                snapshot.child("messageTime").getValue().toString(),
+                                                accountId
+                                        );
+                                        message.setMessageId(snapshot.getKey().toString());
+                                        return message;
+
+                                }catch (NullPointerException e){
+
                                 }
+                                return null;
+
                             }
                         }).build();
         return options;
