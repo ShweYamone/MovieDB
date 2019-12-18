@@ -76,6 +76,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     RecyclerView rv_chatmsg;
 
     private String messageId;
+    private boolean isSpace = true;
     public int itemPos=0;
 
     private ChatPresenterImpl mPresenter;
@@ -123,8 +124,10 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                     rv_chatmsg.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            rv_chatmsg.smoothScrollToPosition(
-                                    rv_chatmsg.getAdapter().getItemCount() - 1);
+                            if (rv_chatmsg.getAdapter().getItemCount() > 0) {
+                                rv_chatmsg.smoothScrollToPosition(
+                                        rv_chatmsg.getAdapter().getItemCount() - 1);
+                            }
                         }
                     }, 100);
                 }
@@ -163,7 +166,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() != 0) {
+                if (s.length() != 0 && !isStringNullOrWhiteSpace(s.toString())) {
                     btnMsgSend.setClickable(true);
                     Glide.with(getApplicationContext())
                             .load(R.drawable.sent)
@@ -180,7 +183,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         btnMsgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (txt_input.getText().toString() != null && !txt_input.getText().toString().equals("")) {
+                if (txt_input.getText().toString() != null && !txt_input.getText().toString().equals("") && !isStringNullOrWhiteSpace(txt_input.getText().toString())) {
                     DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
                     String time = df.format(Calendar.getInstance().getTime());
 
@@ -188,6 +191,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                             txt_input.getText().toString(),
                             mSharePreferenceHelper.getUserName(),
                             time,
+                            "false",
                             Long.valueOf(mSharePreferenceHelper.getUserId()+"")));
 
                     txt_input.setText("");
@@ -256,16 +260,13 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 //        Toast.makeText(this,item+"is selected",Toast.LENGTH_SHORT).show();
 
         switch (item){
-            case "delete":
-
-//                Log.i(TAG, "onItemClick: "+dataset.getSnapshots().size());
-//                chatMsgAdapter.notifyItemRangeChanged(itemPos,dataset.getSnapshots().size());
-//                String title = ((TextView) rv_chatmsg.findViewHolderForAdapterPosition(itemPos).itemView.findViewById(R.id.tv_message)).getText().toString();
-
-
-                deleteData(messageId);
+            case "delete": updateDeleteData(messageId);
 
         }
+    }
+
+    private void updateDeleteData(String messageId) {
+        FirebaseDB.getFirebaseDB().child("ChatMessage").child(messageId).child("isDeleted").setValue("true");
     }
 
     private void deleteData(String messageId){
@@ -287,5 +288,19 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                 Toast.makeText(ChatActivity.this,databaseError.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public static boolean isStringNullOrWhiteSpace(String value) {
+        if (value == null) {
+            return true;
+        }
+
+        for (int i = 0; i < value.length(); i++) {
+            if (!Character.isWhitespace(value.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
