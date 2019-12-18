@@ -72,8 +72,6 @@ public class RatedMovieAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     context.startActivity(MovieDetailActivity.getMovieDetailActivityIntent(context,mMovieModel.getId()));
-
-
                 }
             });
         }
