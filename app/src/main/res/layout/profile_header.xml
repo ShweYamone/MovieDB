@@ -58,7 +58,7 @@
             android:id="@+id/btnLogOut"
             android:text="@string/logout"
             android:textAllCaps="false"
-            android:background="@drawable/bg_button2"
+            android:background="@drawable/bg_btnlogout"
             android:drawablePadding="@dimen/margin_xsmall"
             android:layout_marginLeft="@dimen/margin_small"
             android:layout_gravity="right"
