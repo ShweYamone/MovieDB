@@ -145,6 +145,10 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             @Override
             public void onClick(View v) {
                 flImage.setVisibility(View.GONE);
+                btnMsgSend.setClickable(false);
+                Glide.with(getApplicationContext())
+                        .load(R.drawable.icon_before_send)
+                        .into(btnSend);
             }
         });
 
@@ -216,10 +220,11 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         btnMsgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("SelectedImageView", selectedImage + "");
                 if (txt_input.getText().toString() != null && !txt_input.getText().toString().equals("") && !isStringNullOrWhiteSpace(txt_input.getText().toString())) {
                     DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
                     String time = df.format(Calendar.getInstance().getTime());
-
+                    Log.i("SelectedImage1", selectedImage + "");
                     addMsg(mReference, new ChatMessage(
                             txt_input.getText().toString(),
                             mSharePreferenceHelper.getUserName(),
@@ -231,6 +236,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                     txt_input.setText("");
                 }
                 else if(selectedImage != null){
+                    Log.i("SelectedImage", selectedImage + "");
                     flImage.setVisibility(View.GONE);
                     DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
                     String time = df.format(Calendar.getInstance().getTime());
@@ -280,6 +286,12 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data) {
             flImage.setVisibility(View.VISIBLE);
             selectedImage = data.getData();
+            if (selectedImage != null) {
+                btnMsgSend.setClickable(true);
+                Glide.with(getApplicationContext())
+                        .load(R.drawable.icon_after_send)
+                        .into(btnSend);
+            }
             try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
             Log.e("photo",bitmap.toString());
