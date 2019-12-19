@@ -5,7 +5,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,8 +23,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +54,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,10 +82,23 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     @BindView(R.id.rv_chatmsg)
     RecyclerView rv_chatmsg;
 
+    @BindView(R.id.ib_add_image)
+    ImageButton addImage;
+
+    @BindView(R.id.fl_image)
+    LinearLayout flImage;
+
+    @BindView(R.id.iv_image_cancel)
+    ImageView imageCancel;
+
+    @BindView(R.id.iv_send_image)
+    ImageView sendImage;
+
     private String messageId;
     private boolean isSpace = true;
     public int itemPos=0;
-
+    private Uri selectedImage;
+    private int PICK_IMAGE_REQUEST = 11;
     private ChatPresenterImpl mPresenter;
     private ChatMsgAdapter chatMsgAdapter;
     private DatabaseReference mReference;
@@ -114,6 +134,20 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         rv_chatmsg.setHasFixedSize(true);
         rv_chatmsg.setItemAnimator(new DefaultItemAnimator());
         rv_chatmsg.setAdapter(chatMsgAdapter);
+
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
+            }
+        });
+
+        imageCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flImage.setVisibility(View.GONE);
+            }
+        });
 
         rv_chatmsg.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -192,7 +226,22 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                             mSharePreferenceHelper.getUserName(),
                             time,
                             "false",
-                            Long.valueOf(mSharePreferenceHelper.getUserId()+"")));
+                            Long.valueOf(mSharePreferenceHelper.getUserId()+""),
+                            "0"));
+
+                    txt_input.setText("");
+                }
+                else if(selectedImage != null){
+                    DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
+                    String time = df.format(Calendar.getInstance().getTime());
+                    Log.e("photo",selectedImage.toString());
+                    addMsg(mReference, new ChatMessage(
+                            selectedImage.toString(),
+                            mSharePreferenceHelper.getUserName(),
+                            time,
+                            "false",
+                            Long.valueOf(mSharePreferenceHelper.getUserId()+""),
+                            "1"));
 
                     txt_input.setText("");
                 }
@@ -224,6 +273,33 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 
     }
 
+    //method to show file chooser
+    private void showFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data) {
+            flImage.setVisibility(View.VISIBLE);
+            selectedImage = data.getData();
+            try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+            Log.e("photo",bitmap.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Glide.with(this)
+                    .load(selectedImage)
+                    .into(sendImage);
+
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -239,7 +315,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     @Override
 
     public void addMsg(DatabaseReference mReference, ChatMessage msg) {
-        mPresenter.addMsg(mReference,msg);
+        mPresenter.addMsg(this,mReference,msg);
     }
 
 

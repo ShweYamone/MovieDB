@@ -1,5 +1,6 @@
 package com.example.moviedb.mvp.presenter;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.moviedb.interactor.ChatMessageInteractor;
@@ -36,8 +37,8 @@ public class ChatPresenterImpl extends BasePresenter implements ChatPresenter {
     }
 
     @Override
-    public Boolean addMsg(DatabaseReference mReference, ChatMessage msg) {
-        return this.messageInteractor.addMsg(mReference, msg);
+    public Boolean addMsg(Context context,DatabaseReference mReference, ChatMessage msg) {
+        return this.messageInteractor.addMsg(context,mReference, msg);
     }
 
 

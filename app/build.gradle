@@ -114,6 +114,7 @@ dependencies {
     //Firebase realtime database
 
     implementation 'com.google.firebase:firebase-database:18.0.1'
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.firebaseui:firebase-ui-database:4.2.0'
     //SpannedGridLayoutManager
     implementation 'com.arasthel:spannedgridlayoutmanager:3.0.2'

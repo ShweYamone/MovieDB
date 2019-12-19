@@ -14,21 +14,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <ImageButton
                 android:id="@+id/iv_cancel"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="50dp"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_gravity="left"
                 android:layout_marginLeft="@dimen/margin_small"
                 app:srcCompat="@drawable/ic_back_36"
                 android:background="@color/colorPrimary"/>
@@ -37,7 +42,7 @@
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardElevation="@dimen/card_elevation"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/card_margin"
+                android:layout_margin="50dp"
                 app:layout_constraintDimensionRatio="@string/img_portrait_ratio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,6 +56,8 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/placeholder_image" />
             </androidx.cardview.widget.CardView>
+
+            </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

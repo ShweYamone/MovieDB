@@ -10,12 +10,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -50,6 +53,8 @@ import com.example.moviedb.util.SharePreferenceHelper;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 import butterknife.BindView;
+
+import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
 import static com.example.moviedb.util.AppConstant.BASE_IMG_URL;
 
 public class MovieDetailActivity extends BaseActivity implements MovieDelegate, MovieDetailView {
@@ -158,6 +163,21 @@ public class MovieDetailActivity extends BaseActivity implements MovieDelegate, 
         accountId=sharePreferenceHelper.getUserId();
         sessionId=sharePreferenceHelper.getSessionId();
         dbHelper = InitializeDatabase.getInstance(MovieDetailActivity.this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            View decor = getWindow().getDecorView();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //if (true) {
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+//            } else {
+//                // We want to change tint color to white again.
+//                // You can also record the flags in advance so that you can turn UI back completely if
+//                // you have set other flags before, such as translucent or full screen.
+//                decor.setSystemUiVisibility(0);
+//            }
+        }
         init();
     }
 

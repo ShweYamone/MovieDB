@@ -11,17 +11,27 @@ public class ChatMessage implements Serializable, Pageable {
     private String messageTime;
     private String isDeleted;
     private Long accountId;
+    private String isPhoto;
 
     public ChatMessage() {
     }
 
 
-    public ChatMessage(String messageText, String messageUser, String messageTime, String isDeleted, Long accountId) {
+    public ChatMessage(String messageText, String messageUser, String messageTime, String isDeleted, Long accountId,String isPhoto) {
         this.messageText = messageText;
         this.messageUser = messageUser;
         this.messageTime = messageTime;
         this.isDeleted = isDeleted;
         this.accountId = accountId;
+        this.isPhoto = isPhoto;
+    }
+
+    public String isPhoto() {
+        return isPhoto;
+    }
+
+    public void setPhoto(String photo) {
+        isPhoto = photo;
     }
 
     public Long getAccountId() {

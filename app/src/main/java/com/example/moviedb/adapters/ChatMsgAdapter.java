@@ -3,17 +3,21 @@ package com.example.moviedb.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.net.Uri;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.moviedb.DB.InitializeDatabase;
 import com.example.moviedb.R;
 import com.example.moviedb.delegate.ChatDelegate;
@@ -21,6 +25,10 @@ import com.example.moviedb.model.ChatMessage;
 import com.example.moviedb.util.SharePreferenceHelper;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -72,6 +80,9 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
         @BindView(R.id.tvTime)
         TextView tvTime;
 
+        @BindView(R.id.iv_image)
+        ImageView image;
+
         private Context context;
         public ChatMsgAdapter chatMsgAdapter;
 
@@ -103,7 +114,33 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 }
                 tvUserName.setText(message.getMessageUser());
                 tvLetters.setText(letters.toUpperCase());
-                tvMessage.setText(message.getMessageText());
+                if(message.isPhoto().equals("0")) {
+                    tvMessage.setVisibility(View.VISIBLE);
+                    image.setVisibility(View.GONE);
+                    tvMessage.setText(message.getMessageText());
+                }
+                else {
+
+                    FirebaseStorage  storage = FirebaseStorage.getInstance();
+                    StorageReference riversRef = storage.getReferenceFromUrl("gs://moviedb-6ae09.appspot.com");
+                    tvMessage.setVisibility(View.GONE);
+                    image.setVisibility(View.VISIBLE);
+                    StorageReference earthRef = riversRef.child("images/"+message.getMessageText());
+//                    Glide.with(context)
+//                            .load(earthRef)
+//                            .into(image);
+                    earthRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Glide.with(context).load(uri).into(image);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
+                }
                 tvTime.setText(message.getMessageTime());
 
                 Display display = ((Activity) layoutItemMessage.getContext()).getWindowManager().getDefaultDisplay();
