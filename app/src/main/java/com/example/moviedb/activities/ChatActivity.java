@@ -145,6 +145,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             @Override
             public void onClick(View v) {
                 flImage.setVisibility(View.GONE);
+                selectedImage = null;
             }
         });
 
@@ -267,12 +268,12 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data) {
             flImage.setVisibility(View.VISIBLE);
             selectedImage = data.getData();
-            try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-            Log.e("photo",bitmap.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+//            Log.e("photo",bitmap.toString());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             Glide.with(this)
                     .load(selectedImage)
                     .into(sendImage);
