@@ -30,6 +30,7 @@
     <LinearLayout
         android:id="@+id/layoutMessage"
         android:background="@drawable/bg_chat_message"
+        android:backgroundTint="@color/color_grey_stroke"
         android:layout_marginLeft="@dimen/margin_xsmall"
         android:paddingTop="@dimen/margin_xsmall"
         android:paddingLeft="@dimen/margin_small"
@@ -54,6 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+<<<<<<< HEAD
         <ImageView
             android:id="@+id/iv_image"
             android:layout_width="150dp"
@@ -63,6 +65,8 @@
             android:visibility="gone"
             android:layout_margin="@dimen/margin_small"/>
 
+=======
+>>>>>>> 3c85ee2a9e7055ac229b79a178021541276d5451
         <TextView
             android:id="@+id/tvTime"
             android:alpha="0.5"

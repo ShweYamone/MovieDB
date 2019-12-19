@@ -95,7 +95,6 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     ImageView sendImage;
 
     private String messageId;
-    private boolean isSpace = true;
     public int itemPos=0;
     private Uri selectedImage;
     private int PICK_IMAGE_REQUEST = 11;
@@ -203,12 +202,12 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                 if (s.length() != 0 && !isStringNullOrWhiteSpace(s.toString())) {
                     btnMsgSend.setClickable(true);
                     Glide.with(getApplicationContext())
-                            .load(R.drawable.sent)
+                            .load(R.drawable.icon_after_send)
                             .into(btnSend);
                 } else {
                     btnMsgSend.setClickable(false);
                     Glide.with(getApplicationContext())
-                            .load(R.drawable.send)
+                            .load(R.drawable.icon_before_send)
                             .into(btnSend);
                 }
             }
@@ -250,26 +249,6 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 
         mPresenter.onAttachView(this);
         mPresenter.onUIReady();
-
-//        chatMsgAdapter.setOnItemClickListener(new ChatMsgAdapter.onClickListner() {
-//            @Override
-//            public void onItemClick(int position, View v) {
-////                position = position+1;//As we are adding header
-////               // Log.e(TAG + "ON ITEM CLICK", position + "");
-////                Snackbar.make(v, "On item click "+position, Snackbar.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onItemLongClick(int position, View v) {
-////                position = position+1;//As we are adding header
-//////                //Log.e(TAG + "ON ITEM LONG CLICK", position + "");
-//////                Snackbar.make(v, "On item longclick  "+position, Snackbar.LENGTH_LONG).show();
-//
-//            }
-//        });
-
-
-
 
     }
 

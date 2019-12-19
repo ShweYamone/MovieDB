@@ -2,8 +2,10 @@ package com.example.moviedb.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -153,13 +155,14 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 int width = size.x;
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
-
+                Drawable background = layoutMessage.getBackground();
                 if(mSharePreferenceHelper.getUserId() == message.getAccountId()) {
+                    background.setTint(context.getResources().getColor(R.color.color_palette4));
+
                     layoutCircle.setVisibility(View.GONE);
                     lp.setMargins((int) (width * (1 / 3.0)), 27 , 0, 0);
                     layoutItemMessage.setLayoutParams(lp);
                     layoutItemMessage.setGravity(Gravity.END);
-
                     //For time
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.gravity = Gravity.START;
@@ -179,6 +182,8 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
 
                 }
                 else {
+                    background.setTint(context.getResources().getColor(R.color.color_grey_stroke));
+               //     layoutMessage.setBackgroundColor(context.getResources().getColor(R.color.color_grey_stroke));
                     layoutCircle.setVisibility(View.VISIBLE);
                     lp.setMargins(0, 27, (int)(width * (1 / 3.0)), 0);
                     layoutItemMessage.setLayoutParams(lp);

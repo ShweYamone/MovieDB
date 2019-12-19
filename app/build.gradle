@@ -1,5 +1,23 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'org.moallemi.advanced-build-version'
+advancedVersioning {
+    nameOptions {
+        versionMajor 1
+        versionMinor 0
+        versionPatch 0
+    }
+    codeOptions {
+        versionCodeType org.moallemi.gradle.internal.VersionCodeType.DATE
+        dependsOnTasks 'release'
+    }
+    outputOptions {
+        renameOutput true
+        nameFormat 'MovieDB-v${versionName}'
+    }
+}
+
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"

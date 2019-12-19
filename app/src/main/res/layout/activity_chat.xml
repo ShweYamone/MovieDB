@@ -100,7 +100,7 @@
                         android:layout_height="match_parent"/>
                     <ImageView
                         android:id="@+id/fab"
-                        android:src="@drawable/send"
+                        android:src="@drawable/icon_before_send"
                         android:clickable="false"
                         android:layout_centerInParent="true"
                         android:layout_width="wrap_content"

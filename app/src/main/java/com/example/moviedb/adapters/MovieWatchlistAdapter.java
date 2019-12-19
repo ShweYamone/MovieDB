@@ -169,7 +169,7 @@ public class MovieWatchlistAdapter extends BaseAdapter {
         }
 
         public void bindView(MovieInfoModel model, int position) {
-            Log.e(TAG, "bindView: " + model.getHeight() );
+            this.mMovieModel = model;
             ivMoviePoster.setMinimumHeight(model.getHeight());
             //    ivMoviePoster.setLayoutParams(params);
 

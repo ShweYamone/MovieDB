@@ -42,6 +42,7 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                             @Override
                             public ChatMessage parseSnapshot(@NonNull DataSnapshot snapshot) {
 
+
                                     Long accountId = -100l;
                                     if (!(snapshot.child("accountId").getValue() == null)) {
                                         accountId = (Long) (snapshot.child("accountId").getValue());
@@ -56,7 +57,6 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                                         );
                                         message.setMessageId(snapshot.getKey().toString());
                                         return message;
-
 
                             }
                         }).build();
