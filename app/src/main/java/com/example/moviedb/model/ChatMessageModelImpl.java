@@ -76,11 +76,7 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                 }
                 else {
                    storage = FirebaseStorage.getInstance();
-                   Uri filePath = Uri.parse(msg.getMessageText());
-                   msg.setMessageText(filePath.getLastPathSegment());
-                   uploadFile(context,filePath);
-
-                   reference.child("ChatMessage").push().setValue(msg);
+                   uploadFile(context,reference,msg);
 
                 }
                 return true;
@@ -92,7 +88,9 @@ public class ChatMessageModelImpl implements IChatMessageModel {
     }
 
 
-    private void uploadFile(Context context,Uri filePath) {
+    private void uploadFile(Context context,DatabaseReference reference,ChatMessage msg) {
+
+        Uri filePath = Uri.parse(msg.getMessageText());
         //if there is a file to upload
         if (filePath != null) {
 
@@ -100,6 +98,8 @@ public class ChatMessageModelImpl implements IChatMessageModel {
             final ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Uploading");
             progressDialog.show();
+
+            msg.setMessageText(filePath.getLastPathSegment());
 
             StorageReference riversRef = storage.getReferenceFromUrl("gs://moviedb-6ae09.appspot.com");
             StorageReference riversRef1 = riversRef.child("images/"+filePath.getLastPathSegment());
@@ -111,6 +111,9 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                             //hiding the progress dialog
                             progressDialog.dismiss();
 
+
+                            reference.child("ChatMessage").push().setValue(msg);
+
                             //and displaying a success toast
                             Toast.makeText(context, "File Uploaded ", Toast.LENGTH_LONG).show();
                         }
@@ -121,6 +124,8 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                             //if the upload is not successfull
                             //hiding the progress dialog
                             progressDialog.dismiss();
+
+                            Log.e(TAG, "onFailure: impl " + exception.getLocalizedMessage() );
 
                             //and displaying error message
                             Toast.makeText(context, exception.getMessage(), Toast.LENGTH_LONG).show();

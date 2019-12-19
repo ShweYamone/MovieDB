@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.net.Uri;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -88,6 +89,8 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
         private Context context;
         public ChatMsgAdapter chatMsgAdapter;
 
+        private static final String TAG = "ViewHolder";
+
         public ViewHolder(View view,ChatMsgAdapter chatMsgAdapter) {
             super(view);
             context = itemView.getContext();
@@ -123,6 +126,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 }
                 else {
 
+                    Log.e(TAG, "bindView: adapter " );
                     FirebaseStorage  storage = FirebaseStorage.getInstance();
                     StorageReference riversRef = storage.getReferenceFromUrl("gs://moviedb-6ae09.appspot.com");
                     tvMessage.setVisibility(View.GONE);
@@ -134,12 +138,15 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                     earthRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            Log.e(TAG, "onSuccess: uri " + uri );
                             Glide.with(context).load(uri).into(image);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             // Handle any errors
+
+                            Log.e(TAG, "onFailure: " + exception.getLocalizedMessage() );
                         }
                     });
                 }

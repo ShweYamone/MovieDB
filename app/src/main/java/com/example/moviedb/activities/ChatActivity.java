@@ -231,6 +231,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                     txt_input.setText("");
                 }
                 else if(selectedImage != null){
+                    flImage.setVisibility(View.GONE);
                     DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
                     String time = df.format(Calendar.getInstance().getTime());
                     Log.e("photo",selectedImage.toString());
