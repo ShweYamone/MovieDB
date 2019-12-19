@@ -234,6 +234,12 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                             "0"));
 
                     txt_input.setText("");
+                    if (selectedImage != null) {
+                        btnMsgSend.setClickable(true);
+                        Glide.with(getApplicationContext())
+                                .load(R.drawable.icon_after_send)
+                                .into(btnSend);
+                    }
                 }
                 else if(selectedImage != null){
                     Log.i("SelectedImage", selectedImage + "");

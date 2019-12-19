@@ -131,6 +131,8 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                     StorageReference riversRef = storage.getReferenceFromUrl("gs://moviedb-6ae09.appspot.com");
                     tvMessage.setVisibility(View.GONE);
                     image.setVisibility(View.VISIBLE);
+                    tvUserName.setVisibility(View.GONE);
+                    tvTime.setVisibility(View.GONE);
                     StorageReference earthRef = riversRef.child("images/"+message.getMessageText());
 //                    Glide.with(context)
 //                            .load(earthRef)
