@@ -1,6 +1,7 @@
 package com.example.moviedb.activities;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -244,6 +245,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                             Long.valueOf(mSharePreferenceHelper.getUserId()+""),
                             "1"));
 
+                    selectedImage = null;
                     txt_input.setText("");
                 }
             }
