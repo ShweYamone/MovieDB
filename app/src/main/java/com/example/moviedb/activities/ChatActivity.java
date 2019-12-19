@@ -148,7 +148,10 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             @Override
             public void onClick(View v) {
                 flImage.setVisibility(View.GONE);
-                selectedImage = null;
+                btnMsgSend.setClickable(false);
+                Glide.with(getApplicationContext())
+                        .load(R.drawable.icon_before_send)
+                        .into(btnSend);
             }
         });
 
@@ -220,12 +223,10 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         btnMsgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.e("BTN Click","Clicked");
                 if (txt_input.getText().toString() != null && !txt_input.getText().toString().equals("") && !isStringNullOrWhiteSpace(txt_input.getText().toString())) {
                     DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
                     String time = df.format(Calendar.getInstance().getTime());
-
+                    Log.i("SelectedImage1", selectedImage + "");
                     addMsg(mReference, new ChatMessage(
                             txt_input.getText().toString(),
                             mSharePreferenceHelper.getUserName(),
@@ -237,6 +238,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                     txt_input.setText("");
                 }
                 else if(selectedImage != null){
+                    Log.i("SelectedImage", selectedImage + "");
                     flImage.setVisibility(View.GONE);
                     DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
                     String time = df.format(Calendar.getInstance().getTime());
@@ -262,10 +264,23 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
 
     //method to show file chooser
     private void showFileChooser() {
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, PICK_IMAGE_REQUEST);
+
+
+/*
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);*/
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -276,12 +291,18 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data) {
             flImage.setVisibility(View.VISIBLE);
             selectedImage = data.getData();
-//            try {
-//            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-//            Log.e("photo",bitmap.toString());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            if (selectedImage != null) {
+                btnMsgSend.setClickable(true);
+                Glide.with(getApplicationContext())
+                        .load(R.drawable.icon_after_send)
+                        .into(btnSend);
+            }
+            try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+            Log.e("photo",bitmap.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Glide.with(this)
                     .load(selectedImage)
                     .into(sendImage);
