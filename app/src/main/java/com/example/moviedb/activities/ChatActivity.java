@@ -169,12 +169,12 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                 if (s.length() != 0 && !isStringNullOrWhiteSpace(s.toString())) {
                     btnMsgSend.setClickable(true);
                     Glide.with(getApplicationContext())
-                            .load(R.drawable.sent)
+                            .load(R.drawable.icon_after_send)
                             .into(btnSend);
                 } else {
                     btnMsgSend.setClickable(false);
                     Glide.with(getApplicationContext())
-                            .load(R.drawable.send)
+                            .load(R.drawable.icon_before_send)
                             .into(btnSend);
                 }
             }
