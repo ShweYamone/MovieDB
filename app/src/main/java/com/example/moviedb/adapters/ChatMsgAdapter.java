@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -86,6 +87,9 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
         @BindView(R.id.iv_image)
         ImageView image;
 
+        @BindView(R.id.cv_image)
+        CardView cardView;
+
         private Context context;
         public ChatMsgAdapter chatMsgAdapter;
 
@@ -121,16 +125,18 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 tvLetters.setText(letters.toUpperCase());
                 if(message.isPhoto().equals("0")) {
                     tvMessage.setVisibility(View.VISIBLE);
-                    image.setVisibility(View.GONE);
+                    cardView.setVisibility(View.GONE);
                     tvMessage.setText(message.getMessageText());
+                    tvTime.setVisibility(View.VISIBLE);
                 }
                 else {
+                    tvTime.setVisibility(View.GONE);
 
                     Log.e(TAG, "bindView: adapter " );
                     FirebaseStorage  storage = FirebaseStorage.getInstance();
                     StorageReference riversRef = storage.getReferenceFromUrl("gs://moviedb-6ae09.appspot.com");
                     tvMessage.setVisibility(View.GONE);
-                    image.setVisibility(View.VISIBLE);
+                    cardView.setVisibility(View.VISIBLE);
                     StorageReference earthRef = riversRef.child("images/"+message.getMessageText());
 //                    Glide.with(context)
 //                            .load(earthRef)

@@ -1,6 +1,7 @@
 package com.example.moviedb.activities;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,6 +59,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import javax.security.auth.login.LoginException;
 
 import butterknife.BindView;
 
@@ -220,7 +223,6 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         btnMsgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("SelectedImageView", selectedImage + "");
                 if (txt_input.getText().toString() != null && !txt_input.getText().toString().equals("") && !isStringNullOrWhiteSpace(txt_input.getText().toString())) {
                     DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
                     String time = df.format(Calendar.getInstance().getTime());
@@ -255,6 +257,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                             Long.valueOf(mSharePreferenceHelper.getUserId()+""),
                             "1"));
 
+                    selectedImage = null;
                     txt_input.setText("");
                 }
             }
@@ -288,6 +291,8 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        selectedImage = null;
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data) {
             flImage.setVisibility(View.VISIBLE);
