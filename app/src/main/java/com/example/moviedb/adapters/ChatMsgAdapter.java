@@ -127,8 +127,10 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                     tvMessage.setVisibility(View.VISIBLE);
                     cardView.setVisibility(View.GONE);
                     tvMessage.setText(message.getMessageText());
+                    tvTime.setVisibility(View.VISIBLE);
                 }
                 else {
+                    tvTime.setVisibility(View.GONE);
 
                     Log.e(TAG, "bindView: adapter " );
                     FirebaseStorage  storage = FirebaseStorage.getInstance();
