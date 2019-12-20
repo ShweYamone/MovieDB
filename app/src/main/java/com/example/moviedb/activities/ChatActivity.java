@@ -250,6 +250,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                             "1"));
 
                     txt_input.setText("");
+
                 }
             }
         });
