@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorLightBlack"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -71,14 +72,18 @@
 
                 <ImageButton
                     android:id="@+id/ib_add_image"
+                    android:background="@drawable/bg_circle_view"
+                    android:backgroundTint="@color/color_grey_stroke"
                     android:layout_width="0dp"
-                    android:layout_height="58dp"
+                    android:layout_height="38dp"
                     android:layout_weight="1"
+                    android:layout_gravity="center"
                     android:src="@drawable/ic_add_black_24dp"/>
 
                 <EditText
                     android:id="@+id/txt_input"
                     android:background="@drawable/bg_chat_edittext"
+                    android:layout_marginLeft="@dimen/margin_small"
                     android:paddingLeft="@dimen/txt_size_small"
                     android:paddingRight="@dimen/txt_size_small"
                     android:layout_width="0dp"
@@ -100,8 +105,11 @@
                         android:layout_height="match_parent"/>
                     <ImageView
                         android:id="@+id/fab"
-                        android:src="@drawable/icon_before_send"
+                        android:src="@drawable/send"
+                        android:tint="@color/color_grey_stroke"
                         android:clickable="false"
+                        android:layout_marginLeft="@dimen/margin_small"
+                        android:layout_marginRight="@dimen/margin_small"
                         android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
