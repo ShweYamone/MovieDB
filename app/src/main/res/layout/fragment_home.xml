@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
                         app:msrv_gravity="start"
-                        app:msrv_ms_per_inch="100"
+                        app:msrv_speed_ms_per_inch="100"
                         android:id="@+id/rv_custom"/>
 
 

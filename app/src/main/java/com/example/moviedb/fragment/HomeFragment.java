@@ -162,8 +162,8 @@ public class HomeFragment extends BaseFragment implements MovieDelegate ,HomeVie
             recyclerCustom.setHasFixedSize(true);
             recyclerCustom.setLayoutManager(linearLayoutManager);
             // add pager behavior
-            PagerSnapHelper snapHelper = new PagerSnapHelper();
-            snapHelper.attachToRecyclerView(recyclerCustom);
+ //           PagerSnapHelper snapHelper = new PagerSnapHelper();
+//            snapHelper.attachToRecyclerView(recyclerCustom);
             recyclerCustom.addItemDecoration(new CirclePagerIndicatorDecoration());
             recyclerCustom.setAdapter(_custom);
             addCustomPhotos();
