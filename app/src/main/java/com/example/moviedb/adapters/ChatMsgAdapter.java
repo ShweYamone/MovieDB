@@ -123,21 +123,23 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                 }
                 tvUserName.setText(message.getMessageUser());
                 tvLetters.setText(letters.toUpperCase());
-                if(message.isPhoto().equals("0")) {
-                    tvMessage.setVisibility(View.VISIBLE);
-                    cardView.setVisibility(View.GONE);
+                if (message.getMessageText().equals("")) {
+                    tvMessage.setVisibility(View.GONE);
+                } else {
                     tvMessage.setText(message.getMessageText());
+                    tvMessage.setVisibility(View.VISIBLE);
+                }
+                if(message.getHasPhoto().equals("0")) {
+                    cardView.setVisibility(View.GONE);
                     tvTime.setVisibility(View.VISIBLE);
                 }
                 else {
                     tvTime.setVisibility(View.GONE);
-
                     Log.e(TAG, "bindView: adapter " );
                     FirebaseStorage  storage = FirebaseStorage.getInstance();
                     StorageReference riversRef = storage.getReferenceFromUrl("gs://moviedb-6ae09.appspot.com");
-                    tvMessage.setVisibility(View.GONE);
                     cardView.setVisibility(View.VISIBLE);
-                    StorageReference earthRef = riversRef.child("images/"+message.getMessageText());
+                    StorageReference earthRef = riversRef.child("images/"+message.getPhotoPath());
 //                    Glide.with(context)
 //                            .load(earthRef)
 //                            .into(image);
@@ -170,7 +172,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 Drawable background = layoutMessage.getBackground();
                 if(mSharePreferenceHelper.getUserId() == message.getAccountId()) {
-                    background.setTint(context.getResources().getColor(R.color.color_palette4));
+                    background.setTint(context.getResources().getColor(R.color.colorWhite));
 
                     layoutCircle.setVisibility(View.GONE);
                     lp.setMargins((int) (width * (1 / 3.0)), 27 , 0, 0);
@@ -195,7 +197,7 @@ public class ChatMsgAdapter extends FirebaseRecyclerAdapter<ChatMessage, ChatMsg
 
                 }
                 else {
-                    background.setTint(context.getResources().getColor(R.color.color_grey_stroke));
+                    background.setTint(context.getResources().getColor(R.color.colorWhite));
                //     layoutMessage.setBackgroundColor(context.getResources().getColor(R.color.color_grey_stroke));
                     layoutCircle.setVisibility(View.VISIBLE);
                     lp.setMargins(0, 27, (int)(width * (1 / 3.0)), 0);

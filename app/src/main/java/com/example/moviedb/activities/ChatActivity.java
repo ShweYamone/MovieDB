@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -105,6 +106,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     private ChatMsgAdapter chatMsgAdapter;
     private DatabaseReference mReference;
     private SharePreferenceHelper mSharePreferenceHelper;
+    private Drawable drawable;
 
     @Override
     protected int getLayoutResource() {
@@ -126,6 +128,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     }
 
     public void init(){
+        drawable = btnSend.getDrawable();
         chatMsgAdapter = new ChatMsgAdapter(mPresenter.getAllMsgs(),this);
 
       //  RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -148,10 +151,9 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             @Override
             public void onClick(View v) {
                 flImage.setVisibility(View.GONE);
-                btnMsgSend.setClickable(false);
-                Glide.with(getApplicationContext())
-                        .load(R.drawable.icon_before_send)
-                        .into(btnSend);
+                if (txt_input.getText().toString().equals("")) {btnMsgSend.setClickable(false);
+                    drawable.setTint(getResources().getColor(R.color.color_grey_stroke));
+                }
             }
         });
 
@@ -208,14 +210,12 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             public void afterTextChanged(Editable s) {
                 if (s.length() != 0 && !isStringNullOrWhiteSpace(s.toString())) {
                     btnMsgSend.setClickable(true);
-                    Glide.with(getApplicationContext())
-                            .load(R.drawable.icon_after_send)
-                            .into(btnSend);
+                    drawable.setTint(getResources().getColor(R.color.colorBlack));
                 } else {
-                    btnMsgSend.setClickable(false);
-                    Glide.with(getApplicationContext())
-                            .load(R.drawable.icon_before_send)
-                            .into(btnSend);
+                    if (selectedImage == null) {
+                        btnMsgSend.setClickable(false);
+                        drawable.setTint(getResources().getColor(R.color.color_grey_stroke));
+                    }
                 }
             }
         });
@@ -223,33 +223,41 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         btnMsgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (txt_input.getText().toString() != null && !txt_input.getText().toString().equals("") && !isStringNullOrWhiteSpace(txt_input.getText().toString())) {
-                    DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
-                    String time = df.format(Calendar.getInstance().getTime());
-                    Log.i("SelectedImage1", selectedImage + "");
-                    addMsg(mReference, new ChatMessage(
-                            txt_input.getText().toString(),
-                            mSharePreferenceHelper.getUserName(),
-                            time,
-                            "false",
-                            Long.valueOf(mSharePreferenceHelper.getUserId()+""),
-                            "0"));
+                DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
+                String time = df.format(Calendar.getInstance().getTime());
+                if ( txt_input.getText().toString() != null &&
+                    !txt_input.getText().toString().equals("") &&
+                    !isStringNullOrWhiteSpace(txt_input.getText().toString())) {
 
-                    txt_input.setText("");
                     if (selectedImage != null) {
-                        btnMsgSend.setClickable(true);
-                        Glide.with(getApplicationContext())
-                                .load(R.drawable.icon_after_send)
-                                .into(btnSend);
+                        Log.i("SelectedImage1", selectedImage + "");
+                        addMsg(mReference, new ChatMessage(
+                                txt_input.getText().toString(),
+                                selectedImage.toString(),
+                                mSharePreferenceHelper.getUserName(),
+                                time,
+                                "false",
+                                Long.valueOf(mSharePreferenceHelper.getUserId()+""),
+                                "1"));
+
+                        selectedImage = null;
+                        txt_input.setText("");
+                        flImage.setVisibility(View.GONE);
+                    } else {
+                        addMsg(mReference, new ChatMessage(
+                                txt_input.getText().toString(),
+                                "",
+                                mSharePreferenceHelper.getUserName(),
+                                time,
+                                "false",
+                                Long.valueOf(mSharePreferenceHelper.getUserId()+""),
+                                "0"));
+
+                        txt_input.setText("");
                     }
-                }
-                else if(selectedImage != null){
-                    Log.i("SelectedImage", selectedImage + "");
-                    flImage.setVisibility(View.GONE);
-                    DateFormat df = new SimpleDateFormat("HH:mm, d MMM yyyy");
-                    String time = df.format(Calendar.getInstance().getTime());
-                    Log.e("photo",selectedImage.toString());
+                } else if (selectedImage != null) {
                     addMsg(mReference, new ChatMessage(
+                            "",
                             selectedImage.toString(),
                             mSharePreferenceHelper.getUserName(),
                             time,
@@ -258,7 +266,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
                             "1"));
 
                     selectedImage = null;
-                    txt_input.setText("");
+                    flImage.setVisibility(View.GONE);
                 }
             }
         });
@@ -280,13 +288,6 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
 
         startActivityForResult(chooserIntent, PICK_IMAGE_REQUEST);
-
-
-/*
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);*/
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -299,9 +300,7 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
             selectedImage = data.getData();
             if (selectedImage != null) {
                 btnMsgSend.setClickable(true);
-                Glide.with(getApplicationContext())
-                        .load(R.drawable.icon_after_send)
-                        .into(btnSend);
+                drawable.setTint(getResources().getColor(R.color.colorBlack));
             }
             try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
@@ -333,8 +332,6 @@ public class ChatActivity extends BaseActivity implements ChatView, ChatMessageD
     public void addMsg(DatabaseReference mReference, ChatMessage msg) {
         mPresenter.addMsg(this,mReference,msg);
     }
-
-
 
     @Override
     public void deleteChatMessage(String messageId,int position) {

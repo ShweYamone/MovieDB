@@ -49,11 +49,12 @@ public class ChatMessageModelImpl implements IChatMessageModel {
                                     }
                                         ChatMessage message = new ChatMessage(
                                                 snapshot.child("messageText").getValue().toString(),
+                                                snapshot.child("photoPath").getValue().toString(),
                                                 snapshot.child("messageUser").getValue().toString(),
                                                 snapshot.child("messageTime").getValue().toString(),
                                                 snapshot.child("isDeleted").getValue().toString(),
                                                 accountId,
-                                                snapshot.child("photo").getValue().toString()
+                                                snapshot.child("hasPhoto").getValue().toString()
                                         );
                                         message.setMessageId(snapshot.getKey().toString());
                                         return message;
@@ -71,7 +72,7 @@ public class ChatMessageModelImpl implements IChatMessageModel {
         }
         else {
             try {
-                if(msg.isPhoto().equals("0")) {
+                if(msg.getHasPhoto().equals("0")) {
                     reference.child("ChatMessage").push().setValue(msg);
                 }
                 else {
@@ -90,16 +91,18 @@ public class ChatMessageModelImpl implements IChatMessageModel {
 
     private void uploadFile(Context context,DatabaseReference reference,ChatMessage msg) {
 
-        Uri filePath = Uri.parse(msg.getMessageText());
+        Uri filePath = Uri.parse(msg.getPhotoPath());
+        Log.i("FiePath", filePath.getLastPathSegment() + "");
         //if there is a file to upload
         if (filePath != null) {
+
 
             //displaying a progress dialog while upload is going on
             final ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Uploading");
             progressDialog.show();
 
-            msg.setMessageText(filePath.getLastPathSegment());
+            msg.setPhotoPath(filePath.getLastPathSegment());
 
             StorageReference riversRef = storage.getReferenceFromUrl("gs://moviedb-6ae09.appspot.com");
             StorageReference riversRef1 = riversRef.child("images/"+filePath.getLastPathSegment());
